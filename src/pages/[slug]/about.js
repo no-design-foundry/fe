@@ -1,3 +1,4 @@
+import Markdown from "@/components/Markdown";
 import data from "@/data";
 import React from "react";
 import { useFela } from "react-fela";
@@ -15,13 +16,7 @@ const mdRule = () => ({
 
 function About({ markdown }) {
   const { css } = useFela();
-  return (
-    <ReactMarkdown
-      children={`${markdown}`}
-      linkTarget="_blank"
-      className={css(mdRule)}
-    />
-  );
+  return <Markdown markdown={markdown} />;
 }
 
 export default About;
@@ -36,7 +31,6 @@ export function getStaticPaths() {
 export function getStaticProps({ params }) {
   const { slug } = params;
   let markdown;
-  console.log("importing markdown");
   switch (slug) {
     case "rotorizer":
       markdown = require("@/abouts/rotorizer.md");
@@ -45,7 +39,6 @@ export function getStaticProps({ params }) {
       markdown = require("@/abouts/rasterizer.md");
       break;
   }
-  console.log(markdown);
   return {
     props: {
       markdown,

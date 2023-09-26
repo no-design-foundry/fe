@@ -8,8 +8,6 @@ const linkRule = ({
   linkActive,
   aboutLinkActive,
   isHome,
-  identifier,
-  variableSliders,
 }) => ({
   position: "relative",
   extend: [
@@ -30,19 +28,7 @@ const linkRule = ({
       },
     },
   ],
-});
-
-const layerRule =
-  (index, color) =>
-  ({ identifier }) => ({
-    // fontFamily: `${identifier}-${index}`,
-    // extend: [{
-    //   condition: index !== 0,
-    //   style: {
-    //     color: "#55F"
-    //   }
-    // }]
-  });
+})
 
 const aboutLinkRule = ({ aboutLinkActive }) => ({
   extend: {

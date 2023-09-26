@@ -36,6 +36,14 @@ button {
     font-size: .75em;
 }
 
+button, input[type=file] {
+    cursor: pointer;
+}
+
+button:disabled {
+    color: gray;
+}
+
 body {
     font-size: 17px;
     line-height: 1.2em;

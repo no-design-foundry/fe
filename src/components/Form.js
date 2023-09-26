@@ -20,8 +20,8 @@ const formRule = () => ({
     whiteSpace: "nowrap",
   },
   "& > *": {
-    width: "100%"
-  }
+    width: "100%",
+  },
 });
 
 const processingRule = () => ({
@@ -37,8 +37,25 @@ const wrapperRule = () => ({
   position: "fixed",
   bottom: 5,
   left: 5,
-  zIndex: 100
+  zIndex: 100,
 });
+
+function saveFile(blob, filename) {
+  if (window.navigator.msSaveOrOpenBlob) {
+    window.navigator.msSaveOrOpenBlob(blob, filename);
+  } else {
+    const a = document.createElement('a');
+    document.body.appendChild(a);
+    const url = window.URL.createObjectURL(blob);
+    a.href = url;
+    a.download = filename;
+    a.click();
+    setTimeout(() => {
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    }, 0)
+  }
+}
 
 let lastTimeStamp;
 function Form() {
@@ -46,14 +63,13 @@ function Form() {
   const { identifier, title, inputs } = useContext(FilterInfoContext);
   const { getInputMemory } = useContext(InputMemoryContext);
   const inputFile = getInputMemory(`${identifier}-fontfile`);
-  const disabled = !Boolean(inputFile)
+  const disabled = !Boolean(inputFile);
   const { setOutputFonts, setPreviewString } = useContext(OutputFontContext);
   const [processing, setProcessing] = useState(false);
   const [logMessages, setLogMessages] = useState([]);
   const { css } = useFela();
 
   function handleOnChange(e) {
-    console.log(e)
     if (
       formRef.current.checkValidity() &&
       e.target.name?.length &&
@@ -111,7 +127,34 @@ function Form() {
   }
 
   function handleOnDownload(e) {
-    e.preventDefault()
+    console.log("hi")
+    e.preventDefault();
+    if (
+      formRef.current.checkValidity() &&
+      Boolean(inputFile)
+    ) {
+      const data = new FormData(formRef.current);
+      data.append("font_file", inputFile);
+      const url = urls.get(identifier);
+      setProcessing(true);
+      axios
+        .post(url, data, {
+          headers: { "Content-Type": "multipart/form-data" },
+        })
+        .then((response) => {
+          response.data.fonts.forEach(font => {
+            const fileRule = "data:" + response.headers["content-type"] + ";base64," + font
+            fetch(fileRule).then(blobResponse => blobResponse.blob()).then(blob => {
+              saveFile(blob, "test.otf")
+
+            })
+          })
+        })
+        .finally((response) => {
+          console.log("finished")
+          setProcessing(false);
+        });
+    }
   }
 
   return (
@@ -122,7 +165,7 @@ function Form() {
       <form ref={formRef} className={css(formRule)} onChange={handleOnChange}>
         {processing && <div className={css(processingRule)}>processing...</div>}
         <FontControls></FontControls>
-        <FileInput required={true} />
+        <FileInput required={true} disabled={!processing}/>
         {inputs.map((input, index) => {
           const { type, ...kwargs } = input;
           return (
@@ -142,7 +185,9 @@ function Form() {
           required={true}
           disabled={disabled}
         />
-        <button className={css(downloadRule)} onClick={handleOnDownload}>download</button>
+        <button className={css(downloadRule)} onClick={handleOnDownload} disabled={processing}>
+          download
+        </button>
       </form>
     </div>
   );
