@@ -1,0 +1,94 @@
+// fonts
+
+* {
+    box-sizing: border-box;
+}
+
+@font-face {
+    font-family: "rasterizer-0";
+    src: url(/rasterizer-0.ttf);
+}
+
+@font-face {
+    font-family: "rotorizer-0";
+    src: url(/rotorizer-0.ttf);
+}
+
+@font-face {
+    font-family: "rotorizer-1";
+    src: url(/rotorizer-1.ttf);
+}
+
+@font-face {
+    font-family: "vtt";
+    src: url(/vtt.woff2);
+}
+
+ul {
+    list-style: none;
+}
+
+button {
+    background: #ddd;
+    padding: .5em .5em .25em .5em;
+    text-align: center !important;
+    border-radius: 4px;
+    font-size: .75em;
+}
+
+body {
+    font-size: 15px;
+    line-height: 1.2em;
+    font-family: "vtt", sans-serif;
+    > * {
+        padding: 8px;
+    }
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    font-size: inherit;
+    font-family: inherit;
+    outline: none;
+    border: none;
+    appearance: none;
+    background: inherit;
+    // box-sizing: content-box;
+    // text-decoration-thickness: .05em;
+}
+
+button, input {
+    // color: gray
+}
+
+input:not([type=range])[disabled] {
+    color: black;
+    &, label[disabled] {
+        opacity: .2 !important;
+        pointer-events: none;
+        user-select: none !important;
+    }
+}
+
+input {
+    overflow: visible;
+}
+
+button {
+    text-align: left;
+}
+
+a, a:visited, a:hover, a:focus, a:active {
+    color: black;
+    position: relative;
+    display: inline-block;
+}
+
+a, a:visited, a:focus, a:active {
+    text-decoration: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: inherit;
+}
