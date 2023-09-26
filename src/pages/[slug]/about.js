@@ -1,7 +1,7 @@
 import React from "react";
 import { useFela } from "react-fela";
 import ReactMarkdown from "react-markdown";
-import { getStaticPaths as getStaticPathsImported } from "./index";
+import { getStaticPaths as getStaticPathsImported } from "@/pages/index";
 
 const mdRule = () => ({
   maxWidth: "50vw",
@@ -31,6 +31,7 @@ export const getStaticPaths = getStaticPathsImported;
 export function getStaticProps({ params }) {
   const { slug } = params;
   let markdown;
+  console.log("importing markdown");
   switch (slug) {
     case "rotorizer":
       markdown = require("@/abouts/rotorizer.md");
@@ -39,6 +40,7 @@ export function getStaticProps({ params }) {
       markdown = require("@/abouts/rasterizer.md");
       break;
   }
+  console.log(markdown);
   return {
     props: {
       markdown,

@@ -1,6 +1,5 @@
 import React from "react";
-import { useFela } from "react-fela";
-import Input from "./Input";
+import Input from "@/components/Input";
 
 function TextInput(props) {
   const { label, name, defaultValue, required = false, disabled=true } = props;

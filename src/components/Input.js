@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef } from "react";
-import InputMemoryContext from "../contexts/InputMemoryContext";
+import InputMemoryContext from "@/contexts/InputMemoryContext";
 
 function Input(props) {
   const {

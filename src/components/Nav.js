@@ -1,6 +1,6 @@
 import React from "react";
 import { useFela } from "react-fela";
-import data from "../data";
+import data from "@/data";
 import Link from "next/link";
 import { useRouter } from "next/router";
 

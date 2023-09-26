@@ -1,14 +1,14 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
-import FilterInfoContext from "../contexts/FilterContext";
+import React, { useContext, useRef, useState } from "react";
+import FilterInfoContext from "@/contexts/FilterContext";
 import Slider from "./Slider";
-import TextInput from "./TextInput";
-import FontControls from "./FontControls";
+import TextInput from "@/components/TextInput";
+import FontControls from "@/components/FontControls";
 import { useFela } from "react-fela";
-import FileInput from "./FileInput";
+import FileInput from "@/components/FileInput";
 import { urls } from "@/variables";
 import axios from "axios";
-import OutputFontContext from "../contexts/OutputFontContext";
-import InputMemoryContext from "../contexts/InputMemoryContext";
+import OutputFontContext from "@/contexts/OutputFontContext";
+import InputMemoryContext from "@/contexts/InputMemoryContext";
 
 const formRule = () => ({
   display: "grid",

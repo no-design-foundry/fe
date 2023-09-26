@@ -1,8 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { useFela } from "react-fela";
-import FilterContext from "../contexts/FilterContext";
-import InputMemoryContext from "../contexts/InputMemoryContext";
-import Input from "./Input";
+import InputMemoryContext from "@/contexts/InputMemoryContext";
 
 const borderRadius = "14px";
 

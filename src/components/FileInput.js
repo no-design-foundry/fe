@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { useFela } from 'react-fela'
-import FilterContext from '../contexts/FilterContext'
-import InputMemoryContext from '../contexts/InputMemoryContext'
+import FilterContext from '@/contexts/FilterContext'
+import InputMemoryContext from '@/contexts/InputMemoryContext'
 
 const inputWrapperRule = () => ({
   position : "relative"

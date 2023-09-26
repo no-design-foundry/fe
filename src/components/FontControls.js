@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef } from "react";
-import FilterInfoContext from "../contexts/FilterContext";
-import InputMemoryContext from "../contexts/InputMemoryContext";
-import OutputFontContext from "../contexts/OutputFontContext";
+import FilterInfoContext from "@/contexts/FilterContext";
+import InputMemoryContext from "@/contexts/InputMemoryContext";
+import OutputFontContext from "@/contexts/OutputFontContext";
 import Slider from "./Slider";
 
 function FontControls() {
