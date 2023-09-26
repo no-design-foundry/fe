@@ -11,7 +11,7 @@ function FontControls() {
 
   const { getInputMemory } = useContext(InputMemoryContext);
   const fontSizeIdentifier = `${filterIdentifier}-fontsize`;
-  const initialFontSize=getInputMemory(fontSizeIdentifier)
+  const initialFontSize = getInputMemory(fontSizeIdentifier);
   const currentVariableSettings = useRef(
     variableFontControlSliders.reduce((collector, slider) => {
       collector[slider.tag] = slider.defaultValue;
@@ -35,6 +35,7 @@ function FontControls() {
   }
 
   useEffect(() => {
+    if (previewRef?.current) {
       document.fonts.ready.then(() => {
         const preview = previewRef.current;
         preview.style.fontVariationSettings = variableSettingsToString();
@@ -44,6 +45,7 @@ function FontControls() {
         const scale = window.innerWidth / preview.firstChild.offsetWidth;
         preview.style.fontSize = `${currentFontSize * scale}px`;
       });
+    }
   }, [filterIdentifier, previewRef?.current]);
 
   return (
@@ -52,7 +54,7 @@ function FontControls() {
         key={filterIdentifier}
         label={"font size"}
         min={10}
-        max={window.innerHeight}
+        max={100} // window.innerHeight
         defaultValue={500}
         onInput={handleOnFontSizeInput}
         identifier={fontSizeIdentifier}

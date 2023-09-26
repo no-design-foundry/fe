@@ -4,6 +4,7 @@ import FontPreview from "@/components/FontPreview";
 import { FilterContextWrapper } from "@/contexts/FilterContext";
 import OutputFontContext from "@/contexts/OutputFontContext";
 import data from "@/data";
+import Form from "@/components/Form";
 
 const wrapperRule = () => ({
   position: "absolute",
@@ -15,7 +16,7 @@ const wrapperRule = () => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  pointerEvents: "none",
+  // pointerEvents: "none",
   userSelect: "none",
   overflow: "hidden",
 });
@@ -36,7 +37,8 @@ function Index({ filterData }) {
       <FilterContextWrapper data={filterData}>
         <FontPreview className={css(previewRule)}>
           {previewStrings?.[filterData.identifier] ?? filterData.title}
-        </FontPreview>{" "}
+        </FontPreview>
+        <Form></Form>
       </FilterContextWrapper>
     </div>
   );
@@ -53,7 +55,6 @@ export function getStaticPaths() {
 
 export function getStaticProps(context) {
   const filterData = data.find((filter) => filter.slug === context.params.slug);
-  console.log(filterData);
   return {
     props: { filterData },
   };

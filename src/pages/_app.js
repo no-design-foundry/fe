@@ -1,10 +1,11 @@
 import React from "react";
 import BaseApp from "next/app";
 import FelaProvider from "../FelaProvider";
-import {OutputFontContextWrapper} from "@/contexts/OutputFontContext";
+import { OutputFontContextWrapper } from "@/contexts/OutputFontContext";
 import { FilterContextWrapper } from "@/contexts/FilterContext";
 import Nav from "@/components/Nav";
-import style from "@/style.scss"
+import style from "@/style.scss";
+import { InputMemoryContextWrapper } from "@/contexts/InputMemoryContext";
 
 class App extends BaseApp {
   render() {
@@ -13,8 +14,10 @@ class App extends BaseApp {
     return (
       <FelaProvider renderer={renderer}>
         <OutputFontContextWrapper>
-            <Nav/>
+          <InputMemoryContextWrapper>
+            <Nav />
             <Component {...pageProps} />
+          </InputMemoryContextWrapper>
         </OutputFontContextWrapper>
       </FelaProvider>
     );

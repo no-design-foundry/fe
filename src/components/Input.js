@@ -1,6 +1,4 @@
 import React, { useContext, useEffect, useRef } from "react";
-import { useForm } from "react-hook-form";
-import FilterContext from "../contexts/FilterContext";
 import InputMemoryContext from "../contexts/InputMemoryContext";
 
 function Input(props) {

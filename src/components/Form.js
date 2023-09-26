@@ -5,7 +5,7 @@ import TextInput from "./TextInput";
 import FontControls from "./FontControls";
 import { useFela } from "react-fela";
 import FileInput from "./FileInput";
-import { urls } from "../variables";
+import { urls } from "@/variables";
 import axios from "axios";
 import OutputFontContext from "../contexts/OutputFontContext";
 import InputMemoryContext from "../contexts/InputMemoryContext";
@@ -35,7 +35,9 @@ const downloadRule = () => ({
 
 const wrapperRule = () => ({
   position: "fixed",
-  bottom: "5px",
+  bottom: 5,
+  left: 5,
+  zIndex: 100
 });
 
 let lastTimeStamp;
@@ -51,6 +53,7 @@ function Form() {
   const { css } = useFela();
 
   function handleOnChange(e) {
+    console.log(e)
     if (
       formRef.current.checkValidity() &&
       e.target.name?.length &&

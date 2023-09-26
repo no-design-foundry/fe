@@ -61,8 +61,8 @@ const navRule = () => ({
 
 function NavLink({ href, children, identifier }) {
   const { asPath, query, route } = useRouter();
-  const aboutLinkActive =
-    route === "/[slug]/about" && "/" + query.slug === href;
+  const aboutLinkActive = route.endsWith("/about") && ("/" + (query?.slug ?? "")) === href;
+  // console.log(query?.slug, href)
   const { css } = useFela({
     linkActive: asPath === href,
     aboutLinkActive: aboutLinkActive,
@@ -76,8 +76,9 @@ function NavLink({ href, children, identifier }) {
       {(asPath === href || aboutLinkActive) && (
         <>
           <span>, </span>
-          <Link href={aboutLinkActive ? href : href + "/about"} className={css(aboutLinkRule)}>
+          <Link href={aboutLinkActive ? href : [href, "about"].filter(part => part?.length > 1).join("/")} className={css(aboutLinkRule)}>
             about
+            {/* {aboutLinkActive ? href : [href, "about"].filter(part => part?.length > 1).join("/")} */}
           </Link>
         </>
       )}
