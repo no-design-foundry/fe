@@ -1,7 +1,7 @@
+import data from "@/data";
 import React from "react";
 import { useFela } from "react-fela";
 import ReactMarkdown from "react-markdown";
-import { getStaticPaths as getStaticPathsImported } from "@/pages/index";
 
 const mdRule = () => ({
   maxWidth: "50vw",
@@ -26,7 +26,12 @@ function About({ markdown }) {
 
 export default About;
 
-export const getStaticPaths = getStaticPathsImported;
+export function getStaticPaths() {
+  return {
+    paths: data.map((entry) => ({ params: { slug: entry.slug } })),
+    fallback: false,
+  };
+}
 
 export function getStaticProps({ params }) {
   const { slug } = params;
