@@ -1,8 +1,15 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useFela } from 'react-fela'
 
-function Log() {
+const logRule = () => ({
+  color: "red",
+  gridColumn: "1 / 2 span"
+})
+
+function Log({error, removeSelf}) {
+  const {css} = useFela()
   return (
-    <div>Log</div>
+    <div className={css(logRule)}>{error.response.data.detail}</div>
   )
 }
 

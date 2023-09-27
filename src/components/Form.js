@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import FilterInfoContext from "@/contexts/FilterContext";
 import Slider from "./Slider";
 import TextInput from "@/components/TextInput";
@@ -9,6 +9,7 @@ import { urls } from "@/variables";
 import axios from "axios";
 import OutputFontContext from "@/contexts/OutputFontContext";
 import InputMemoryContext from "@/contexts/InputMemoryContext";
+import Log from "./Log";
 
 const formRule = () => ({
   display: "grid",
@@ -22,6 +23,11 @@ const formRule = () => ({
   "& > *": {
     width: "100%",
   },
+});
+
+const logRule = () => ({
+  color: "red",
+  gridColumn: "1 / 2 span",
 });
 
 const processingRule = () => ({
@@ -44,7 +50,7 @@ function saveFile(blob, filename) {
   if (window.navigator.msSaveOrOpenBlob) {
     window.navigator.msSaveOrOpenBlob(blob, filename);
   } else {
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     document.body.appendChild(a);
     const url = window.URL.createObjectURL(blob);
     a.href = url;
@@ -53,7 +59,7 @@ function saveFile(blob, filename) {
     setTimeout(() => {
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
-    }, 0)
+    }, 0);
   }
 }
 
@@ -63,10 +69,13 @@ function Form() {
   const { identifier, title, inputs } = useContext(FilterInfoContext);
   const { getInputMemory } = useContext(InputMemoryContext);
   const inputFile = getInputMemory(`${identifier}-fontfile`);
+  const [errors, setErrors] = useState([]);
   const disabled = !Boolean(inputFile);
-  const { setOutputFonts, setPreviewString, previewStrings } = useContext(OutputFontContext);
+  const { setOutputFonts, setPreviewString, previewStrings } =
+    useContext(OutputFontContext);
   const [processing, setProcessing] = useState(false);
   const [logMessages, setLogMessages] = useState([]);
+  const logRemovingInterval = useRef();
   const { css } = useFela();
 
   function handleOnChange(e) {
@@ -117,7 +126,12 @@ function Form() {
                 outputFonts.map((font) => font.family)
               );
             })
-            .catch((response) => console.log(response))
+            .catch((response) =>
+              setErrors([
+                ...errors,
+                { ...response, timeStamp: new Date().getTime() },
+              ])
+            )
             .finally((response) => {
               setProcessing(false);
             });
@@ -127,12 +141,9 @@ function Form() {
   }
 
   function handleOnDownload(e) {
-    console.log("hi")
+    console.log("hi");
     e.preventDefault();
-    if (
-      formRef.current.checkValidity() &&
-      Boolean(inputFile)
-    ) {
+    if (formRef.current.checkValidity() && Boolean(inputFile)) {
       const data = new FormData(formRef.current);
       data.append("font_file", inputFile);
       const url = urls.get(identifier);
@@ -142,30 +153,58 @@ function Form() {
           headers: { "Content-Type": "multipart/form-data" },
         })
         .then((response) => {
-          response.data.fonts.forEach(font => {
-            const fileRule = "data:" + response.headers["content-type"] + ";base64," + font
-            fetch(fileRule).then(blobResponse => blobResponse.blob()).then(blob => {
-              saveFile(blob, "test.otf")
-
-            })
-          })
+          response.data.fonts.forEach((font) => {
+            const fileRule =
+              "data:" + response.headers["content-type"] + ";base64," + font;
+            fetch(fileRule)
+              .then((blobResponse) => blobResponse.blob())
+              .then((blob) => {
+                saveFile(blob, "test.otf");
+              });
+          });
         })
         .finally((response) => {
-          console.log("finished")
+          console.log("finished");
           setProcessing(false);
         });
     }
   }
+
+  useEffect(() => {
+    if (errors.length) {
+      logRemovingInterval.current = setInterval(
+        () => {
+          setErrors((currentErrors) => {
+            const [_, ...otherErrors] = currentErrors;
+            return otherErrors
+          });
+        },
+        2000
+      )
+    }
+    else {
+      clearInterval(logRemovingInterval.current);
+    }
+    return () => {
+      clearInterval(logRemovingInterval.current)
+    }
+  }, [errors.length]);
 
   return (
     <div className={css(wrapperRule)}>
       {logMessages.length != 0 && (
         <ul>{logMessages.map((message) => message)}</ul>
       )}
+
       <form ref={formRef} className={css(formRule)} onChange={handleOnChange}>
+        {errors.map((error) => (
+          <div key={error.timeStamp} className={css(logRule)}>
+            {error.response.data.detail}
+          </div>
+        ))}
         {processing && <div className={css(processingRule)}>processing...</div>}
         <FontControls></FontControls>
-        <FileInput required={true} disabled={!processing}/>
+        <FileInput required={true} disabled={!processing} />
         {inputs.map((input, index) => {
           const { type, ...kwargs } = input;
           return (
@@ -185,7 +224,11 @@ function Form() {
           required={true}
           disabled={disabled}
         />
-        <button className={css(downloadRule)} onClick={handleOnDownload} disabled={processing}>
+        <button
+          className={css(downloadRule)}
+          onClick={handleOnDownload}
+          disabled={processing}
+        >
           download
         </button>
       </form>
