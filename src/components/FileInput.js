@@ -34,10 +34,10 @@ function FileInput({disabled}) {
   const { setInputMemory, getInputMemory } = useContext(InputMemoryContext);
   const inputFile = getInputMemory(identifier);
   function handleOnInput(e) {
+    console.log(e)
     if (e.target.files.length === 1) {
       setInputMemory(identifier, e.target.files[0]);
     } else {
-      setInputFile(identifier, null);
     }
   }
   return (
@@ -52,6 +52,7 @@ function FileInput({disabled}) {
           onInput={handleOnInput}
           name="font_file"
           type="file"
+          accept=".ttf, .otf"
         ></input>
       </span>
     </>

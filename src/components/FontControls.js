@@ -5,13 +5,12 @@ import OutputFontContext from "@/contexts/OutputFontContext";
 import Slider from "./Slider";
 
 function FontControls() {
-  const { previewRef } = useContext(OutputFontContext);
+  const { previewRef, outputFonts } = useContext(OutputFontContext);
   const { variableFontControlSliders = [], identifier: filterIdentifier } =
     useContext(FilterInfoContext);
 
-  const { getInputMemory } = useContext(InputMemoryContext);
-  const fontSizeIdentifier = `${filterIdentifier}-fontsize`;
-  const initialFontSize = getInputMemory(fontSizeIdentifier);
+  // const fontSizeIdentifier = `${filterIdentifier}-fontsize`;
+  // const initialFontSize = getInputMemory(fontSizeIdentifier);
   const currentVariableSettings = useRef(
     variableFontControlSliders.reduce((collector, slider) => {
       collector[slider.tag] = slider.defaultValue;
@@ -25,14 +24,17 @@ function FontControls() {
       .join(", ");
   }
 
-  function handleOnFontSizeInput(e) {
-    previewRef.current.style.fontSize = `${e.target.value}px`;
-  }
+  // function handleOnFontSizeInput(e) {
+  //   previewRef.current.style.fontSize = `${e.target.value}px`;
+  // }
+
+
 
   function handleOnVariableInput({ tag, value }) {
     currentVariableSettings.current[tag] = parseFloat(value);
     previewRef.current.style.fontVariationSettings = variableSettingsToString();
   }
+
 
   useEffect(() => {
     if (previewRef?.current) {
@@ -42,15 +44,16 @@ function FontControls() {
         const currentFontSize = parseInt(
           window.getComputedStyle(preview)["font-size"]
         );
-        const scale = window.innerWidth / preview.firstChild.offsetWidth;
-        preview.style.fontSize = `${currentFontSize * scale}px`;
+        const scaleX = (window.innerHeight * .5) / preview.firstChild.offsetHeight;
+        const scaleY = (window.innerWidth * .8) / preview.firstChild.offsetWidth;
+        preview.style.fontSize = `${currentFontSize * Math.min(scaleX, scaleY)}px`;
       });
     }
-  }, [filterIdentifier, previewRef?.current]);
+  }, [filterIdentifier, previewRef?.current, outputFonts[filterIdentifier]]);
 
   return (
     <>
-      <Slider
+      {/* <Slider
         key={filterIdentifier}
         label={"font size"}
         min={10}
@@ -58,7 +61,7 @@ function FontControls() {
         defaultValue={500}
         onInput={handleOnFontSizeInput}
         identifier={fontSizeIdentifier}
-      ></Slider>
+      ></Slider> */}
       {variableFontControlSliders.map((slider, index) => (
         <Slider
           identifier={`${filterIdentifier}-${slider.tag}`}

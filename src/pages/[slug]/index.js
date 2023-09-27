@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { useFela } from "react-fela";
 import FontPreview from "@/components/FontPreview";
-import { FilterContextWrapper } from "@/contexts/FilterContext";
+import FilterContext, { FilterContextWrapper } from "@/contexts/FilterContext";
 import OutputFontContext from "@/contexts/OutputFontContext";
 import data from "@/data";
 import Form from "@/components/Form";
@@ -29,6 +29,7 @@ const previewRule = () => ({
 function Index({ filterData }) {
   //   const { identifier } = useContext(FilterContext);
   const { previewStrings } = useContext(OutputFontContext);
+
   //   const { title } = useContext(FilterContext);
   const { css } = useFela();
 

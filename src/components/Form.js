@@ -14,7 +14,7 @@ const formRule = () => ({
   display: "grid",
   gridTemplateColumns: "repeat(2, min-content)",
   gridAutoRows: "min-content",
-  gridGap: "4px 1ch",
+  gridGap: "2px 1ch",
   alignItems: "center",
   "& > label": {
     whiteSpace: "nowrap",
@@ -29,14 +29,14 @@ const processingRule = () => ({
 });
 
 const downloadRule = () => ({
-  marginTop: "1em",
+  // marginTop: "1em",
   gridColumn: 2,
 });
 
 const wrapperRule = () => ({
   position: "fixed",
-  bottom: 5,
-  left: 5,
+  bottom: 14,
+  left: 14,
   zIndex: 100,
 });
 
@@ -64,7 +64,7 @@ function Form() {
   const { getInputMemory } = useContext(InputMemoryContext);
   const inputFile = getInputMemory(`${identifier}-fontfile`);
   const disabled = !Boolean(inputFile);
-  const { setOutputFonts, setPreviewString } = useContext(OutputFontContext);
+  const { setOutputFonts, setPreviewString, previewStrings } = useContext(OutputFontContext);
   const [processing, setProcessing] = useState(false);
   const [logMessages, setLogMessages] = useState([]);
   const { css } = useFela();
@@ -181,7 +181,7 @@ function Form() {
           key={identifier}
           label="preview"
           name="preview_string"
-          defaultValue={title}
+          defaultValue={previewStrings?.[identifier] ?? title}
           required={true}
           disabled={disabled}
         />

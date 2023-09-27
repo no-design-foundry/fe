@@ -1,9 +1,5 @@
 // fonts
 
-* {
-    box-sizing: border-box;
-}
-
 @font-face {
     font-family: "rasterizer-0";
     src: url(/rasterizer-0.ttf);
@@ -47,7 +43,7 @@ button:disabled {
 body {
     font-size: 17px;
     line-height: 1.2em;
-    font-family: "vtt", sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     > * {
         padding: 8px;
     }
@@ -62,6 +58,9 @@ body {
     border: none;
     appearance: none;
     background: inherit;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     // box-sizing: content-box;
     // text-decoration-thickness: .05em;
 }
