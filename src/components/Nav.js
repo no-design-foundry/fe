@@ -41,9 +41,9 @@ const aboutLinkRule = ({ aboutLinkActive }) => ({
 
 const navRule = () => ({
   marginBottom: "1em",
-  position: "fixed",
-  top: 14,
-  left: 14
+  position: "sticky",
+  top: 0,
+  // left: 14
 });
 
 function NavLink({ href, children, identifier }) {
