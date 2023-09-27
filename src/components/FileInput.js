@@ -35,6 +35,7 @@ function FileInput({disabled}) {
   const inputFile = getInputMemory(identifier);
   function handleOnInput(e) {
     console.log(e)
+    console.log(e.target.files)
     if (e.target.files.length === 1) {
       setInputMemory(identifier, e.target.files[0]);
     } else {
@@ -48,6 +49,7 @@ function FileInput({disabled}) {
           {inputFile?.name ?? "Upload a font"}
         </button>
         <input
+          key={identifier}
           className={css(puppetRule)}
           onInput={handleOnInput}
           name="font_file"

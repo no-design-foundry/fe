@@ -39,7 +39,7 @@ function Index({ filterData }) {
         <FontPreview className={css(previewRule)}>
           {previewStrings?.[filterData.identifier] ?? filterData.title}
         </FontPreview>
-        <Form></Form>
+        <Form key={filterData.identifier}></Form>
       </FilterContextWrapper>
     </div>
   );

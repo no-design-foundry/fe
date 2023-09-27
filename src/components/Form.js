@@ -141,7 +141,6 @@ function Form() {
   }
 
   function handleOnDownload(e) {
-    console.log("hi");
     e.preventDefault();
     if (formRef.current.checkValidity() && Boolean(inputFile)) {
       const data = new FormData(formRef.current);
@@ -159,7 +158,7 @@ function Form() {
             fetch(fileRule)
               .then((blobResponse) => blobResponse.blob())
               .then((blob) => {
-                saveFile(blob, "test.otf");
+                saveFile(blob, `no-design-foundry-${identifier}.ttf`);
               });
           });
         })
