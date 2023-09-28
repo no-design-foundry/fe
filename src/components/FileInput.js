@@ -11,7 +11,6 @@ const masterRule = () => ({
   top: 0,
   left: 0,
   whiteSpace: "nowrap",
-  width: "20ch",
   height: "100%",
   textOverflow: "ellipsis",
   overflow: "hidden",
@@ -43,7 +42,7 @@ function FileInput({disabled}) {
   }
   return (
     <>
-      <label>font</label>
+      <label>Font</label>
       <span className={css(inputWrapperRule)}>
         <button className={css(masterRule)}>
           {inputFile?.name ?? "Upload a font"}

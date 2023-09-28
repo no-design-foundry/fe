@@ -8,7 +8,7 @@ export default [
     inputs: [
       {
         type: "range",
-        label: "resolution",
+        label: "Resolution",
         name: "resolution",
         min: 10,
         max: 150,
@@ -24,7 +24,7 @@ export default [
     layerColors: ["gray", "#000"],
     variableFontControlSliders: [
       {
-        label: "rotation",
+        label: "Rotation",
         tag: "RTTX",
         min: 0,
         max: 360,
@@ -34,7 +34,7 @@ export default [
     inputs: [
       {
         type: "range",
-        label: "depth",
+        label: "Depth",
         name: "depth",
         min: 2,
         max: 600,

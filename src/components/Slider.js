@@ -79,7 +79,7 @@ function Slider(props) {
       <input
         name={name}
         type="range"
-        className={css(inputRule)}
+        // className={css(inputRule)}
         defaultValue={defaultValue}
         min={min}
         max={max}

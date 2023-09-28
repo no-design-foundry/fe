@@ -12,10 +12,11 @@ import InputMemoryContext from "@/contexts/InputMemoryContext";
 import Log from "./Log";
 
 const formRule = () => ({
+  maxWidth: 300,
   display: "grid",
-  gridTemplateColumns: "repeat(2, min-content)",
+  gridTemplateColumns: "min-content 1fr",
   gridAutoRows: "min-content",
-  gridGap: "2px 1ch",
+  gridGap: "3px 1ch",
   alignItems: "center",
   "& > label": {
     whiteSpace: "nowrap",
@@ -35,7 +36,7 @@ const processingRule = () => ({
 });
 
 const downloadRule = () => ({
-  // marginTop: "1em",
+  marginTop: ".5em",
   gridColumn: 2,
 });
 
@@ -171,22 +172,18 @@ function Form() {
 
   useEffect(() => {
     if (errors.length) {
-      logRemovingInterval.current = setInterval(
-        () => {
-          setErrors((currentErrors) => {
-            const [_, ...otherErrors] = currentErrors;
-            return otherErrors
-          });
-        },
-        2000
-      )
-    }
-    else {
+      logRemovingInterval.current = setInterval(() => {
+        setErrors((currentErrors) => {
+          const [_, ...otherErrors] = currentErrors;
+          return otherErrors;
+        });
+      }, 2000);
+    } else {
       clearInterval(logRemovingInterval.current);
     }
     return () => {
-      clearInterval(logRemovingInterval.current)
-    }
+      clearInterval(logRemovingInterval.current);
+    };
   }, [errors.length]);
 
   return (
@@ -217,7 +214,7 @@ function Form() {
         })}
         <TextInput
           key={identifier}
-          label="preview"
+          label="Preview"
           name="preview_string"
           defaultValue={previewStrings?.[identifier] ?? title}
           required={true}
@@ -226,9 +223,9 @@ function Form() {
         <button
           className={css(downloadRule)}
           onClick={handleOnDownload}
-          disabled={processing}
+          disabled={processing || !inputFile}
         >
-          download
+          Download
         </button>
       </form>
     </div>

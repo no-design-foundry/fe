@@ -2,17 +2,17 @@
 
 @font-face {
     font-family: "rasterizer-0";
-    src: url(/rasterizer-0.ttf);
+    src: url(/Arial-rastr.ttf);
 }
 
 @font-face {
     font-family: "rotorizer-0";
-    src: url(/rotorizer-0.ttf);
+    src: url(/Arial-rotorizer-0.ttf);
 }
 
 @font-face {
     font-family: "rotorizer-1";
-    src: url(/rotorizer-1.ttf);
+    src: url(/Arial-rotorizer-1.ttf);
 }
 
 @font-face {
@@ -24,17 +24,20 @@ ul {
     list-style: none;
 }
 
-button {
-    background: #ddd;
-    padding: .5em .5em .25em .5em;
-    text-align: center !important;
-    border-radius: 4px;
-    font-size: .75em;
-}
 
-button, input[type=file] {
+button, input[type=submit], input[type=file] {
     cursor: pointer;
 }
+
+
+button {
+    // background: #ddd;
+    padding: 2px .5em !important;
+    text-align: center !important;
+    // border-radius: 4px;
+    // font-size: .2em !important;
+}
+
 
 button:disabled {
     color: gray;
@@ -50,38 +53,18 @@ body {
 * {
     padding: 0;
     margin: 0;
-    font-size: inherit;
-    font-family: inherit;
-    outline: none;
-    border: none;
-    appearance: none;
-    background: inherit;
     box-sizing: border-box;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    // box-sizing: content-box;
-    // text-decoration-thickness: .05em;
 }
 
 button, input {
-    // color: gray
+    font-size: inherit;
 }
 
-input:not([type=range])[disabled] {
-    color: black;
-    &, label[disabled] {
-        opacity: .2 !important;
-        pointer-events: none;
-        user-select: none !important;
-    }
-}
-
-input {
-    overflow: visible;
-}
-
-button {
-    text-align: left;
+button, input[type=submit] {
+    font-size: 15px !important;
+    width: 100%;
 }
 
 a, a:visited, a:hover, a:focus, a:active {
