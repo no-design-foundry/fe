@@ -73,7 +73,7 @@ function Slider(props) {
 
   return (
     <>
-      <label htmlFor={name} disabled={disabled}>
+      <label htmlFor={name} data-disabled={disabled}>
         {label}
       </label>
       <input

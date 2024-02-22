@@ -5,7 +5,7 @@ function TextInput(props) {
   const { label, name, defaultValue, required = false, disabled=true } = props;
   return (
     <>
-      <label htmlFor={name} disabled={disabled}>
+      <label htmlFor={name} data-disabled={disabled}>
         {label}
       </label>
       <Input

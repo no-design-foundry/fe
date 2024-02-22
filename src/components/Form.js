@@ -198,8 +198,8 @@ function Form() {
             {error.response.data.detail}
           </div>
         ))}
-        {processing && <div className={css(processingRule)}>processing...</div>}
-        <FontControls></FontControls>
+        {processing && <div className={css(processingRule)}>Processing...</div>}
+        <FontControls disabled={disabled}></FontControls>
         <FileInput required={true} disabled={!processing} />
         {inputs.map((input, index) => {
           const { type, ...kwargs } = input;

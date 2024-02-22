@@ -39,9 +39,12 @@ button {
 }
 
 
-button:disabled {
-    color: gray;
+button:disabled, input:disabled, label[data-disabled] {
+    color: silver;
+    opacity: .5;
 }
+
+
 
 body {
     padding: 14px;
