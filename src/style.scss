@@ -39,7 +39,7 @@ button {
 }
 
 
-button:disabled, input:disabled, label[data-disabled] {
+button:disabled, input:disabled, label[data-disabled="true"] {
     color: silver;
     opacity: .5;
 }

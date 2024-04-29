@@ -26,7 +26,7 @@ const puppetRule = () => ({
   height: "100%",
 });
 
-function FileInput({disabled}) {
+function FileInput({disabled, onChange}) {
   const { css } = useFela({disabled});
   const { identifier: filterIdentifier } = useContext(FilterContext);
   const identifier = `${filterIdentifier}-fontfile`;
@@ -54,6 +54,7 @@ function FileInput({disabled}) {
           name="font_file"
           type="file"
           accept=".ttf, .otf"
+          {...onChange ? {onChange} : {}}
         ></input>
       </span>
     </>
