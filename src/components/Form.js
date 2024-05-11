@@ -163,6 +163,12 @@ function Form() {
               });
           });
         })
+        .catch((response) =>
+          setErrors([
+            ...errors,
+            { ...response, timeStamp: new Date().getTime() },
+          ])
+        )
         .finally((response) => {
           console.log("finished");
           setProcessing(false);
@@ -195,12 +201,12 @@ function Form() {
       <form ref={formRef} className={css(formRule)} onChange={handleOnChange}>
         {errors.map((error) => (
           <div key={error.timeStamp} className={css(logRule)}>
-            {error.response.data.detail}
+            {error?.response?.data?.detail ?? "😭, maybe the font vas variable? Get in touch jansindl3r@gmail.com"}
           </div>
         ))}
         {processing && <div className={css(processingRule)}>Processing...</div>}
-        <FontControls disabled={disabled}></FontControls>
-        <FileInput required={true} disabled={!processing} />
+        <FontControls></FontControls>
+        <FileInput required={true} disabled={processing} />
         {inputs.map((input, index) => {
           const { type, ...kwargs } = input;
           return (
@@ -208,7 +214,7 @@ function Form() {
               key={`${identifier}-${index}`}
               {...kwargs}
               required={true}
-              disabled={disabled}
+              disabled={disabled || processing}
             />
           );
         })}
@@ -218,7 +224,7 @@ function Form() {
           name="preview_string"
           defaultValue={previewStrings?.[identifier] ?? title}
           required={true}
-          disabled={disabled}
+          disabled={disabled || processing}
         />
         <button
           className={css(downloadRule)}

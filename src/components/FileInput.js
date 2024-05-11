@@ -18,7 +18,7 @@ const masterRule = () => ({
 });
 
 const puppetRule = () => ({
-  opacity: 0,
+  opacity: "0 !important",
   position: "absolute",
   left: 0,
   top: 0,
@@ -42,15 +42,16 @@ function FileInput({disabled, onChange}) {
   }
   return (
     <>
-      <label>Font</label>
+      <label htmlFor="font_file" data-disabled={disabled}>Font</label>
       <span className={css(inputWrapperRule)}>
-        <button className={css(masterRule)}>
+        <button className={css(masterRule)} disabled={disabled}>
           {inputFile?.name ?? "Upload a font"}
         </button>
         <input
           key={identifier}
           className={css(puppetRule)}
           onInput={handleOnInput}
+          disabled={disabled}
           name="font_file"
           type="file"
           accept=".ttf, .otf"
