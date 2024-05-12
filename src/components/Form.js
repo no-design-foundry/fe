@@ -183,7 +183,7 @@ function Form() {
           const [_, ...otherErrors] = currentErrors;
           return otherErrors;
         });
-      }, 2000);
+      }, 10000);
     } else {
       clearInterval(logRemovingInterval.current);
     }
@@ -201,7 +201,7 @@ function Form() {
       <form ref={formRef} className={css(formRule)} onChange={handleOnChange}>
         {errors.map((error) => (
           <div key={error.timeStamp} className={css(logRule)}>
-            {error?.response?.data?.detail ?? "😭, maybe the font vas variable? Get in touch jansindl3r@gmail.com"}
+            {error?.response?.data?.detail ?? "😭, maybe the font was too big? I am working on it 😥 Get in touch jansindl3r@gmail.com"}
           </div>
         ))}
         {processing && <div className={css(processingRule)}>Processing...</div>}
