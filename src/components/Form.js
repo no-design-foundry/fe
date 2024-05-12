@@ -231,7 +231,7 @@ function Form() {
           onClick={handleOnDownload}
           disabled={processing || !inputFile}
         >
-          Download
+          Download (Limited Set)
         </button>
       </form>
     </div>
