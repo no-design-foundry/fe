@@ -7,7 +7,7 @@ This project is primarily work of [Jan Šindler](https://www.jansindler.com), bu
 This website doesn't store any fonts, make sure you font license is compliant with usage of this website.
 
 __Have a look, contribute or copy__
-- [github.com/jansindl3r/no-design-foundry-be](https://github.com/jansindl3r/no-design-foundry-be)
-- [github.com/jansindl3r/no-design-foundry](https://github.com/jansindl3r/no-design-foundry)
-- [github.com/jansindl3r/rotorizer](https://github.com/jansindl3r/rotorizer)
-- [github.com/jansindl3r/rasterizer](https://github.com/jansindl3r/rasterizer)
+- [github.com/no-design-foundry/be](https://github.com/no-design-foundry/be)
+- [github.com/no-design-foundry/fe](https://github.com/no-design-foundry/fe)
+- [github.com/no-design-foundry/filters-rotorizer](https://github.com/no-design-foundry/filters-rotorizer)
+- [github.com/no-design-foundry/filters-rasterizer](https://github.com/no-design-foundry/filters-rasterizer)
