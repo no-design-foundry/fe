@@ -90,6 +90,7 @@ function Form() {
       setTimeout(function () {
         if (now === lastTimeStamp) {
           const data = new FormData(formRef.current);
+          data.delete("font_file")
           data.append("font_file", inputFile);
           const url = urls.preview(identifier);
           setProcessing(true);

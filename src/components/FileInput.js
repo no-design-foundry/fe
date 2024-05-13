@@ -32,12 +32,9 @@ function FileInput({disabled, onChange}) {
   const identifier = `${filterIdentifier}-fontfile`;
   const { setInputMemory, getInputMemory } = useContext(InputMemoryContext);
   const inputFile = getInputMemory(identifier);
-  function handleOnInput(e) {
-    console.log(e)
-    console.log(e.target.files)
-    if (e.target.files.length === 1) {
+  async function handleOnInput(e) {
+    if (e.target.files.length >= 1) {
       setInputMemory(identifier, e.target.files[0]);
-    } else {
     }
   }
   return (
