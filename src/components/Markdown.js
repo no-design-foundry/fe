@@ -10,6 +10,9 @@ const mdRule = () => ({
   portrait: {
     maxWidth: "unset",
   },
+  "& a": {
+    textDecoration: "underline",
+  }
 });
 
 function Markdown({ markdown }) {
