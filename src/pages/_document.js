@@ -28,7 +28,9 @@ export default class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-        <script data-goatcounter="https://nodesignfoundry.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+        <script data-goatcounter="https://nodesignfoundry.goatcounter.com/count" src="/count.js" async defer></script>
+        <title>ndf</title>
+        <meta name="description" content="Apply effects on your fonts ✌. Rotorize, Rasterize, ..."/>
         </Head>
         <body>
           <Main />
