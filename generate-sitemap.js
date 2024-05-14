@@ -1,16 +1,8 @@
-// pages/sitemap.xml.js
+const fs = require('fs');
+const path = require('path');
+require('dotenv').config();
+
 const host = process.env.NEXT_PUBLIC_HOST
-const Sitemap = () => {}
-
-export const getServerSideProps = async ({ res }) => {
-  res.setHeader('Content-Type', 'text/xml')
-  res.write(createSitemap())
-  res.end()
-
-  return {
-    props: {},
-  }
-}
 
 const createSitemap = () => {
   const today = new Date();
@@ -19,7 +11,7 @@ const createSitemap = () => {
   const dd = String(today.getDate()).padStart(2, '0'); // Pad with 0 if needed
   const currentDate = `${yyyy}-${mm}-${dd}`;
 
-  return (`<?xml version="1.0" encoding="UTF-8"?>
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
   <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     ${[
         ["/", 1],
@@ -36,7 +28,11 @@ const createSitemap = () => {
         <priority>${priority}</priority>
       </url>`).join("\n")}
   </urlset>
-  `)
+  `
+  return xml
 }
 
-export default Sitemap
+const sitemap = createSitemap()
+
+fs.writeFileSync(path.join(__dirname, './public/sitemap.xml'), sitemap);
+
