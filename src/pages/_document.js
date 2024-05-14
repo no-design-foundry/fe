@@ -28,6 +28,7 @@ export default class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
+        <script data-goatcounter="https://nodesignfoundry.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
         </Head>
         <body>
           <Main />
