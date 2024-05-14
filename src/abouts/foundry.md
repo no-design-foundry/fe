@@ -6,8 +6,14 @@ This project is primarily work of [Jan Šindler](https://www.jansindler.com), bu
 
 This website doesn't store any fonts, make sure you font license is compliant with usage of this website.
 
-__Have a look, contribute or copy__
+</br>
+
+Have a look, contribute or copy
 - [github.com/no-design-foundry/be](https://github.com/no-design-foundry/be)
 - [github.com/no-design-foundry/fe](https://github.com/no-design-foundry/fe)
 - [github.com/no-design-foundry/filters-rotorizer](https://github.com/no-design-foundry/filters-rotorizer)
 - [github.com/no-design-foundry/filters-rasterizer](https://github.com/no-design-foundry/filters-rasterizer)
+
+</br>
+
+[Buy me a coffee](https://buymeacoffee.com/jansindl3r)

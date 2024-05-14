@@ -1,6 +1,7 @@
 import React from "react";
 import { useFela } from "react-fela";
 import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
 
 const mdRule = () => ({
   maxWidth: "50vw",
@@ -22,6 +23,7 @@ function Markdown({ markdown }) {
       children={`${markdown}`}
       linkTarget="_blank"
       className={css(mdRule)}
+      rehypePlugins={[rehypeRaw]} 
     />
   );
 }
