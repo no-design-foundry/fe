@@ -6,5 +6,11 @@ General rule is that fonts with suffix `.ttf` should have better displaying capa
 
 The smallest sizes in some of the older fonts were specially prepared as separate bitmaps. Someone was really there, drawing that system font bitmap of eight pixels!
 
-__Have a look, contribute or copy__
+</br>
+
+Have a look, contribute or copy
 [github.com/no-design-foundry/filters-rasterizer](https://github.com/no-design-foundry/filters-rasterizer)
+
+</br>
+
+[Buy me a coffee](https://buymeacoffee.com/jansindl3r)
