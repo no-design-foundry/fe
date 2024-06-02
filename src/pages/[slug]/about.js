@@ -30,15 +30,7 @@ export function getStaticPaths() {
 
 export function getStaticProps({ params }) {
   const { slug } = params;
-  let markdown;
-  switch (slug) {
-    case "rotorizer":
-      markdown = require("@/abouts/rotorizer.md");
-      break;
-    case "rasterizer":
-      markdown = require("@/abouts/rasterizer.md");
-      break;
-  }
+  const markdown = require(`@/abouts/${slug}.md`);
   return {
     props: {
       markdown,

@@ -41,5 +41,10 @@ export default [
         defaultValue: 100,
       },
     ],
+  },
+  {
+    type: "post",
+    slug: "hinting",
+    title: "TrueType hinting, an insight for the curious",
   }
 ];

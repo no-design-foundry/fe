@@ -43,6 +43,7 @@ const navRule = () => ({
   marginBottom: "1em",
   position: "sticky",
   top: 0,
+  backgroundColor: "white",
   // left: 14
 });
 
@@ -81,13 +82,11 @@ function Nav() {
         <li>
           <NavLink href="/">no design foundry</NavLink>
         </li>
-        {data.map((filter) => (
+        {data.filter(entry => entry.type === "filterDetailView").map((filter) => (
           <li key={filter.identifier}>
             <NavLink
               href={"/" + filter.slug}
-              colors={filter.layerColors}
               identifier={filter.identifier}
-              variableSliders={filter.variableFontControlSliders}
             >
               {filter.title}
             </NavLink>
