@@ -3,7 +3,7 @@ import { useFela } from "react-fela";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 
-const backgroundColor = `rgb(${[255, 255, 255].map(val => val * .85).join(", ")})`
+const backgroundColor = `rgb(${[255, 255, 255].map(val => val * .95).join(", ")})`
 
 const mdRule = () => ({
   "& img": {
@@ -11,6 +11,7 @@ const mdRule = () => ({
   },
   "& h1, & h2": {
     fontSize: "2em",
+    fontWeight: "bold",
     fontStyle: "italic",
     fontFamily: "cursive",
     marginTop: 50,
@@ -25,9 +26,17 @@ const mdRule = () => ({
   "& a": {
     textDecoration: "underline",
   },
-  "& em": {
+  "& em, & figcaption": {
+    fontSize: "1.2em",
+    fontFamily: "cursive",
     fontStyle: "italic",
     display: "inline-block",
+  },
+  "& figcaption": {
+    width: "100%",
+    marginBottom: "1em",
+    textAlign: "center",
+    display: "block"
   },
   "& code": {
     maxWidth: "100%",
@@ -75,7 +84,7 @@ function Markdown({ markdown }) {
       },
       img: ({node, inline, className, children, ...props}) => {
         return (
-          <img className={className} {...props} width="50%" />
+          <img className={className} {...props} width="100%" height="auto" />
         )
     }}}
     />

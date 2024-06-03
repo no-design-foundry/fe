@@ -8,16 +8,37 @@ TrueType hinting is a technology in digital typography that ensures text remains
 
 Font in the TrueType format contain instructions for the rendering software how to adjust the display of vector-based fonts on pixel grids. These instructions, or "hints," modify the way individual characters are displayed at small sizes or low resolutions to enhance legibility and aesthetic quality.
 
-![Alt Text](/posts/hinting/base.png)
-![Alt Text](/posts/hinting/unhinted_bitmap.png)
-![Alt Text](/posts/hinting/hinted_vector.png)
-![Alt Text](/posts/hinting/hinted_bitmap.png)
+
+<figure>
+  <img src="/posts/hinting/vector_good.svg" alt="Two designers admiring their great vector work. It seems that everything is great!"/>
+  <figcaption>It seems that everything is great!</figcaption>
+</figure>
+
+<figure>
+  <img src="/posts/hinting/bitmap_bad.svg" alt="Two designers are shocked by how their vectors got rasterized"/>
+  <figcaption>Hold on!!! What's this? Ah, the vector was randomly placed onto a grid without any hints how to behave.</figcaption>
+</figure>
+
+<figure>
+  <img src="/posts/hinting/vector_weird.svg" alt="Two designers are surprised by fonts being hinted how to behave"/>
+  <figcaption>I didn't design the curves like this at all! Ahh, maybe it's the hinting trying to boss around the contours and force them into the pixel grid?</figcaption>
+</figure>
+
+<figure>
+  <img src="/posts/hinting/bitmap_good.svg" alt="Two designers are surprised by fonts being hinted how to behave"/>
+  <figcaption>Nice! that is much more readable!!! Thank you, hinting!</figcaption>
+</figure>
 
 When text is displayed on a screen, each character is represented by a grid of pixels. However, the transformation from the vector outline of a character to the pixel grid can lead to distortions, especially at small sizes or lower resolutions. Hinting solves these issues by providing specific guidance on adjusting the placement and shape of the font’s vector outlines to better align with the pixel grid.
 
 While hinting significantly enhances font clarity, it is a complex and labor-intensive process. Crafting effective hints requires a deep understanding of both typography and the technical constraints of digital displays. Moreover, different rendering engines and operating systems may interpret hints differently, leading to variations in appearance across platforms.
 
 Although many of you read this article on a phone or another device with high resolution, there are still many people who can't afford high resolution screen or don't mind low resolution. There are also different applications of font, such as digital signages, embedded systems like operating systems of coffee machines, or a receipt printer. TrueType hinting therefore remains a vital aspect of digital typography. As display technology continues to evolve, hinting will likely adapt to new standards, ensuring that text remains sharp and readable in our increasingly digital world.
+
+<figure>
+  <img src="/posts/hinting/black_or_white.svg" alt="Two designers are surprised by fonts being hinted how to behave"/>
+  <figcaption>Nice! that is much more readable!!! Thank you, hinting!</figcaption>
+</figure>
 
 ## Inteview with Greg Hitchcock
 
