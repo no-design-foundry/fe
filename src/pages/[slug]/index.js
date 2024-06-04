@@ -49,7 +49,7 @@ export default Index;
 
 export function getStaticPaths() {
   return {
-    paths: data.map((entry) => ({ params: { slug: entry.slug } })),
+    paths: data.filter((entry) => entry.type === "filterDetailView").map((entry) => ({ params: { slug: entry.slug } })),
     fallback: false,
   };
 }
