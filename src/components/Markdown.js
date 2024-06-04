@@ -11,7 +11,7 @@ const mdRule = () => ({
   },
   "& h1, & h2": {
     fontSize: "2em",
-    fontWeight: "bold",
+    // fontWeight: "bold",
     fontStyle: "italic",
     fontFamily: "cursive",
     marginTop: 50,

@@ -45,6 +45,6 @@ export default [
   {
     type: "post",
     slug: "hinting",
-    title: "TrueType hinting, an insight for the curious",
+    title: "TrueType hinting, an insight for the curious █▇▅▂▄▁▃▆▇▂▅▃▄▁▆█",
   }
 ];

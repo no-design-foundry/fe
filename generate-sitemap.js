@@ -19,7 +19,8 @@ const createSitemap = () => {
         ["/rasterizer", .9],
         ["/rotorizer", .9],
         ["/rasterizer/about", .8],
-        ["/rotorizer/about", .8]
+        ["/rotorizer/about", .8],
+        ["/post/hinting", .8]
       ].map(([path, priority]) =>
       `<url>
         <loc>${host}${path}</loc>
