@@ -24,7 +24,7 @@ const thumbnailRule = () => ({
 
 const lottieRule = () => ({
   width: "100%",
-  untilTabletS: {
+  noHover: {
     height: "100vw",
   },
 })

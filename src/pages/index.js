@@ -21,6 +21,10 @@ const lottieGridRule = () => ({
   untilTabletS: {
     display: "flex",
     flexDirection: "column"
+  },
+  noHover: {
+    display: "flex",
+    flexDirection: "column"
   }
 });
 
