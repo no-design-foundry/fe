@@ -46,10 +46,11 @@ const navRule = () => ({
   margin: -14,
   padding: 14,
   backgroundColor: "white",
+  zIndex: 1,
   // left: 14
 });
 
-function NavLink({ href, children, identifier }) {
+function NavLink({ href, children, identifier, isNew }) {
   const { asPath, query, route } = useRouter();
   const aboutLinkActive = route.endsWith("/about") && ("/" + (query?.slug ?? "")) === href;
   // console.log(query?.slug, href)
@@ -63,6 +64,7 @@ function NavLink({ href, children, identifier }) {
       <Link href={href} className={css(linkRule)}>
         {children}
       </Link>
+      {isNew && <strong> new!</strong>}
       {(asPath === href || aboutLinkActive) && (
         <>
           <span>, </span>
@@ -78,17 +80,20 @@ function NavLink({ href, children, identifier }) {
 
 function Nav() {
   const { css } = useFela();
+  const router = useRouter();
+
   return (
     <nav className={css(navRule)}>
       <ul>
         <li>
           <NavLink href="/">no design foundry</NavLink>
         </li>
-        {data.filter(entry => entry.type === "filterDetailView").map((filter) => (
-          <li key={filter.identifier}>
+        {data.filter(entry => entry.type === "filterDetailView" && !(entry.isHidden)).map((filter) => (
+          <li key={filter.identifier} hidden={router.pathname==="/"}>
             <NavLink
               href={"/" + filter.slug}
               identifier={filter.identifier}
+              isNew={filter.isNew}
             >
               {filter.title}
             </NavLink>

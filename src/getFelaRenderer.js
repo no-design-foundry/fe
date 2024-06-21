@@ -13,7 +13,6 @@ export const breakpoints = {
   mobileM: 375,
   mobileL: 625,
   tabletS: 750,
-  mobileNav: 820,
   tablet: 1024,
   desktop: 1400,
   fullHd: 2400,
@@ -21,8 +20,6 @@ export const breakpoints = {
 
 export const namedBreakpoints = {
   untilMobileM: `@media (max-width: ${breakpoints.mobileM}px)`,
-  untilMobileNav: `@media (max-width: ${breakpoints.mobileNav}px)`,
-  fromMobileNav: `@media (min-width: ${breakpoints.mobileNav}px)`,
   untilTabletS: `@media (max-width: ${breakpoints.tabletS}px)`,
   fromTabletS: `@media (min-width: ${breakpoints.tabletS}px)`,
   untilMobileL: `@media (max-width: ${breakpoints.mobileL}px)`,

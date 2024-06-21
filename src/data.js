@@ -43,8 +43,37 @@ export default [
     ],
   },
   {
+    type: "filterDetailView",
+    title: "Extruder",
+    identifier: "extruder",
+    slug: "extruder",
+    isHidden: true,
+    isNew: true,
+    isNewUntil: "01-08-2024",
+    layerColors: ["gray", "#000"],
+    variableFontControlSliders: [
+      {
+        label: "Depth",
+        tag: "DPTH",
+        min: 10,
+        max: 400,
+        defaultValue: 100,
+      }
+    ],
+    inputs: [
+      {
+        type: "range",
+        label: "Angle",
+        name: "angle",
+        min: 0,
+        max: 360,
+        defaultValue: 330,
+      },
+    ],
+  },
+  {
     type: "post",
     slug: "hinting",
-    title: "TrueType hinting, an insight for the curious █▇▅▂▄▁▃▆▇▂▅▃▄▁▆█",
+    title: "TrueType hinting, an insight for the curious",
   }
 ];

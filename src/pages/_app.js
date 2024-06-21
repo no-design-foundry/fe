@@ -36,7 +36,9 @@ class App extends BaseApp {
             <Head>
               <title>{"ndf" + getTitle(router?.asPath)}</title>
             </Head>
-            <Component {...pageProps} />
+            <main style={{marginTop: "1em"}}>
+              <Component {...pageProps} />
+            </main>
           </InputMemoryContextWrapper>
         </OutputFontContextWrapper>
       </FelaProvider>
