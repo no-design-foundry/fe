@@ -4,9 +4,6 @@ import data from "@/data";
 import Markdown from "@/components/Markdown";
 
 function Index({ markdown }) {
-  //   const { title } = useContext(FilterContext);
-  const { css } = useFela();
-
   return (
     <div>
         <Markdown markdown={markdown} />
