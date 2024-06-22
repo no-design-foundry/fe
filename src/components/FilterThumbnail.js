@@ -25,8 +25,10 @@ const thumbnailRule = () => ({
 const lottieRule = () => ({
   width: "100%",
   noHover: {
-    height: "100vw",
-  },
+    portrait: {
+      height: "100vw",
+    }
+  }
 })
 
 function FilterThumbnail({slug}) {
