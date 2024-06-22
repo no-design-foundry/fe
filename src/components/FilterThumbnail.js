@@ -25,8 +25,10 @@ const thumbnailRule = () => ({
 const lottieRule = () => ({
   width: "100%",
   untilTabletS: {
-    height: "100vw",
-  },
+    portrait: {
+      height: "100vw",
+    }
+  }
 })
 
 function FilterThumbnail({slug}) {
