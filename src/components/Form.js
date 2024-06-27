@@ -17,6 +17,9 @@ const formRule = () => ({
   gridTemplateColumns: "min-content 1fr",
   gridAutoRows: "min-content",
   gridGap: "3px 1ch",
+  noHover: {
+    gridGap: ".5em 1ch",
+  },
   alignItems: "center",
   "& > label": {
     whiteSpace: "nowrap",
