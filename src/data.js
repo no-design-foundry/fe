@@ -1,6 +1,45 @@
 export default [
   {
     type: "filterDetailView",
+    title: "Pan",
+    identifier: "pan",
+    slug: "pan",
+    isNew: true,
+    layerColors: ["#000"],
+    variableFontControlSliders: [
+      {
+        label: "Angle",
+        tag: "ANGL",
+        min: 0,
+        max: 360,
+        defaultValue: 45,
+      },
+      {
+        label: "Step",
+        tag: "STEP",
+        min: 40,
+        max: 100,
+        defaultValue: 45,
+      },
+      {
+        label: "Thickness",
+        tag: "THCK",
+        min: 20,
+        max: 80,
+        defaultValue: 20,
+      },
+      {
+        label: "Flipped End",
+        tag: "FLIP",
+        min: 0,
+        max: 100,
+        defaultValue: 0,
+      },
+    ],
+    inputs: []
+  },
+  {
+    type: "filterDetailView",
     title: "Rastr",
     identifier: "rasterizer",
     slug: "rasterizer",

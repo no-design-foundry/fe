@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import rastrAnimationData from "@/lottie/rastr.json";
 import rotorizerAnimationData from "@/lottie/rotorizer.json";
+import panAnimationData from "@/lottie/pan.json";
 import dynamic from "next/dynamic";
 import { useFela } from "react-fela";
 
@@ -10,6 +11,7 @@ const lottieFileMapper = {
   rasterizer: rastrAnimationData,
   rotorizer: rotorizerAnimationData,
   extruder: rotorizerAnimationData,
+  pan: panAnimationData
 };
 
 const thumbnailRule = () => ({
