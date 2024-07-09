@@ -1,6 +1,54 @@
 export default [
   {
     type: "filterDetailView",
+    title: "Pan",
+    identifier: "pan",
+    slug: "pan",
+    isNew: true,
+    isHidden: true && process.env.NODE_ENV === "production",
+    layerColors: ["#000"],
+    variableFontControlSliders: [
+      {
+        label: "Angle",
+        tag: "ANGL",
+        min: 0,
+        max: 360,
+        defaultValue: 45,
+      },
+      {
+        label: "Step",
+        tag: "STEP",
+        min: 40,
+        max: 100,
+        defaultValue: 45,
+      },
+      {
+        label: "Thickness",
+        tag: "THCK",
+        min: 20,
+        max: 80,
+        defaultValue: 20,
+      },
+      {
+        label: "Flipped End",
+        tag: "FLIP",
+        min: 0,
+        max: 100,
+        defaultValue: 0,
+      },
+    ],
+    inputs: [
+      {
+        label: "Min Length",
+        name: "min_length",
+        min: 0,
+        max: 100,
+        defaultValue: 2,
+      },      
+    ]
+  },
+  {
+    type: "filterDetailView",
     title: "Rastr",
     identifier: "rasterizer",
     slug: "rasterizer",
@@ -47,7 +95,7 @@ export default [
     title: "Extruder",
     identifier: "extruder",
     slug: "extruder",
-    isHidden: true,
+    isHidden: true && process.env.NODE_ENV === "production",
     isNew: true,
     isNewUntil: "01-08-2024",
     layerColors: ["gray", "#000"],
