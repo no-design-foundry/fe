@@ -5,6 +5,7 @@ export default [
     identifier: "pan",
     slug: "pan",
     isNew: true,
+    isHidden: true && process.env.NODE_ENV === "production",
     layerColors: ["#000"],
     variableFontControlSliders: [
       {
@@ -36,7 +37,15 @@ export default [
         defaultValue: 0,
       },
     ],
-    inputs: []
+    inputs: [
+      {
+        label: "Min Length",
+        name: "min_length",
+        min: 0,
+        max: 100,
+        defaultValue: 2,
+      },      
+    ]
   },
   {
     type: "filterDetailView",
@@ -86,7 +95,7 @@ export default [
     title: "Extruder",
     identifier: "extruder",
     slug: "extruder",
-    isHidden: true,
+    isHidden: true && process.env.NODE_ENV === "production",
     isNew: true,
     isNewUntil: "01-08-2024",
     layerColors: ["gray", "#000"],

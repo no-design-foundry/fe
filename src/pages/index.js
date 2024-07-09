@@ -20,8 +20,13 @@ const lottieGridRule = () => ({
   gap: "20px 4px",
   untilTabletS: {
     display: "flex",
-    flexDirection: "column"
-  }
+    flexDirection: "column",
+  },
+});
+
+const titleWrapperRule = () => ({
+  display: "flex",
+  justifyContent: "space-between",
 });
 
 function Index() {
@@ -30,16 +35,21 @@ function Index() {
   return (
     <div>
       <div className={css(lottieGridRule, sectionRule)}>
-        {
-          data.filter((entry) => entry.type === "filterDetailView" && !(entry.isHidden)).map((entry) => (
-            <div key={entry.slug}>
+        {data
+          .filter(
+            (entry) => entry.type === "filterDetailView" && !entry.isHidden
+          )
+          .map((entry) => (
+            <div key={entry.slug} className="hover-area">
               <Link href={entry.slug}>
-                <div>{entry.title}</div>
-                <FilterThumbnail slug={entry.slug}/>
+                <div className={css(titleWrapperRule)}>
+                  <span>{entry.title}</span>
+                  <span className="hover-child">See More</span>
+                </div>
+                <FilterThumbnail slug={entry.slug} />
               </Link>
             </div>
-          ))
-        }
+          ))}
       </div>
       <div className={css(sectionRule)}>
         <div>Posts</div>
@@ -52,7 +62,7 @@ function Index() {
               </li>
             ))}
         </ul>
-        </div>
+      </div>
     </div>
   );
 }
