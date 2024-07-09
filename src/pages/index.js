@@ -21,12 +21,17 @@ const lottieGridRule = () => ({
   untilTabletS: {
     display: "flex",
     flexDirection: "column",
-  },
+  }
 });
 
 const titleWrapperRule = () => ({
   display: "flex",
   justifyContent: "space-between",
+  flexDirection: "column",
+  noHover: {
+    display: "flex",
+    flexDirection: "column"
+  }
 });
 
 function Index() {

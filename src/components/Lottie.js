@@ -11,7 +11,7 @@ const wrapperRule = () => ({
   }
 });
 
-export default function ({ ...kwargs }) {
+export default function ({ className, ...kwargs }) {
   const ref = useRef(null);
   const intersectionObserver = useRef(null);
   const { View, play, setDirection, setSpeed } = useLottie(kwargs);

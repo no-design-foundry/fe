@@ -22,10 +22,16 @@ const thumbnailRule = () => ({
   "& > *": {
     filter: "invert(1)",
   },
-  untilTabletS: {
-    height: "100vw",
-  },
 });
+
+const lottieRule = () => ({
+  width: "100%",
+  noHover: {
+    portrait: {
+      height: "100vw",
+    }
+  }
+})
 
 function FilterThumbnail({slug}) {
   const { css } = useFela();
@@ -33,6 +39,7 @@ function FilterThumbnail({slug}) {
   return (
     <div className={css(thumbnailRule)}>
       <Lottie
+        className={css(lottieRule)}
         animationData={lottieFileMapper[slug]}
         loop={false}
         autoplay={false}
