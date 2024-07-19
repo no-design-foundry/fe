@@ -8,6 +8,11 @@ const sectionRule = () => ({
   marginTop: "1em",
 });
 
+const filterThumbnailWrapperRule = () => ({
+  display: "flex",
+  flexDirection: "column",
+})
+
 const postUlRule = () => ({
   fontFamily: "cursive",
   listStyleType: "disc",
@@ -21,15 +26,15 @@ const lottieGridRule = () => ({
   untilTabletS: {
     display: "flex",
     flexDirection: "column",
-  }
+  },
 });
 
 const titleWrapperRule = () => ({
   display: "flex",
-  justifyContent: "space-between"
+  justifyContent: "space-between",
 });
 
-function Index() {
+function Index({ draftMode }) {
   const { css } = useFela();
 
   return (
@@ -37,17 +42,27 @@ function Index() {
       <div className={css(lottieGridRule, sectionRule)}>
         {data
           .filter(
-            (entry) => entry.type === "filterDetailView" && !entry.isHidden
+            (entry) => entry.type === "filterDetailView"
+            // && (draftMode ? true : !entry.isHidden)
           )
           .map((entry) => (
             <div key={entry.slug} className="hover-area">
-              <Link href={entry.slug}>
-                <div className={css(titleWrapperRule)}>
-                  <span>{entry.title}</span>
-                  <span className="hover-child">See More</span>
-                </div>
-                <FilterThumbnail slug={entry.slug} />
-              </Link>
+              {React.createElement(
+                entry.isHidden ? React.Fragment : Link,
+                {className: css(filterThumbnailWrapperRule), ...(entry.isHidden ? {} : {href: entry.slug}) },
+                <>
+                  <div className={css(titleWrapperRule)}>
+                    <span>{entry.title}</span>
+                    <span className="hover-child">
+                      {entry.isHidden ? "Coming Soon!" : "See More"}
+                    </span>
+                  </div>
+                  <FilterThumbnail
+                    slug={entry.slug}
+                    isPreview={entry.isHidden}
+                  />
+                </>
+              )}
             </div>
           ))}
       </div>
@@ -68,3 +83,9 @@ function Index() {
 }
 
 export default Index;
+
+export function getStaticProps({ draftMode = false }) {
+  return {
+    props: { draftMode },
+  };
+}

@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import rastrAnimationData from "@/lottie/rastr.json";
 import rotorizerAnimationData from "@/lottie/rotorizer.json";
 import panAnimationData from "@/lottie/pan.json";
+import xRayAnimationData from "@/lottie/xray.json"
 import extruderAnimationData from "@/lottie/extruder.json";
 import dynamic from "next/dynamic";
 import { useFela } from "react-fela";
@@ -12,11 +13,12 @@ const lottieFileMapper = {
   rasterizer: rastrAnimationData,
   rotorizer: rotorizerAnimationData,
   extruder: extruderAnimationData,
-  pan: panAnimationData
+  pan: panAnimationData,
+  x_ray: xRayAnimationData,
 };
 
-const thumbnailRule = () => ({
-  background: "black",
+const thumbnailRule = ({ isPreview }) => ({
+  background: isPreview ? "silver" : "black",
   display: "flex",
   flexDirection: "column",
   "& > *": {
@@ -27,8 +29,8 @@ const thumbnailRule = () => ({
   },
 });
 
-function FilterThumbnail({slug}) {
-  const { css } = useFela();
+function FilterThumbnail({slug, isPreview}) {
+  const { css } = useFela({isPreview});
 
   return (
     <div className={css(thumbnailRule)}>
