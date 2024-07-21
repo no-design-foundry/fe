@@ -26,7 +26,15 @@ const thumbnailRule = ({ isPreview }) => ({
   },
   untilTabletS: {
     height: "100vw",
+    alignItems: "center",
+    justifyContent: "center",
+    "& > *": {
+      height: "100%"
+    }
   },
+  "& *": {
+    clipPath: "none !important"
+  }
 });
 
 function FilterThumbnail({slug, isPreview}) {
