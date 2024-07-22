@@ -48,7 +48,7 @@ function Index({ draftMode }) {
           .map((entry) => (
             <div key={entry.slug} className="hover-area">
               {React.createElement(
-                entry.isHidden ? React.Fragment : Link,
+                entry.isHidden ? (props) => React.createElement("div", props) : Link,
                 {className: css(filterThumbnailWrapperRule), ...(entry.isHidden ? {} : {href: entry.slug}) },
                 <>
                   <div className={css(titleWrapperRule)}>
@@ -60,6 +60,7 @@ function Index({ draftMode }) {
                   <FilterThumbnail
                     slug={entry.slug}
                     isPreview={entry.isHidden}
+                    scaleThumbnailOnMobile={entry.scaleThumbnailOnMobile}
                   />
                 </>
               )}

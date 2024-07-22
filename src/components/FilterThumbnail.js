@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import rastrAnimationData from "@/lottie/rastr.json";
 import rotorizerAnimationData from "@/lottie/rotorizer.json";
 import panAnimationData from "@/lottie/pan.json";
-import xRayAnimationData from "@/lottie/xray.json"
+import xRayAnimationData from "@/lottie/xray.json";
 import extruderAnimationData from "@/lottie/extruder.json";
 import dynamic from "next/dynamic";
 import { useFela } from "react-fela";
@@ -17,7 +17,7 @@ const lottieFileMapper = {
   x_ray: xRayAnimationData,
 };
 
-const thumbnailRule = ({ isPreview }) => ({
+const thumbnailRule = ({ isPreview, scaleThumbnailOnMobile }) => ({
   background: isPreview ? "silver" : "black",
   display: "flex",
   flexDirection: "column",
@@ -25,20 +25,31 @@ const thumbnailRule = ({ isPreview }) => ({
     filter: "invert(1)",
   },
   untilTabletS: {
+    overflow: "hidden",
     height: "100vw",
     alignItems: "center",
     justifyContent: "center",
     "& > *": {
-      height: "100%"
-    }
+      height: "100%",
+      extend: [
+        {
+          condition: scaleThumbnailOnMobile,
+          style: {
+            "& > *": {
+            transform: "scale(1.3)",
+            }
+          },
+        },
+      ],
+    },
   },
   "& *": {
-    clipPath: "none !important"
-  }
+    clipPath: "none !important",
+  },
 });
 
-function FilterThumbnail({slug, isPreview}) {
-  const { css } = useFela({isPreview});
+function FilterThumbnail({ slug, isPreview, scaleThumbnailOnMobile }) {
+  const { css } = useFela({ isPreview, scaleThumbnailOnMobile });
 
   return (
     <div className={css(thumbnailRule)}>

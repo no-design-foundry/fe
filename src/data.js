@@ -49,6 +49,7 @@ export default [
     slug: "x_ray",
     isHidden: true,
     isNew: true,
+    scaleThumbnailOnMobile: true,
     isNewUntil: "01-08-2024",
     layerColors: ["#000"],
     variableFontControlSliders: [
@@ -82,6 +83,7 @@ export default [
     identifier: "pan",
     slug: "pan",
     isNew: true,
+    scaleThumbnailOnMobile: true,
     isHidden: true,
     layerColors: ["#000"],
     variableFontControlSliders: [
@@ -130,6 +132,7 @@ export default [
     identifier: "extruder",
     slug: "extruder",
     isHidden: true,
+    scaleThumbnailOnMobile: true,
     isNew: true,
     isNewUntil: "01-08-2024",
     layerColors: ["gray", "#000"],

@@ -10,9 +10,9 @@ import axios from "axios";
 import OutputFontContext from "@/contexts/OutputFontContext";
 import InputMemoryContext from "@/contexts/InputMemoryContext";
 import Log from "./Log";
+import { breakpoints } from "@/getFelaRenderer";
 
 const formRule = () => ({
-  maxWidth: 300,
   display: "grid",
   gridTemplateColumns: "min-content 1fr",
   gridAutoRows: "min-content",
@@ -45,9 +45,14 @@ const downloadRule = () => ({
 
 const wrapperRule = () => ({
   position: "fixed",
-  bottom: 14,
-  left: 14,
+  bottom: 0,
+  left: 0,
+  padding: 14,
   zIndex: 100,
+  width: "100%",
+  fromMobileL: {
+    maxWidth: breakpoints.mobileL
+  },
 });
 
 function saveFile(blob, filename) {
