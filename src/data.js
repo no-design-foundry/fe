@@ -61,14 +61,6 @@ export default [
         step: 45
       },
       {
-        label: "Step",
-        tag: "STEP",
-        min: 40,
-        max: 100-20,
-        defaultValue: 40,
-        step: 20
-      },
-      {
         label: "Thickness",
         tag: "THCK",
         min: 20,
@@ -84,6 +76,14 @@ export default [
       },
     ],
     inputs: [
+      {
+        type: "range",
+        label: "Step",
+        name: "step",
+        min: 10,
+        max: 50,
+        defaultValue: 20,
+      },
       {
         type: "checkbox",
         label: "Shadow",
