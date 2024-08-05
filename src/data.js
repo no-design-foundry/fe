@@ -44,9 +44,59 @@ export default [
   },
   {
     type: "filterDetailView",
+    title: "Pan",
+    identifier: "pan",
+    slug: "pan",
+    isNew: true,
+    scaleThumbnailOnMobile: true,
+    isHidden: !true,
+    layerColors: ["#000"],
+    variableFontControlSliders: [
+      {
+        label: "Angle",
+        tag: "ANGL",
+        min: 0,
+        max: 360-45,
+        defaultValue: 45,
+        step: 45
+      },
+      {
+        label: "Step",
+        tag: "STEP",
+        min: 40,
+        max: 100-20,
+        defaultValue: 40,
+        step: 20
+      },
+      {
+        label: "Thickness",
+        tag: "THCK",
+        min: 20,
+        max: 100,
+        defaultValue: 60,
+      },
+      {
+        label: "Flipped End",
+        tag: "FLIP",
+        min: 0,
+        max: 100,
+        defaultValue: 50,
+      },
+    ],
+    inputs: [
+      {
+        type: "checkbox",
+        label: "Shadow",
+        name: "shadow",
+        defaultValue: false,
+      }, 
+    ]
+  },
+  {
+    type: "filterDetailView",
     title: "X-Ray",
     identifier: "x_ray",
-    slug: "x_ray",
+    slug: "x-ray",
     isHidden: true,
     isNew: true,
     scaleThumbnailOnMobile: true,
@@ -75,56 +125,7 @@ export default [
         defaultValue: 100,
       },
     ],
-    inputs: [],
-  },
-  {
-    type: "filterDetailView",
-    title: "Pan",
-    identifier: "pan",
-    slug: "pan",
-    isNew: true,
-    scaleThumbnailOnMobile: true,
-    isHidden: true,
-    layerColors: ["#000"],
-    variableFontControlSliders: [
-      {
-        label: "Angle",
-        tag: "ANGL",
-        min: 0,
-        max: 360,
-        defaultValue: 45,
-      },
-      {
-        label: "Step",
-        tag: "STEP",
-        min: 40,
-        max: 100,
-        defaultValue: 45,
-      },
-      {
-        label: "Thickness",
-        tag: "THCK",
-        min: 20,
-        max: 80,
-        defaultValue: 20,
-      },
-      {
-        label: "Flipped End",
-        tag: "FLIP",
-        min: 0,
-        max: 100,
-        defaultValue: 0,
-      },
-    ],
-    inputs: [
-      {
-        label: "Min Length",
-        name: "min_length",
-        min: 0,
-        max: 100,
-        defaultValue: 2,
-      },      
-    ]
+    inputs: []
   },
   {
     type: "filterDetailView",
@@ -135,7 +136,7 @@ export default [
     scaleThumbnailOnMobile: true,
     isNew: true,
     isNewUntil: "01-08-2024",
-    layerColors: ["gray", "#000"],
+    layerColors: ["#000", "transparent"],
     variableFontControlSliders: [
       {
         label: "Depth",

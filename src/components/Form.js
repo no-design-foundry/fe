@@ -11,6 +11,7 @@ import OutputFontContext from "@/contexts/OutputFontContext";
 import InputMemoryContext from "@/contexts/InputMemoryContext";
 import Log from "./Log";
 import { breakpoints } from "@/getFelaRenderer";
+import Checkbox from "./Checkbox";
 
 const formRule = () => ({
   display: "grid",
@@ -51,7 +52,7 @@ const wrapperRule = () => ({
   zIndex: 100,
   width: "100%",
   fromMobileL: {
-    maxWidth: breakpoints.mobileL
+    maxWidth: breakpoints.mobileL,
   },
 });
 
@@ -98,7 +99,7 @@ function Form() {
       setTimeout(function () {
         if (now === lastTimeStamp) {
           const data = new FormData(formRef.current);
-          data.delete("font_file")
+          data.delete("font_file");
           data.append("font_file", inputFile);
           const url = urls.preview(identifier);
           setProcessing(true);
@@ -210,7 +211,8 @@ function Form() {
       <form ref={formRef} className={css(formRule)} onChange={handleOnChange}>
         {errors.map((error) => (
           <div key={error.timeStamp} className={css(logRule)}>
-            {error?.response?.data?.detail ?? "😭, maybe the font was too big? I am working on it 😥 Get in touch jansindl3r@gmail.com"}
+            {error?.response?.data?.detail ??
+              "😭, maybe the font was too big? I am working on it 😥 Get in touch jansindl3r@gmail.com"}
           </div>
         ))}
         {processing && <div className={css(processingRule)}>Processing...</div>}
@@ -218,14 +220,28 @@ function Form() {
         <FileInput required={true} disabled={processing} />
         {inputs.map((input, index) => {
           const { type, ...kwargs } = input;
-          return (
-            <Slider
-              key={`${identifier}-${index}`}
-              {...kwargs}
-              required={true}
-              disabled={disabled || processing}
-            />
-          );
+          switch (type) {
+            case "range":
+              return (
+                <Slider
+                  key={`${identifier}-${index}`}
+                  {...kwargs}
+                  required={true}
+                  disabled={disabled || processing}
+                />
+              );
+            case "checkbox":
+              return (
+                <Checkbox
+                  key={`${identifier}-${index}`}
+                  {...kwargs}
+                  required={false}
+                  disabled={disabled || processing}
+                />
+              );
+            default:
+              return <code>"{type}" is not defined</code>;
+          }
         })}
         <TextInput
           key={identifier}

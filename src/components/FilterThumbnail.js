@@ -14,7 +14,7 @@ const lottieFileMapper = {
   rotorizer: rotorizerAnimationData,
   extruder: extruderAnimationData,
   pan: panAnimationData,
-  x_ray: xRayAnimationData,
+  "x-ray": xRayAnimationData,
 };
 
 const thumbnailRule = ({ isPreview, scaleThumbnailOnMobile }) => ({
