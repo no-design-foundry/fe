@@ -31,11 +31,8 @@ button, input[type=submit], input[type=file] {
 
 
 button {
-    // background: #ddd;
     padding: 2px .5em !important;
     text-align: center !important;
-    // border-radius: 4px;
-    // font-size: .2em !important;
 }
 
 
@@ -44,7 +41,22 @@ button:disabled, input:disabled, label[data-disabled="true"] {
     opacity: .5;
 }
 
+main {
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+}
 
+html, body, #__next {
+    height: 100%;
+}
+#__next {
+    display: flex;
+    flex-direction: column;
+}
+main {
+    flex-grow: 1;
+}
 
 body {
     padding: 14px;
@@ -94,5 +106,26 @@ h1, h2, h3, h4, h5, h6 {
         .hover-child {
             display: block;
         }
+    }
+}
+
+
+
+
+
+
+
+@media (hover: none) {
+
+    input[type="range"]::-webkit-slider-thumb {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+    }
+
+    input[type="range"]::-moz-range-thumb {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
     }
 }

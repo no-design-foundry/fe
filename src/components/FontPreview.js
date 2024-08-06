@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useFela } from "react-fela";
 import FilterContext from "@/contexts/FilterContext";
 import OutputFontContext from "@/contexts/OutputFontContext";

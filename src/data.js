@@ -30,17 +30,15 @@ export default [
         max: 360,
         defaultValue: 130,
       },
-    ],
-    inputs: [
       {
-        type: "range",
         label: "Depth",
-        name: "depth",
-        min: 2,
-        max: 600,
-        defaultValue: 100,
+        tag: "DPTH",
+        min: 0,
+        max: 100,
+        defaultValue: 50,
       },
     ],
+    inputs: []
   },
   {
     type: "filterDetailView",
@@ -65,7 +63,7 @@ export default [
         tag: "THCK",
         min: 20,
         max: 100,
-        defaultValue: 60,
+        defaultValue: 100,
       },
       {
         label: "Flipped End",
@@ -80,8 +78,8 @@ export default [
         type: "range",
         label: "Step",
         name: "step",
-        min: 10,
-        max: 50,
+        min: 30,
+        max: 60,
         defaultValue: 20,
       },
       {

@@ -24,10 +24,6 @@ function FontControls() {
       .join(", ");
   }
 
-  // function handleOnFontSizeInput(e) {
-  //   previewRef.current.style.fontSize = `${e.target.value}px`;
-  // }
-
 
 
   function handleOnVariableInput({ tag, value }) {
@@ -41,11 +37,12 @@ function FontControls() {
       document.fonts.ready.then(() => {
         const preview = previewRef.current;
         preview.style.fontVariationSettings = variableSettingsToString();
+        console.log(window.getComputedStyle(preview).fontFamily)
         const currentFontSize = parseInt(
           window.getComputedStyle(preview)["font-size"]
         );
-        const scaleX = (window.innerHeight * .5) / preview.firstChild.offsetHeight;
-        const scaleY = (window.innerWidth * .8) / preview.firstChild.offsetWidth;
+        const scaleX = (window.innerHeight * .7) / preview.firstChild.offsetHeight;
+        const scaleY = (window.innerWidth * .7) / preview.firstChild.offsetWidth;
         preview.style.fontSize = `${currentFontSize * Math.min(scaleX, scaleY)}px`;
       });
     }
@@ -53,15 +50,6 @@ function FontControls() {
 
   return (
     <>
-      {/* <Slider
-        key={filterIdentifier}
-        label={"font size"}
-        min={10}
-        max={100} // window.innerHeight
-        defaultValue={500}
-        onInput={handleOnFontSizeInput}
-        identifier={fontSizeIdentifier}
-      ></Slider> */}
       {variableFontControlSliders.map((slider, index) => (
         <Slider
           identifier={`${filterIdentifier}-${slider.tag}`}

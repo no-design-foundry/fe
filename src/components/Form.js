@@ -31,9 +31,16 @@ const formRule = () => ({
 });
 
 const logRule = () => ({
-  color: "red",
-  gridColumn: "1 / 2 span",
+  display: "flex",
+  flexDirection: "column",
+  position: "absolute",
+  top: 0,
+  transform: "translateY(-100%)",
 });
+
+const errorRule = () => ({
+  color: "red",
+})
 
 const processingRule = () => ({
   gridColumn: "1/-1",
@@ -45,10 +52,10 @@ const downloadRule = () => ({
 });
 
 const wrapperRule = () => ({
-  position: "fixed",
+  // position: "fixed",
+  position: "relative",
   bottom: 0,
   left: 0,
-  padding: 14,
   zIndex: 100,
   width: "100%",
   fromMobileL: {
@@ -204,18 +211,16 @@ function Form() {
 
   return (
     <div className={css(wrapperRule)}>
-      {logMessages.length != 0 && (
-        <ul>{logMessages.map((message) => message)}</ul>
-      )}
-
-      <form ref={formRef} className={css(formRule)} onChange={handleOnChange}>
+      <div className={css(logRule)}>
         {errors.map((error) => (
-          <div key={error.timeStamp} className={css(logRule)}>
+          <div key={error.timeStamp} className={css(errorRule)}>
             {error?.response?.data?.detail ??
               "😭, maybe the font was too big? I am working on it 😥 Get in touch jansindl3r@gmail.com"}
           </div>
         ))}
         {processing && <div className={css(processingRule)}>Processing...</div>}
+      </div>
+      <form ref={formRef} className={css(formRule)} onChange={handleOnChange}>
         <FontControls></FontControls>
         <FileInput required={true} disabled={processing} />
         {inputs.map((input, index) => {

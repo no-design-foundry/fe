@@ -7,18 +7,16 @@ import data from "@/data";
 import Form from "@/components/Form";
 
 const wrapperRule = () => ({
-  position: "absolute",
   zIndex: -1,
   left: 0,
   top: 0,
-  width: "100vw",
-  height: "100vh",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
   // pointerEvents: "none",
   userSelect: "none",
   overflow: "hidden",
+  flexGrow: 1
 });
 
 const previewRule = () => ({
@@ -27,21 +25,19 @@ const previewRule = () => ({
 });
 
 function Index({ filterData }) {
-  //   const { identifier } = useContext(FilterContext);
   const { previewStrings } = useContext(OutputFontContext);
 
-  //   const { title } = useContext(FilterContext);
   const { css } = useFela();
 
   return (
-    <div className={css(wrapperRule)} data-font-preview>
-      <FilterContextWrapper data={filterData}>
+    <FilterContextWrapper data={filterData}>
+      <div className={css(wrapperRule)}>
         <FontPreview className={css(previewRule)}>
           {previewStrings?.[filterData.identifier] ?? filterData.title}
         </FontPreview>
-        <Form key={filterData.identifier}></Form>
-      </FilterContextWrapper>
-    </div>
+      </div>
+      <Form key={filterData.identifier}></Form>
+    </FilterContextWrapper>
   );
 }
 
@@ -49,11 +45,12 @@ export default Index;
 
 export function getStaticPaths() {
   return {
-    paths: data.filter((entry) => entry.type === "filterDetailView" && !(entry.isHidden)).map((entry) => ({ params: { slug: entry.slug } })),
+    paths: data
+      .filter((entry) => entry.type === "filterDetailView" && !entry.isHidden)
+      .map((entry) => ({ params: { slug: entry.slug } })),
     fallback: false,
   };
 }
-
 
 export function getStaticProps(context) {
   const filterData = data.find((filter) => filter.slug === context.params.slug);
