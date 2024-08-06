@@ -1,47 +1,6 @@
 export default [
   {
     type: "filterDetailView",
-    title: "Rastr",
-    identifier: "rasterizer",
-    slug: "rasterizer",
-    layerColors: ["#000"],
-    inputs: [
-      {
-        type: "range",
-        label: "Resolution",
-        name: "resolution",
-        min: 10,
-        max: 150,
-        defaultValue: 20,
-      },
-    ],
-  },
-  {
-    type: "filterDetailView",
-    title: "Rotorizer",
-    identifier: "rotorizer",
-    slug: "rotorizer",
-    layerColors: ["gray", "#000"],
-    variableFontControlSliders: [
-      {
-        label: "Rotation",
-        tag: "RTTX",
-        min: 0,
-        max: 360,
-        defaultValue: 130,
-      },
-      {
-        label: "Depth",
-        tag: "DPTH",
-        min: 0,
-        max: 100,
-        defaultValue: 50,
-      },
-    ],
-    inputs: []
-  },
-  {
-    type: "filterDetailView",
     title: "Pan",
     identifier: "pan",
     slug: "pan",
@@ -89,6 +48,47 @@ export default [
         defaultValue: false,
       }, 
     ]
+  },
+  {
+    type: "filterDetailView",
+    title: "Rastr",
+    identifier: "rasterizer",
+    slug: "rasterizer",
+    layerColors: ["#000"],
+    inputs: [
+      {
+        type: "range",
+        label: "Resolution",
+        name: "resolution",
+        min: 10,
+        max: 150,
+        defaultValue: 20,
+      },
+    ],
+  },
+  {
+    type: "filterDetailView",
+    title: "Rotorizer",
+    identifier: "rotorizer",
+    slug: "rotorizer",
+    layerColors: ["gray", "#000"],
+    variableFontControlSliders: [
+      {
+        label: "Rotation",
+        tag: "RTTX",
+        min: 0,
+        max: 360,
+        defaultValue: 130,
+      },
+      {
+        label: "Depth",
+        tag: "DPTH",
+        min: 0,
+        max: 100,
+        defaultValue: 50,
+      },
+    ],
+    inputs: []
   },
   {
     type: "filterDetailView",
