@@ -96,6 +96,11 @@ function Form() {
   const { css } = useFela();
 
   function handleOnChange(e) {
+    if (e.target.name == "font_file") {
+      formRef.current.querySelectorAll("[data-hide-on-mobile='true'").forEach((element) => {
+        element.dataset.hideOnMobile = false
+      })
+    }
     if (
       formRef.current.checkValidity() &&
       e.target.name?.length &&
@@ -233,6 +238,7 @@ function Form() {
                   {...kwargs}
                   required={true}
                   disabled={disabled || processing}
+                  hideOnMobile={true}
                 />
               );
             case "checkbox":
@@ -242,6 +248,7 @@ function Form() {
                   {...kwargs}
                   required={false}
                   disabled={disabled || processing}
+                  hideOnMobile={true}
                 />
               );
             default:
@@ -255,11 +262,13 @@ function Form() {
           defaultValue={previewStrings?.[identifier] ?? title}
           required={true}
           disabled={disabled || processing}
+          hideOnMobile={true}
         />
         <button
           className={css(downloadRule)}
           onClick={handleOnDownload}
           disabled={processing || !inputFile}
+          data-hide-on-mobile="true"
         >
           Download (Limited Set)
         </button>

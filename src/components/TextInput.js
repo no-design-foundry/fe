@@ -1,11 +1,21 @@
 import React from "react";
 import Input from "@/components/Input";
 
-function TextInput(props) {
-  const { label, name, defaultValue, required = false, disabled=true } = props;
+function TextInput({
+  label,
+  name,
+  defaultValue,
+  required = false,
+  disabled = true,
+  hideOnMobile = false,
+}) {
   return (
     <>
-      <label htmlFor={name} data-disabled={disabled}>
+      <label
+        htmlFor={name}
+        data-disabled={disabled}
+        data-hide-on-mobile={hideOnMobile}
+      >
         {label}
       </label>
       <Input
@@ -14,6 +24,7 @@ function TextInput(props) {
         defaultValue={defaultValue}
         required={required}
         disabled={disabled}
+        data-hide-on-mobile={hideOnMobile}
       />
     </>
   );

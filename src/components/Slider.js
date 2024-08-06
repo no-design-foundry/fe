@@ -10,6 +10,7 @@ function Slider(props) {
     onInput,
     required = false,
     disabled = false,
+    hideOnMobile = false,
     ...kwargs
   } = props;
 
@@ -21,7 +22,11 @@ function Slider(props) {
 
   return (
     <>
-      <label htmlFor={name} data-disabled={disabled}>
+      <label
+        htmlFor={name}
+        data-disabled={disabled}
+        data-hide-on-mobile={hideOnMobile}
+      >
         {label}
       </label>
       <input
@@ -33,6 +38,7 @@ function Slider(props) {
         required={required}
         onInput={handleOnInput}
         disabled={disabled}
+        data-hide-on-mobile={hideOnMobile}
         {...kwargs}
       />
     </>
