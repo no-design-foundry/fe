@@ -23,7 +23,7 @@ const lottieGridRule = () => ({
   display: "grid",
   gridTemplateColumns: "1fr 1fr",
   gap: "20px 4px",
-  untilTabletS: {
+  "untilTabletS,noHover": {
     display: "flex",
     flexDirection: "column",
   },

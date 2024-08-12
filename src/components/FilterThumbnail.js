@@ -24,7 +24,7 @@ const thumbnailRule = ({ isPreview, scaleThumbnailOnMobile }) => ({
   "& > *": {
     filter: "invert(1)",
   },
-  untilTabletS: {
+  "untilTabletS,noHover": {
     overflow: "hidden",
     height: "100vw",
     alignItems: "center",
