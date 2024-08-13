@@ -214,15 +214,21 @@ function Form() {
     };
   }, [errors.length]);
 
+  console.log(logMessages)
   return (
     <div className={css(wrapperRule)}>
       <div className={css(logRule)}>
         {errors.map((error) => (
           <div key={error.timeStamp} className={css(errorRule)}>
             {error?.response?.data?.detail ??
-              "😭, maybe the font was too big? I am working on it 😥 Get in touch jansindl3r@gmail.com"}
+              "😭, maybe the font was too big? I am working on it 😥 jansindl3r@gmail.com"}
           </div>
         ))}
+        {
+          logMessages.map((message, index) => (
+            <Log key={index} message={message} />
+          ))
+        }
         {processing && <div className={css(processingRule)}>Processing...</div>}
       </div>
       <form ref={formRef} className={css(formRule)} onChange={handleOnChange}>

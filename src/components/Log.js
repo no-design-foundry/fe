@@ -6,10 +6,10 @@ const logRule = () => ({
   gridColumn: "1 / 2 span"
 })
 
-function Log({error, removeSelf}) {
+function Log({message}) {
   const {css} = useFela()
   return (
-    <div className={css(logRule)}>{error.response.data.detail}</div>
+    <div className={css(logRule)}>{message}</div>
   )
 }
 
