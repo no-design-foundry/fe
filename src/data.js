@@ -6,7 +6,7 @@ export default [
     slug: "pan",
     isNew: true,
     scaleThumbnailOnMobile: true,
-    isHidden: !true,
+    isHidden: false,
     layerColors: ["#000"],
     variableFontControlSliders: [
       {
@@ -95,35 +95,71 @@ export default [
     title: "X-Ray",
     identifier: "x_ray",
     slug: "x-ray",
-    isHidden: true,
+    isHidden: process.env.NODE_ENV !== "development",
     isNew: true,
     scaleThumbnailOnMobile: true,
     isNewUntil: "01-08-2024",
     layerColors: ["#000"],
+    opentypeFeatures: [
+      {
+        label: "Background",
+        tag: "ss01"
+      },
+      {
+        label: "Filled",
+        tag: "ss02"
+      }
+    ],
     variableFontControlSliders: [
+      {
+        label: "Outline Width",
+        tag: "OTLN",
+        min: 1,
+        max: 20,
+        defaultValue: 10,
+      },
       {
         label: "Line Width",
         tag: "LINE",
-        min: 10,
-        max: 400,
-        defaultValue: 100,
+        min: 1,
+        max: 20,
+        defaultValue: 10,
       },
       {
         label: "Point Size",
         tag: "POIN",
         min: 10,
-        max: 400,
-        defaultValue: 100,
+        max: 40,
+        defaultValue: 10,
       },
       {
         label: "Handle Size",
         tag: "HAND",
         min: 10,
-        max: 400,
-        defaultValue: 100,
+        max: 40,
+        defaultValue: 10,
       },
     ],
-    inputs: []
+    inputs: [
+      {
+        type: "color",
+        label: "Outline Color",
+        name: "outline_color",
+        defaultValue: "#000",
+      },
+      {
+        type: "color",
+        label: "Line Color",
+        name: "line_color",
+        defaultValue: "#000",
+      },
+      {
+        type: "color",
+        label: "Point Color",
+        name: "point_color",
+        defaultValue: "#000",
+      },
+    ]
   },
   {
     type: "filterDetailView",

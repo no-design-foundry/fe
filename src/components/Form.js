@@ -10,8 +10,8 @@ import axios from "axios";
 import OutputFontContext from "@/contexts/OutputFontContext";
 import InputMemoryContext from "@/contexts/InputMemoryContext";
 import Log from "./Log";
-import { breakpoints } from "@/getFelaRenderer";
 import Checkbox from "./Checkbox";
+import ColorInput from "./ColorInput";
 
 const formRule = () => ({
   display: "grid",
@@ -59,7 +59,7 @@ const wrapperRule = () => ({
   zIndex: 100,
   width: "100%",
   fromMobileL: {
-    maxWidth: breakpoints.mobileL,
+    maxWidth: 400,
   },
 });
 
@@ -94,6 +94,10 @@ function Form() {
   const [logMessages, setLogMessages] = useState([]);
   const logRemovingInterval = useRef();
   const { css } = useFela();
+
+  function handleOnSubmit(e) {
+    e.preventDefault();
+  }
 
   function handleOnChange(e) {
     if (e.target.name == "font_file") {
@@ -132,6 +136,7 @@ function Form() {
             })
             .then(([inputFontBuffer, outputFontsArrays]) => [
               new FontFace(`preview-input-font-${Date.now()}`, inputFontBuffer),
+              
               outputFontsArrays.map(
                 (outputFontArray, index) =>
                   new FontFace(
@@ -220,8 +225,9 @@ function Form() {
       <div className={css(logRule)}>
         {errors.map((error) => (
           <div key={error.timeStamp} className={css(errorRule)}>
-            {error?.response?.data?.detail ??
-              "😭, maybe the font was too big? I am working on it 😥 jansindl3r@gmail.com"}
+            {(error?.response?.data?.warnings ?? error?.response?.data?.detail ??
+              "😭, maybe the font was too big? I am working on it") + " 😥 jansindl3r@gmail.com"}
+              
           </div>
         ))}
         {
@@ -231,7 +237,7 @@ function Form() {
         }
         {processing && <div className={css(processingRule)}>Processing...</div>}
       </div>
-      <form ref={formRef} className={css(formRule)} onChange={handleOnChange}>
+      <form ref={formRef} className={css(formRule)} onChange={handleOnChange} onSubmit={handleOnSubmit}>
         <FontControls></FontControls>
         <FileInput required={true} disabled={processing} />
         {inputs.map((input, index) => {
@@ -257,6 +263,16 @@ function Form() {
                   hideOnMobile={true}
                 />
               );
+            case "color":
+              return (
+                <ColorInput
+                  key={`${identifier}-${index}`}
+                  {...kwargs}
+                  required={true}
+                  disabled={disabled || processing}
+                  hideOnMobile={true}
+                />
+              )
             default:
               return <code>"{type}" is not defined</code>;
           }

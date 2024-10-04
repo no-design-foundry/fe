@@ -3,11 +3,13 @@ import FilterInfoContext from "@/contexts/FilterContext";
 import InputMemoryContext from "@/contexts/InputMemoryContext";
 import OutputFontContext from "@/contexts/OutputFontContext";
 import Slider from "./Slider";
+import Checkbox from "./Checkbox";
 
 function FontControls() {
   const { previewRef, outputFonts } = useContext(OutputFontContext);
-  const { variableFontControlSliders = [], identifier: filterIdentifier } =
+  const { variableFontControlSliders = [], identifier: filterIdentifier, opentypeFeatures } =
     useContext(FilterInfoContext);
+  const currentOpentypeFeatures = useRef([])
 
   // const fontSizeIdentifier = `${filterIdentifier}-fontsize`;
   // const initialFontSize = getInputMemory(fontSizeIdentifier);
@@ -25,10 +27,21 @@ function FontControls() {
   }
 
 
-
   function handleOnVariableInput({ tag, value }) {
     currentVariableSettings.current[tag] = parseFloat(value);
     previewRef.current.style.fontVariationSettings = variableSettingsToString();
+  }
+
+  function handleOnFeatureInput({ tag, checked }) {
+    if (checked) {
+      currentOpentypeFeatures.current.push(tag)
+    }
+    else {
+      const index = currentOpentypeFeatures.current.indexOf(tag)
+      currentOpentypeFeatures.current.splice(index, 1)
+    }
+    console.log(currentOpentypeFeatures)
+    previewRef.current.style.fontFeatureSettings = currentOpentypeFeatures.current.map(tag => `"${tag}"`).join(", ");
   }
 
 
@@ -50,6 +63,16 @@ function FontControls() {
 
   return (
     <>
+      {
+        opentypeFeatures?.map((feature, index) => (
+          <Checkbox
+            key={`${filterIdentifier}-opentype-feature-${index}`}
+            identifier={`${filterIdentifier}-${feature.tag}`}
+            {...feature}
+            handleOnInput={(e) => handleOnFeatureInput({ tag: feature.tag, checked: e.target.checked })}
+          ></Checkbox>
+        ))
+      }
       {variableFontControlSliders.map((slider, index) => (
         <Slider
           identifier={`${filterIdentifier}-${slider.tag}`}
