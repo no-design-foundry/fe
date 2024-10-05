@@ -283,7 +283,7 @@ function Form() {
           name="preview_string"
           defaultValue={previewStrings?.[identifier] ?? title}
           required={true}
-          disabled={disabled || processing}
+          disabled={!inputFile}
           hideOnMobile={true}
         />
         <button

@@ -96,7 +96,7 @@ export default [
     identifier: "x_ray",
     slug: "x-ray",
     isHidden: process.env.NODE_ENV !== "development",
-    isNew: true,
+    isNew: false,
     scaleThumbnailOnMobile: true,
     isNewUntil: "01-08-2024",
     layerColors: ["#000"],
