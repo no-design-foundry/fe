@@ -8,8 +8,6 @@ import Form from "@/components/Form";
 
 const wrapperRule = () => ({
   zIndex: -1,
-  left: 0,
-  top: 0,
   display: "flex",
   alignItems: "center",
   justifyContent: "center",

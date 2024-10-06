@@ -11,7 +11,7 @@ const sectionRule = () => ({
 const filterThumbnailWrapperRule = () => ({
   display: "flex",
   flexDirection: "column",
-})
+});
 
 const postUlRule = () => ({
   fontFamily: "cursive",
@@ -37,6 +37,12 @@ const titleWrapperRule = () => ({
 function Index({ draftMode }) {
   const { css } = useFela();
 
+  function handleOnNotification() {
+    OneSignal.push(function () {
+      OneSignal.registerForPushNotifications();
+    });
+  }
+
   return (
     <div>
       <div className={css(lottieGridRule, sectionRule)}>
@@ -48,8 +54,13 @@ function Index({ draftMode }) {
           .map((entry) => (
             <div key={entry.slug} className="hover-area">
               {React.createElement(
-                entry.isHidden ? (props) => React.createElement("div", props) : Link,
-                {className: css(filterThumbnailWrapperRule), ...(entry.isHidden ? {} : {href: entry.slug}) },
+                entry.isHidden
+                  ? (props) => React.createElement("div", props)
+                  : Link,
+                {
+                  className: css(filterThumbnailWrapperRule),
+                  ...(entry.isHidden ? {} : { href: entry.slug }),
+                },
                 <>
                   <div className={css(titleWrapperRule)}>
                     <span>{entry.title}</span>
@@ -66,6 +77,16 @@ function Index({ draftMode }) {
               )}
             </div>
           ))}
+        <div>
+          <div>New stuff!</div>
+          <div>
+            <button onClick={handleOnNotification}>Get Notified</button>
+            <button onClick={handleOnNotification}>Get Notified</button>
+            <button onClick={handleOnNotification}>Get Notified</button>
+            <button onClick={handleOnNotification}>Get Notified</button>
+            <button onClick={handleOnNotification}>Get Notified</button>
+          </div>
+        </div>
       </div>
       <div className={css(sectionRule)}>
         <div>Posts</div>

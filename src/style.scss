@@ -44,7 +44,6 @@ button:disabled, input:disabled, label[data-disabled="true"] {
 main {
     display: flex;
     flex-direction: column;
-    overflow-x: hidden;
 }
 
 html, body, #__next {
