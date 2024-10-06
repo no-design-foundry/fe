@@ -28,7 +28,7 @@ export default class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <script data-goatcounter="https://nodesignfoundry.goatcounter.com/count" src="/count.js" async defer></script>
+          <script data-goatcounter="https://nodesignfoundry.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
           
           <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96-light.png" media="(prefers-color-scheme: light)" />
           <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96-dark.png" media="(prefers-color-scheme: dark)" />
