@@ -3,6 +3,7 @@ import Link from "next/link";
 import React from "react";
 import { useFela } from "react-fela";
 import FilterThumbnail from "@/components/FilterThumbnail";
+import EmailSignup from "@/components/EmailSignup";
 
 const sectionRule = () => ({
   marginTop: "1em",
@@ -71,16 +72,12 @@ function Index({ draftMode }) {
               )}
             </div>
           ))}
-        {/* <div>
+        <div>
           <div>New stuff!</div>
           <div>
-            <button onClick={handleOnNotification}>Get Notified</button>
-            <button onClick={handleOnNotification}>Get Notified</button>
-            <button onClick={handleOnNotification}>Get Notified</button>
-            <button onClick={handleOnNotification}>Get Notified</button>
-            <button onClick={handleOnNotification}>Get Notified</button>
+            <EmailSignup/>
           </div>
-        </div> */}
+        </div>
       </div>
       <div className={css(sectionRule)}>
         <div>Posts</div>
