@@ -17,9 +17,8 @@ const formRule = () => ({
   alignItems: "flex-start",
   gap: 5,
   marginTop: 50,
-  paddingTop: 10,
   paddingHorizontal: 10,
-  paddingBottom: 50,
+  paddingVertical: 10,
 });
 
 const checkBoxRule = () => ({
@@ -100,6 +99,10 @@ const messageRule = ({message}) => ({
   color: message[1] === "success" ? "#7FFF00" : "#FF0800",
 });
 
+const instagramRule = () => ({
+  marginTop: "4em"
+})
+
 function SignUpForm() {
   
   const [message, setMessage] = useState(null);
@@ -174,6 +177,8 @@ function SignUpForm() {
           Subscribe
         </button>
         <u onClick={() => setTermsAreVisible(true)}>Terms & Conditions</u>
+
+        <a className={css(instagramRule)} href="https://www.instagram.com/sindljan/" target="_blank" rel="noreferrer"><u>Follow on Instagram</u></a>
       </form>
       {termsAreVisible && (
         <div className={css(markDownRule)}>
