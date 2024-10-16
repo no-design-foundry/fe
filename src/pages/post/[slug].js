@@ -22,7 +22,7 @@ export function getStaticPaths() {
 
 export function getStaticProps(context) {
   const { slug } = context.params;
-  const markdown = require(`@/posts/${slug}.md`);
+  const markdown = require(`@/texts/${slug}.md`);
   return {
     props: { markdown },
   };
