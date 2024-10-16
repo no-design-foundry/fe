@@ -24,6 +24,10 @@ const thumbnailRule = ({ isPreview, scaleThumbnailOnMobile }) => ({
   "& > *": {
     filter: "invert(1)",
   },
+  fromTabletS: {
+    height: 0,
+    paddingBottom: "56%"
+  },
   "untilTabletS,noHover": {
     overflow: "hidden",
     height: "100vw",
