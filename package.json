@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --experimental-https",
+    "dev": "next dev",
     "prebuild": "node generate-sitemap.js",
     "build": "next build",
     "start": "next start",
@@ -12,6 +12,7 @@
   "dependencies": {
     "axios": "^1.5.0",
     "dotenv": "^16.4.5",
+    "email-validator": "^2.0.4",
     "fela-plugin-custom-property": "^12.2.1",
     "fela-plugin-embedded": "^12.2.1",
     "fela-plugin-extend": "^12.2.1",
@@ -29,6 +30,7 @@
     "react-dom": "latest",
     "react-fela": "^12.2.1",
     "react-markdown": "^8.0.7",
+    "react-use": "^17.5.1",
     "rehype-raw": "^7.0.0"
   },
   "devDependencies": {

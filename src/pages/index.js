@@ -1,8 +1,10 @@
 import data from "@/data";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import { useFela } from "react-fela";
 import FilterThumbnail from "@/components/FilterThumbnail";
+import axios from "axios";
+import SignUpForm from "@/components/SignUpForm";
 
 const sectionRule = () => ({
   marginTop: "1em",
@@ -23,7 +25,7 @@ const lottieGridRule = () => ({
   display: "grid",
   gridTemplateColumns: "1fr 1fr",
   gap: "20px 4px",
-  "untilTabletS,noHover": {
+  "untilTabletS, noHover": {
     display: "flex",
     flexDirection: "column",
   },
@@ -36,6 +38,7 @@ const titleWrapperRule = () => ({
 
 function Index({ draftMode }) {
   const { css } = useFela();
+
 
   return (
     <div>
@@ -71,16 +74,6 @@ function Index({ draftMode }) {
               )}
             </div>
           ))}
-        {/* <div>
-          <div>New stuff!</div>
-          <div>
-            <button onClick={handleOnNotification}>Get Notified</button>
-            <button onClick={handleOnNotification}>Get Notified</button>
-            <button onClick={handleOnNotification}>Get Notified</button>
-            <button onClick={handleOnNotification}>Get Notified</button>
-            <button onClick={handleOnNotification}>Get Notified</button>
-          </div>
-        </div> */}
       </div>
       <div className={css(sectionRule)}>
         <div>Posts</div>
@@ -94,6 +87,7 @@ function Index({ draftMode }) {
             ))}
         </ul>
       </div>
+      <SignUpForm/>
     </div>
   );
 }
