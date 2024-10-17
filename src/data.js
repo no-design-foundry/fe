@@ -195,5 +195,10 @@ export default [
     type: "post",
     slug: "hinting",
     title: "TrueType hinting, an insight for the curious",
+  },
+  {
+    type: "post",
+    slug: "bezier",
+    title: "Bezier Curves, the interactive guide",
   }
 ];

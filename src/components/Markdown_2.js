@@ -81,6 +81,9 @@ const mdRule = () => ({
 
 function Markdown({ markdown }) {
   const { css } = useFela();
+
+  const parsedMarkdown = rehypeRaw().processSync().toString();
+
   
 
   return (

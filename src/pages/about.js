@@ -1,4 +1,4 @@
-import Markdown from '@/components/Markdown'
+import Markdown from '@/components/Markdown_2'
 import React from 'react'
 const foundryMarkdown = require("@/abouts/foundry.md")
 
