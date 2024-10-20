@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useRef, useState } from "react";
 import { useFela } from "react-fela";
-import Markdown from "./Markdown_2";
+import Markdown from "./Markdown";
 import { useClickAway, useLockBodyScroll } from "react-use";
 const termsAndConditions = require(`@/texts/termsAndConditions.md`);
 

@@ -44,6 +44,7 @@ function doOneOrder(bezier, time) {
 }
 
 function BezierPlayground(){
+  return 1
   const [time, setTime] = useState(0.5);
   const animatingInterval = useRef(null);
   const animatingDirection = useRef(1);
@@ -52,8 +53,8 @@ function BezierPlayground(){
   const [bezierPoints, setBezierPoints] = useState([
     [50, 450],
     [200, 50],
-    [800, 50],
-    [950, 450],
+    [800-300, 50],
+    [950-300, 450],
   ]);
   const [dragging, setDragging] = useState(null);
   const [mathLines, setMathLines] = useState([]);

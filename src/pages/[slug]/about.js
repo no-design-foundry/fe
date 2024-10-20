@@ -1,4 +1,4 @@
-import Markdown from "@/components/Markdown_2";
+import Markdown from "@/components/Markdown";
 import data from "@/data";
 import React from "react";
 

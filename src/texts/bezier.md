@@ -3,16 +3,16 @@
 ## Cubic
 
 
-<reactcomponent component="BezierPlayground"></reactcomponent>
+<bezierplayground component="bezierplayground"></bezierplayground>
 
 
 # Quadratic
 
 
-<reactcomponent component="BezierPlayground"></reactcomponent>
+<bezierplayground component="bezierplayground"></bezierplayground>
 
 
 # Interpolation
 
 
-<reactcomponent component="BezierPlayground"></reactcomponent>
+<bezierplayground component="bezierplayground"></bezierplayground>

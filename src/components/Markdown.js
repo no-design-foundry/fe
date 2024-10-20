@@ -4,6 +4,8 @@ import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import rehypeReact from "rehype-react";
 import BezierPlayground from "./BezierPlayground";
+import rehypeSanitize from "rehype-sanitize";
+import dynamic from 'next/dynamic'
 
 const componentMapper = {
   BezierPlayground,
@@ -79,6 +81,7 @@ const mdRule = () => ({
 });
 
 
+
 function Markdown({ markdown }) {
   const { css } = useFela();
   
@@ -90,10 +93,7 @@ function Markdown({ markdown }) {
       className={css(mdRule)}
       rehypePlugins={[rehypeRaw]}
       components={{
-        reactcomponent: (props) => React.createElement(componentMapper[props.component], props),
-        pre: ({ node, inline, className, children, ...props }) => {
-          return children;
-        },
+        bezierplayground: (props) => BezierPlayground(props),
         img: ({ node, inline, className, children, ...props }) => {
           return (
             <img className={className} {...props} width="100%" height="auto" />
