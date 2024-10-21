@@ -1,37 +1,38 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useFela } from "react-fela";
+import Path from "./bezier/Path";
+import Line from "./bezier/Line";
+import Cross from "./bezier/Cross";
+import Point from "./bezier/Point";
+import Handle from "./bezier/Handle";
 
-const svgRule = () => ({
+export const svgRule = () => ({
   background: "silver",
   width: "100%",
-})
+});
 
-const wrapperRule = () => ({
+export const wrapperRule = () => ({
   display: "flex",
   flexDirection: "column",
-  spaceY: 10
-})
+  spaceY: 10,
+});
 
-function interpolate(a, b, t = 0.5) {
+export const controlWrapperRule = () => ({
+  display: "grid",
+  gridTemplateColumns: "1fr auto",
+  gap: 10,
+});
+
+export function interpolate(a, b, t = 0.5) {
   return a + (b - a) * t;
 }
 
-function interpolatePoint(a, b, t = 0.5) {
+export function interpolatePoint(a, b, t = 0.5) {
   return [interpolate(a[0], b[0], t), interpolate(a[1], b[1], t)];
 }
 
-function diagonalLine(point, direction, angle) {
-  const offsetAngle = angle + (Math.PI / 4);
-  return (
-    <line
-      x1={point[0] - 20 * Math.cos(offsetAngle) * direction}
-      x2={point[0] + 20 * Math.cos(offsetAngle) * direction}
-      y1={point[1] - 20 * Math.sin(offsetAngle) * direction}
-      y2={point[1] + 20 * Math.sin(offsetAngle) * direction}
-      strokeWidth="2"
-      stroke="red"
-    />
-  );
+export function interpolatePath(pathA, pathB, t = 0.5) {
+  return pathA.map((point, index) => interpolatePoint(point, pathB[index], t));
 }
 
 // Function to generate the next order of Bezier control points
@@ -43,25 +44,21 @@ function doOneOrder(bezier, time) {
   return nextOrderBezier;
 }
 
-function BezierPlayground(){
-  return 1
+function BezierPlayground({ curve }) {
+  const isCubic = curve.length === 4;
   const [time, setTime] = useState(0.5);
   const animatingInterval = useRef(null);
   const animatingDirection = useRef(1);
   const [timeIsAnimating, setTimeIsAnimating] = useState(false);
   const svgRef = useRef(null);
-  const [bezierPoints, setBezierPoints] = useState([
-    [50, 450],
-    [200, 50],
-    [800-300, 50],
-    [950-300, 450],
-  ]);
+  const [scaleFactor, setScaleFactor] = useState(1);
+  const [bezierPoints, setBezierPoints] = useState(curve);
   const [dragging, setDragging] = useState(null);
   const [mathLines, setMathLines] = useState([]);
   const [lastOrderPoint, setLastOrderPoint] = useState(null);
   const [lastOrderPointAngle, setLastOrderPointAngle] = useState(null);
-  
-  const {css} = useFela()
+
+  const { css } = useFela();
 
   const handleMouseDown = (index) => {
     setDragging(index);
@@ -77,16 +74,15 @@ function BezierPlayground(){
       if (x > rect.width) x = rect.width;
       if (y < 0) y = 0;
       if (y > rect.height) y = rect.height;
-      if (dragging === 0 || dragging === 3) {
+      x = x * scaleFactor;
+      y = y * scaleFactor;
+      if (isCubic && (dragging === 0 || dragging === 3)) {
         const point = newPoints[dragging];
-        const difference = [
-          x - point[0],
-          y - point[1],
-        ]
+        const difference = [x - point[0], y - point[1]];
         newPoints[dragging === 0 ? 1 : 2] = [
           newPoints[dragging === 0 ? 1 : 2][0] + difference[0],
           newPoints[dragging === 0 ? 1 : 2][1] + difference[1],
-        ];        
+        ];
       }
       newPoints[dragging] = [x, y];
       setBezierPoints(newPoints);
@@ -119,6 +115,9 @@ function BezierPlayground(){
   useEffect(() => {
     let collector = [];
     let currentBezier = [...bezierPoints];
+    if (isCubic) {
+      collector.push([currentBezier[1], currentBezier[2]]);
+    }
     while (currentBezier.length > 1) {
       currentBezier = doOneOrder(currentBezier, time);
       for (let i = 0; i < currentBezier.length - 1; i++) {
@@ -138,10 +137,17 @@ function BezierPlayground(){
     setMathLines(collector);
   }, [time, bezierPoints]);
 
+  function handleOnResize() {
+    setScaleFactor(1000 / svgRef.current.getBoundingClientRect().width);
+  }
+
   useEffect(() => {
+    handleOnResize();
+    window.addEventListener("resize", handleOnResize);
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseup", handleMouseUp);
     return () => {
+      window.removeEventListener("resize", handleOnResize);
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
     };
@@ -149,86 +155,76 @@ function BezierPlayground(){
 
   return (
     <div className={css(wrapperRule)}>
-      <input
-        type="range"
-        min="0"
-        max="1"
-        step="0.01"
-        value={time}
-        onChange={(e) => setTime(parseFloat(e.target.value))}
-      />
-      <button onClick={() => setTimeIsAnimating(!timeIsAnimating)}>Animate</button>
+      <div className={css(controlWrapperRule)}>
+        <input
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          value={time}
+          onChange={(e) => setTime(parseFloat(e.target.value))}
+        />
+        <button onClick={() => setTimeIsAnimating(!timeIsAnimating)}>
+          Animate
+        </button>
+      </div>
       <svg
         ref={svgRef}
         width="1000"
-        height="500"
-        class={css(svgRule)}
+        className={css(svgRule)}
+        viewBox="0 0 1000 500"
       >
-        <path
-          d={`M${bezierPoints[0][0]},${bezierPoints[0][1]} C${bezierPoints[1][0]},${bezierPoints[1][1]} ${bezierPoints[2][0]},${bezierPoints[2][1]} ${bezierPoints[3][0]},${bezierPoints[3][1]}`}
-          stroke="black"
-          fill="transparent"
-          strokeWidth="2"
-        />
-        <line
-          x1={bezierPoints[0][0]}
-          y1={bezierPoints[0][1]}
-          x2={bezierPoints[1][0]}
-          y2={bezierPoints[1][1]}
-          stroke="black"
-        />
-        <line
-          x1={bezierPoints[2][0]}
-          y1={bezierPoints[2][1]}
-          x2={bezierPoints[3][0]}
-          y2={bezierPoints[3][1]}
-          stroke="black"
-        />
+        <Path path={bezierPoints} isCubic={isCubic} scaleFactor={scaleFactor} />
+        <Line points={bezierPoints.slice(0, 2)} scaleFactor={scaleFactor} />
+        {isCubic ? (
+          <Line points={bezierPoints.slice(2, 4)} scaleFactor={scaleFactor} />
+        ) : (
+          <Line points={bezierPoints.slice(1, 3)} scaleFactor={scaleFactor} />
+        )}
         {mathLines.map((line, index) => (
-          <line
-            key={index}
-            x1={line[0][0]}
-            y1={line[0][1]}
-            x2={line[1][0]}
-            y2={line[1][1]}
-            strokeDasharray="5 10"
-            stroke="black"
-          />
-        ))}
-        {bezierPoints.slice(1, 3).map((point, index) => (
-          <circle
-            key={index}
-            cx={point[0]}
-            cy={point[1]}
-            r={8}
-            fill="black"
-            onMouseDown={() => handleMouseDown([1, 2][index])}
-          />
+          <Line points={line} scaleFactor={scaleFactor} isDashed={true} />
         ))}
         {[bezierPoints[0], bezierPoints[bezierPoints.length - 1]].map(
           (point, index) => (
-            <rect
+            <Point
               key={index}
-              x={point[0] - 10}
-              y={point[1] - 10}
-              width={20}
-              height={20}
-              fill="black"
-              onMouseDown={() => handleMouseDown([0, 3][index])}
+              point={point}
+              scaleFactor={scaleFactor}
+              onMouseDown={() =>
+                handleMouseDown([0, bezierPoints.length - 1][index])
+              }
             />
           )
         )}
+        {isCubic ? (
+          bezierPoints
+            .slice(1, 3)
+            .map((point, index) => (
+              <Handle
+                key={index}
+                point={point}
+                scaleFactor={scaleFactor}
+                onMouseDown={() => handleMouseDown([1, 2][index])}
+              />
+            ))
+        ) : (
+          <Handle
+            point={bezierPoints[1]}
+            scaleFactor={scaleFactor}
+            onMouseDown={() => handleMouseDown(1)}
+          />
+        )}
 
         {lastOrderPoint && (
-          <>
-            {diagonalLine(lastOrderPoint, +1, lastOrderPointAngle)}
-            {diagonalLine(lastOrderPoint, -1, lastOrderPointAngle + Math.PI/2)}
-          </>
-          // <circle cx={lastOrderPoint[0]} cy={lastOrderPoint[1]} r={10} fill="none" strokeWidth="3" stroke="black" />
+          <Cross
+            point={lastOrderPoint}
+            angle={lastOrderPointAngle}
+            strokeWidth={2 * scaleFactor}
+          />
         )}
       </svg>
     </div>
   );
-};
+}
 
 export default BezierPlayground;

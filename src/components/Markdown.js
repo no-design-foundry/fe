@@ -4,12 +4,12 @@ import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import rehypeReact from "rehype-react";
 import BezierPlayground from "./BezierPlayground";
-import rehypeSanitize from "rehype-sanitize";
-import dynamic from 'next/dynamic'
+import dynamic from "next/dynamic";
+import BezierInterpolationPlayground from "./BezierInterpolationPlayground";
 
 const componentMapper = {
   BezierPlayground,
-}
+};
 
 const backgroundColor = `rgb(${[255, 255, 255]
   .map((val) => val * 0.95)
@@ -80,11 +80,14 @@ const mdRule = () => ({
   },
 });
 
-
-
 function Markdown({ markdown }) {
   const { css } = useFela();
-  
+
+  return <>
+    <BezierInterpolationPlayground curveA={[[150,450],[200,50],[500,50],[950,450]]} curveB={[[50,450],[200,150],[800,50],[950,50]]}/>
+    <BezierPlayground curve={[[50,450],[500,50],[950,450]]}/>
+    <BezierPlayground curve={[[50,450],[200,50],[800,50],[950,450]]}/>
+  </>
 
   return (
     <ReactMarkdown
@@ -93,6 +96,16 @@ function Markdown({ markdown }) {
       className={css(mdRule)}
       rehypePlugins={[rehypeRaw]}
       components={{
+        div: ({ component, ...props }) => {
+          if (component) {
+            if (props.curve) {
+              props.curve = JSON.parse(props.curve);
+            }
+            return componentMapper[component](props);
+          } else {
+            return <div {...props} />;
+          }
+        },
         bezierplayground: (props) => BezierPlayground(props),
         img: ({ node, inline, className, children, ...props }) => {
           return (
@@ -100,10 +113,11 @@ function Markdown({ markdown }) {
           );
         },
       }}
-      transformLinkUri={(uri) => (uri.startsWith("http") ? uri : `https://${uri}`)}
+      transformLinkUri={(uri) =>
+        uri.startsWith("http") ? uri : `https://${uri}`
+      }
     />
   );
 }
-
 
 export default Markdown;

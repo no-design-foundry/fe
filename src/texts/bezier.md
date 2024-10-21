@@ -2,17 +2,12 @@
 
 ## Cubic
 
-
-<bezierplayground component="bezierplayground"></bezierplayground>
-
+<div component="BezierPlayground" curve="[[50,450],[200,50],[800,50],[950,450]]">test</div>
 
 # Quadratic
 
-
-<bezierplayground component="bezierplayground"></bezierplayground>
-
+<div component="BezierPlayground"  curve="[[50,450],[200,50],[800,50],[800,300]]">test</div>
 
 # Interpolation
 
-
-<bezierplayground component="bezierplayground"></bezierplayground>
+<div component="BezierPlayground"  curve="[[50,450],[200,50],[800,50],[950,450]]">test</div>
