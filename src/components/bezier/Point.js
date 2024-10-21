@@ -9,6 +9,7 @@ function Point({ point, scaleFactor, onMouseDown, fill }) {
       height={20 * scaleFactor}
       fill={fill || "black"}
       onMouseDown={onMouseDown}
+      onTouchStart={onMouseDown}
     />
   );
 }

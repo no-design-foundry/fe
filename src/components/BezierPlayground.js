@@ -5,22 +5,29 @@ import Line from "./bezier/Line";
 import Cross from "./bezier/Cross";
 import Point from "./bezier/Point";
 import Handle from "./bezier/Handle";
+import { useLockBodyScroll } from "react-use";
 
 export const svgRule = () => ({
-  background: "silver",
   width: "100%",
+  overflow: "visible",
 });
 
 export const wrapperRule = () => ({
   display: "flex",
   flexDirection: "column",
   spaceY: 10,
+  background: "silver",
+  borderRadius: 10,
+  marginVertical: 10,
 });
 
 export const controlWrapperRule = () => ({
+  position: "sticky",
+  top: 45,
   display: "grid",
   gridTemplateColumns: "1fr auto",
   gap: 10,
+  padding: 10
 });
 
 export function interpolate(a, b, t = 0.5) {
@@ -59,6 +66,8 @@ function BezierPlayground({ curve }) {
   const [lastOrderPointAngle, setLastOrderPointAngle] = useState(null);
 
   const { css } = useFela();
+  
+  useLockBodyScroll(dragging != null)
 
   const handleMouseDown = (index) => {
     setDragging(index);
@@ -89,6 +98,16 @@ function BezierPlayground({ curve }) {
     }
   };
 
+  useLockBodyScroll(!!dragging);
+  
+  const handleTouchMove = (e) => {
+    handleMouseMove(e.touches[0])
+  }
+  
+  const handleTouchEnd = () => {
+    setDragging(null);
+  }
+
   const handleMouseUp = () => {
     setDragging(null);
   };
@@ -104,7 +123,7 @@ function BezierPlayground({ curve }) {
           }
           return prevTime + 0.008 * animatingDirection.current;
         });
-      }, 1000 / 60);
+      }, 1000 / 30);
     } else {
       clearInterval(animatingInterval.current);
       animatingInterval.current = null;
@@ -145,11 +164,15 @@ function BezierPlayground({ curve }) {
     handleOnResize();
     window.addEventListener("resize", handleOnResize);
     window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("touchmove", handleTouchMove);
     window.addEventListener("mouseup", handleMouseUp);
+    window.addEventListener("touchend", handleMouseUp);
     return () => {
       window.removeEventListener("resize", handleOnResize);
       window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("touchmove", handleTouchMove);
       window.removeEventListener("mouseup", handleMouseUp);
+      window.removeEventListener("touchend", handleMouseUp);
     };
   });
 
@@ -193,6 +216,7 @@ function BezierPlayground({ curve }) {
               onMouseDown={() =>
                 handleMouseDown([0, bezierPoints.length - 1][index])
               }
+              onTouchEnd={handleTouchEnd}
             />
           )
         )}
@@ -205,6 +229,7 @@ function BezierPlayground({ curve }) {
                 point={point}
                 scaleFactor={scaleFactor}
                 onMouseDown={() => handleMouseDown([1, 2][index])}
+                onTouchEnd={handleTouchEnd}
               />
             ))
         ) : (
@@ -212,6 +237,7 @@ function BezierPlayground({ curve }) {
             point={bezierPoints[1]}
             scaleFactor={scaleFactor}
             onMouseDown={() => handleMouseDown(1)}
+            onTouchEnd={handleTouchEnd}
           />
         )}
 
@@ -219,7 +245,7 @@ function BezierPlayground({ curve }) {
           <Cross
             point={lastOrderPoint}
             angle={lastOrderPointAngle}
-            strokeWidth={2 * scaleFactor}
+            scaleFactor={scaleFactor}
           />
         )}
       </svg>

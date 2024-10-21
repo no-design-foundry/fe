@@ -8,6 +8,8 @@ function Handle({ point, scaleFactor, onMouseDown, fill }) {
       r={8 * scaleFactor}
       fill={fill || "black"}
       onMouseDown={onMouseDown}
+      draggable="true"
+      onTouchStart={onMouseDown}
     />
   );
 }

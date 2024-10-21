@@ -11,6 +11,7 @@ import Point from "./bezier/Point";
 import Handle from "./bezier/Handle";
 import { useFela } from "react-fela";
 import Line from "./bezier/Line";
+import { useLockBodyScroll } from "react-use";
 
 function BezierInterpolationPlayground({ curveA, curveB }) {
   const isCubic = curveA.length === 4;
@@ -29,6 +30,9 @@ function BezierInterpolationPlayground({ curveA, curveB }) {
   const [dragging, setDragging] = useState(null); // changed from useRef to useState
   const [render, setRender] = useState(0); // remains useState
 
+  useLockBodyScroll(dragging != null)
+
+
   const { css } = useFela();
 
   function handleMouseDown(path, index) {
@@ -46,12 +50,20 @@ function BezierInterpolationPlayground({ curveA, curveB }) {
     setScaleFactor(newScaleFactor);
   }
 
+  function handleOnChange(e) {
+    if (timeIsAnimating) {
+      setTimeIsAnimating(false)
+    }
+    else {
+      setTimeIsAnimating(true)
+    }
+    setTime(parseFloat(e.target.value));
+  }
+  
   function handleMouseMove(e) {
     if (dragging !== null) {
       const bezierPoints =
         dragging.path === "A" ? bezierPointsA : bezierPointsB;
-      const otherBezierPoints =
-        dragging.path === "A" ? bezierPointsB : bezierPointsA;
       const newPoints = [...bezierPoints];
       const rect = svgRef.current.getBoundingClientRect();
       let x = e.clientX - rect.left;
@@ -83,16 +95,24 @@ function BezierInterpolationPlayground({ curveA, curveB }) {
     }
   }
 
+  function handleTouchMove(e) {
+    handleMouseMove(e.touches[0])
+  }
+
   useEffect(() => {
     handleOnResize();
     setRender((prev) => prev + 1);
     window.addEventListener("resize", handleOnResize);
     window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("touchmove", handleTouchMove);
     window.addEventListener("mouseup", handleMouseUp);
+    window.addEventListener("touchend", handleMouseUp);
     return () => {
       window.removeEventListener("resize", handleOnResize);
       window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("touchmove", handleTouchMove);
       window.removeEventListener("mouseup", handleMouseUp);
+      window.removeEventListener("touchend", handleMouseUp);
     };
   }, [dragging, scaleFactor]);
 
@@ -125,7 +145,7 @@ function BezierInterpolationPlayground({ curveA, curveB }) {
   function drawBezier(bezier, pathKey, stroke) {
     return (
       <>
-        <Path path={bezier} isCubic={isCubic} scaleFactor={1} />
+        <Path path={bezier} isCubic={isCubic} scaleFactor={scaleFactor} stroke={stroke} />
         {[bezier[0], bezier[bezier.length - 1]].map((point, index) => (
           <Point
             key={index}
@@ -152,17 +172,28 @@ function BezierInterpolationPlayground({ curveA, curveB }) {
         ) : (
           <Handle
             point={bezierPointsA[1]}
-            scaleFactor={scaleFactor}
+            scaleFactor={scaleFactor * 2}
             onMouseDown={() => handleMouseDown(pathKey, 1)}
             fill={stroke}
           />
         )}
-        <Line points={bezier.slice(0, 2)} scaleFactor={scaleFactor} stroke={stroke} />
+        <Line
+          points={bezier.slice(0, 2)}
+          scaleFactor={scaleFactor}
+          stroke={stroke}
+        />
         {isCubic ? (
-          <Line points={bezier.slice(2, 4)} scaleFactor={scaleFactor} stroke={stroke} />
+          <Line
+            points={bezier.slice(2, 4)}
+            scaleFactor={scaleFactor}
+            stroke={stroke}
+          />
         ) : (
-          <Line points={bezier.slice(1, 3)} scaleFactor={scaleFactor} stroke={stroke} />
-
+          <Line
+            points={bezier.slice(1, 3)}
+            scaleFactor={scaleFactor}
+            stroke={stroke}
+          />
         )}
       </>
     );
@@ -177,7 +208,7 @@ function BezierInterpolationPlayground({ curveA, curveB }) {
           max="1"
           step="0.01"
           value={time}
-          onChange={(e) => setTime(parseFloat(e.target.value))}
+          onChange={handleOnChange}
         />
         <button onClick={() => setTimeIsAnimating(!timeIsAnimating)}>
           Animate
@@ -189,23 +220,15 @@ function BezierInterpolationPlayground({ curveA, curveB }) {
         width="1000"
         viewBox="0 0 1000 500"
       >
-        {drawBezier(bezierPointsInterpolated, null, "red")}
-        <Path path={bezierPointsB} isCubic={isCubic} scaleFactor={1} />
         {bezierPointsA.map((_, index) => (
-          <>
             <Line
               key={index}
               points={[bezierPointsA[index], bezierPointsB[index]]}
               isDashed={true}
+              scaleFactor={scaleFactor}
             />
-          </>
         ))}
-        <Path
-          path={bezierPointsInterpolated}
-          isCubic={isCubic}
-          scaleFactor={1}
-          isHighlighted={true}
-        />
+        {drawBezier(bezierPointsInterpolated, null, "red")}
         {drawBezier(bezierPointsA, "A")}
         {drawBezier(bezierPointsB, "B")}
       </svg>

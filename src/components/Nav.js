@@ -88,7 +88,7 @@ function Nav() {
         <li>
           <NavLink href="/">no design foundry</NavLink>
         </li>
-        {data.filter(entry => entry.type === "filterDetailView" && !(entry.isHidden)).map((filter) => (
+        {/* {data.filter(entry => entry.type === "filterDetailView" && !(entry.isHidden)).map((filter) => (
           <li key={filter.identifier} hidden={router.pathname==="/"}>
             <NavLink
               href={"/" + filter.slug}
@@ -98,7 +98,7 @@ function Nav() {
               {filter.title}
             </NavLink>
           </li>
-        ))}
+        ))} */}
       </ul>
     </nav>
   );

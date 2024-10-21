@@ -3,12 +3,13 @@ import { useFela } from "react-fela";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import rehypeReact from "rehype-react";
-import BezierPlayground from "./BezierPlayground";
 import dynamic from "next/dynamic";
+import BezierPlayground from "./BezierPlayground";
 import BezierInterpolationPlayground from "./BezierInterpolationPlayground";
 
 const componentMapper = {
   BezierPlayground,
+  BezierInterpolationPlayground
 };
 
 const backgroundColor = `rgb(${[255, 255, 255]
@@ -18,13 +19,6 @@ const backgroundColor = `rgb(${[255, 255, 255]
 const mdRule = () => ({
   "& img": {
     backgroundColor: backgroundColor,
-  },
-  "& h1, & h2": {
-    fontSize: "2em",
-    // fontWeight: "bold",
-    fontStyle: "italic",
-    fontFamily: "cursive",
-    marginTop: 50,
   },
   lineHeight: 1.1,
   "& > *": {
@@ -80,14 +74,33 @@ const mdRule = () => ({
   },
 });
 
+const h1Rule = () => ({
+  fontSize: "2em",
+  // fontWeight: "bold",
+  fontStyle: "italic",
+  fontFamily: "cursive",
+  marginTop: ".5em",
+})
+
+const h2Rule = () => ({
+  fontSize: "1.5em",
+  // fontWeight: "bold",
+  fontStyle: "italic",
+  fontFamily: "cursive",
+  marginTop: ".25em"
+})
+
+// "& h1, & h2": {
+//   fontSize: "2em",
+//   // fontWeight: "bold",
+//   fontStyle: "italic",
+//   fontFamily: "cursive",
+//   marginTop: 50,
+// },
+
 function Markdown({ markdown }) {
   const { css } = useFela();
 
-  return <>
-    <BezierInterpolationPlayground curveA={[[150,450],[200,50],[500,50],[950,450]]} curveB={[[50,450],[200,150],[800,50],[950,50]]}/>
-    <BezierPlayground curve={[[50,450],[500,50],[950,450]]}/>
-    <BezierPlayground curve={[[50,450],[200,50],[800,50],[950,450]]}/>
-  </>
 
   return (
     <ReactMarkdown
@@ -101,12 +114,23 @@ function Markdown({ markdown }) {
             if (props.curve) {
               props.curve = JSON.parse(props.curve);
             }
+            if (props.curvea) {
+              props.curveA = JSON.parse(props.curvea);
+              props.curveB = JSON.parse(props.curveb);
+            }
             return componentMapper[component](props);
           } else {
             return <div {...props} />;
           }
         },
-        bezierplayground: (props) => BezierPlayground(props),
+        h1: ({ node, inline, className, children, ...props }) => {
+          const {css} = useFela()
+          return <h1 className={css(h1Rule)} {...props}>{children}</h1>;
+        },
+        h2: ({ node, inline, className, children, ...props }) => {
+          const {css} = useFela()
+          return <h1 className={css(h2Rule)} {...props}>{children}</h1>;
+        },
         img: ({ node, inline, className, children, ...props }) => {
           return (
             <img className={className} {...props} width="100%" height="auto" />
