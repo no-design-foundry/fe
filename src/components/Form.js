@@ -226,7 +226,7 @@ function Form() {
         {errors.map((error) => (
           <div key={error.timeStamp} className={css(errorRule)}>
             {(error?.response?.data?.warnings ?? error?.response?.data?.detail ??
-              "😭, maybe the font was too big? I am working on it") + " 😥 jansindl3r@gmail.com"}
+              "😭, maybe the font was too big? I am working on it") + " 😥 mail@nodesignfoundry.com"}
               
           </div>
         ))}
