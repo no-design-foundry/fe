@@ -1,10 +1,10 @@
 import React from "react";
 
-function ColorInput({ label, name, disabled }) {
+function ColorInput({ label, name, disabled, defaultValue="#000000" }) {
   return (
     <>
-      <label data-disabled={disabled}>{label}</label>
-      <input type="color" name={name} disabled={disabled} />
+      {label && <label data-disabled={disabled}>{label}</label>}
+      <input type="color" name={name} disabled={disabled} defaultValue={defaultValue}/>
     </>
   );
 }

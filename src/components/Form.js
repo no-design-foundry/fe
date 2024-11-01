@@ -12,6 +12,7 @@ import InputMemoryContext from "@/contexts/InputMemoryContext";
 import Log from "./Log";
 import Checkbox from "./Checkbox";
 import ColorInput from "./ColorInput";
+import ColorsInput from "./ColorsInput";
 
 const formRule = () => ({
   display: "grid",
@@ -40,7 +41,7 @@ const logRule = () => ({
 
 const errorRule = () => ({
   color: "red",
-})
+});
 
 const processingRule = () => ({
   gridColumn: "1/-1",
@@ -52,12 +53,12 @@ const downloadRule = () => ({
 });
 
 const wrapperRule = () => ({
-  // position: "fixed",
-  position: "relative",
-  bottom: 0,
-  left: 0,
+  position: "fixed",
+  // position: "relative",
+  bottom: 14,
+  left: 14,
   zIndex: 100,
-  width: "100%",
+  right: 14,
   fromMobileL: {
     maxWidth: 400,
   },
@@ -101,9 +102,11 @@ function Form() {
 
   function handleOnChange(e) {
     if (e.target.name == "font_file") {
-      formRef.current.querySelectorAll("[data-hide-on-mobile='true'").forEach((element) => {
-        element.dataset.hideOnMobile = false
-      })
+      formRef.current
+        .querySelectorAll("[data-hide-on-mobile='true'")
+        .forEach((element) => {
+          element.dataset.hideOnMobile = false;
+        });
     }
     if (
       formRef.current.checkValidity() &&
@@ -136,7 +139,7 @@ function Form() {
             })
             .then(([inputFontBuffer, outputFontsArrays]) => [
               new FontFace(`preview-input-font-${Date.now()}`, inputFontBuffer),
-              
+
               outputFontsArrays.map(
                 (outputFontArray, index) =>
                   new FontFace(
@@ -219,25 +222,28 @@ function Form() {
     };
   }, [errors.length]);
 
-  console.log(logMessages)
   return (
     <div className={css(wrapperRule)}>
       <div className={css(logRule)}>
         {errors.map((error) => (
           <div key={error.timeStamp} className={css(errorRule)}>
-            {(error?.response?.data?.warnings ?? error?.response?.data?.detail ??
-              "😭, maybe the font was too big? I am working on it") + " 😥 jansindl3r@gmail.com"}
-              
+            {(error?.response?.data?.warnings ??
+              error?.response?.data?.detail ??
+              "😭, maybe the font was too big? I am working on it") +
+              " 😥 jansindl3r@gmail.com"}
           </div>
         ))}
-        {
-          logMessages.map((message, index) => (
-            <Log key={index} message={message} />
-          ))
-        }
+        {logMessages.map((message, index) => (
+          <Log key={index} message={message} />
+        ))}
         {processing && <div className={css(processingRule)}>Processing...</div>}
       </div>
-      <form ref={formRef} className={css(formRule)} onChange={handleOnChange} onSubmit={handleOnSubmit}>
+      <form
+        ref={formRef}
+        className={css(formRule)}
+        onChange={handleOnChange}
+        onSubmit={handleOnSubmit}
+      >
         <FontControls></FontControls>
         <FileInput required={true} disabled={processing} />
         {inputs.map((input, index) => {
@@ -272,7 +278,17 @@ function Form() {
                   disabled={disabled || processing}
                   hideOnMobile={true}
                 />
-              )
+              );
+            case "colors":
+              return (
+                <ColorsInput
+                  key={`${identifier}-${index}`}
+                  {...kwargs}
+                  required={true}
+                  disabled={disabled || processing}
+                  hideOnMobile={true}
+                />
+              );
             default:
               return <code>"{type}" is not defined</code>;
           }

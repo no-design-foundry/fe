@@ -142,22 +142,11 @@ export default [
     ],
     inputs: [
       {
-        type: "color",
-        label: "Outline Color",
-        name: "outline_color",
-        defaultValue: "#000",
-      },
-      {
-        type: "color",
-        label: "Line Color",
-        name: "line_color",
-        defaultValue: "#000",
-      },
-      {
-        type: "color",
-        label: "Point Color",
-        name: "point_color",
-        defaultValue: "#000",
+        type: "colors",
+        label: "Colors",
+        names: ["outline_color", "line_color", "point_color"],
+        labels: ["Outline Color", "Line Color", "Point Color"],
+        defaultValues: ["#FF0000", "#00FF00", "#0000FF"],
       },
     ]
   },
@@ -199,6 +188,6 @@ export default [
   {
     type: "post",
     slug: "bezier",
-    title: "Bezier Curves, the interactive guide",
+    title: "Beziers (Not the town in France)",
   }
 ];
