@@ -188,6 +188,6 @@ export default [
   {
     type: "post",
     slug: "bezier",
-    title: "Bezier Curves, the interactive guide",
+    title: "Beziers (Not the town in France)",
   }
 ];
