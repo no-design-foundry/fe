@@ -89,7 +89,7 @@ function Form() {
   const inputFile = getInputMemory(`${identifier}-fontfile`);
   const [errors, setErrors] = useState([]);
   const disabled = !Boolean(inputFile);
-  const { setOutputFonts, setPreviewString, previewStrings } =
+  const { outputFontArrays, setOutputFonts, setPreviewString, previewStrings } =
     useContext(OutputFontContext);
   const [processing, setProcessing] = useState(false);
   const [logMessages, setLogMessages] = useState([]);
@@ -139,13 +139,14 @@ function Form() {
             })
             .then(([inputFontBuffer, outputFontsArrays]) => [
               new FontFace(`preview-input-font-${Date.now()}`, inputFontBuffer),
-
               outputFontsArrays.map(
-                (outputFontArray, index) =>
-                  new FontFace(
+                (outputFontArray, index) => {
+                  outputFontArrays.current.push(outputFontArray);
+                  return new FontFace(
                     `preview-output-font-${Date.now()}-${index}`,
                     outputFontArray
                   )
+                }
               ),
             ])
             .then(([inputFont, outputFonts]) => {
