@@ -101,6 +101,9 @@ function Form() {
   }
 
   function handleOnChange(e) {
+    if (e.target.type == "color") {
+      return
+    }
     if (e.target.name == "font_file") {
       formRef.current
         .querySelectorAll("[data-hide-on-mobile='true'")

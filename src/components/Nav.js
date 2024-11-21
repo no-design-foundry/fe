@@ -39,21 +39,26 @@ const aboutLinkRule = ({ aboutLinkActive }) => ({
   },
 });
 
-const navRule = () => ({
+const navRule = ({isInFilter}) => ({
   marginBottom: "1em",
   position: "sticky",
   top: 0,
   margin: -14,
   padding: 14,
-  backgroundColor: "white",
   zIndex: 1,
+  extend: [{
+    condition: !isInFilter,
+    style: {
+      backgroundColor: "red",
+    }
+  }]
   // left: 14
 });
 
 function NavLink({ href, children, identifier, isNew }) {
   const { asPath, query, route } = useRouter();
   const aboutLinkActive = route.endsWith("/about") && ("/" + (query?.slug ?? "")) === href;
-  // console.log(query?.slug, href)
+  
   const { css } = useFela({
     linkActive: asPath === href,
     aboutLinkActive: aboutLinkActive,
@@ -79,8 +84,9 @@ function NavLink({ href, children, identifier, isNew }) {
 }
 
 function Nav() {
-  const { css } = useFela();
   const router = useRouter();
+  const isInFilter = data.some(entry => (entry.type === "filterDetailView") && (router.query.slug === entry.slug));
+  const { css } = useFela({isInFilter});
 
   return (
     <nav className={css(navRule)}>

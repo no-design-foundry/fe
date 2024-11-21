@@ -1,10 +1,70 @@
 export default [
   {
     type: "filterDetailView",
+    title: "X-Ray",
+    identifier: "x_ray",
+    slug: "x-ray",
+    isHidden: false,
+    isNew: true,
+    scaleThumbnailOnMobile: true,
+    isNewUntil: "01-08-2024",
+    layerColors: ["#000"],
+    opentypeFeatures: [
+      {
+        label: "Background",
+        tag: "ss01"
+      },
+      {
+        label: "Filled",
+        tag: "ss02"
+      }
+    ],
+    variableFontControlSliders: [
+      {
+        label: "Outline Width",
+        tag: "OTLN",
+        min: 1,
+        max: 20,
+        defaultValue: 10,
+      },
+      {
+        label: "Line Width",
+        tag: "LINE",
+        min: 1,
+        max: 20,
+        defaultValue: 10,
+      },
+      {
+        label: "Point Size",
+        tag: "POIN",
+        min: 10,
+        max: 40,
+        defaultValue: 10,
+      },
+      {
+        label: "Handle Size",
+        tag: "HAND",
+        min: 10,
+        max: 40,
+        defaultValue: 10,
+      },
+    ],
+    inputs: [
+      {
+        type: "colors",
+        label: "Colors",
+        names: ["outline_color", "line_color", "point_color"],
+        labels: ["Outline Color", "Line Color", "Point Color"],
+        defaultValues: ["#FF0000", "#00FF00", "#0000FF"],
+      },
+    ]
+  },
+  {
+    type: "filterDetailView",
     title: "Pan",
     identifier: "pan",
     slug: "pan",
-    isNew: true,
+    isNew: false,
     scaleThumbnailOnMobile: true,
     isHidden: false,
     layerColors: ["#000"],
@@ -92,72 +152,12 @@ export default [
   },
   {
     type: "filterDetailView",
-    title: "X-Ray",
-    identifier: "x_ray",
-    slug: "x-ray",
-    isHidden: process.env.NODE_ENV !== "development",
-    isNew: false,
-    scaleThumbnailOnMobile: true,
-    isNewUntil: "01-08-2024",
-    layerColors: ["#000"],
-    opentypeFeatures: [
-      {
-        label: "Background",
-        tag: "ss01"
-      },
-      {
-        label: "Filled",
-        tag: "ss02"
-      }
-    ],
-    variableFontControlSliders: [
-      {
-        label: "Outline Width",
-        tag: "OTLN",
-        min: 1,
-        max: 20,
-        defaultValue: 10,
-      },
-      {
-        label: "Line Width",
-        tag: "LINE",
-        min: 1,
-        max: 20,
-        defaultValue: 10,
-      },
-      {
-        label: "Point Size",
-        tag: "POIN",
-        min: 10,
-        max: 40,
-        defaultValue: 10,
-      },
-      {
-        label: "Handle Size",
-        tag: "HAND",
-        min: 10,
-        max: 40,
-        defaultValue: 10,
-      },
-    ],
-    inputs: [
-      {
-        type: "colors",
-        label: "Colors",
-        names: ["outline_color", "line_color", "point_color"],
-        labels: ["Outline Color", "Line Color", "Point Color"],
-        defaultValues: ["#FF0000", "#00FF00", "#0000FF"],
-      },
-    ]
-  },
-  {
-    type: "filterDetailView",
     title: "Extruder",
     identifier: "extruder",
     slug: "extruder",
     isHidden: true,
     scaleThumbnailOnMobile: true,
-    isNew: true,
+    isNew: false,
     isNewUntil: "01-08-2024",
     layerColors: ["#000", "transparent"],
     variableFontControlSliders: [

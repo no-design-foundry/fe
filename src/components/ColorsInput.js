@@ -15,17 +15,19 @@ function ColorsInput({ label, disabled, defaultValues, processing, names }) {
 
   function handleOnChange(event) {
     const form = event.target.closest("form");
-    const colors = ["outline_color", "line_color", "point_color"].map(name => form[name].value);
+    let colors = ["outline_color", "line_color", "point_color"].map(name => form[name].value);
+    colors = ["#00000010", ...colors]
     const colorsAsRGB = colors.map(color => {
       const r = parseInt(color.slice(1, 3), 16);
       const g = parseInt(color.slice(3, 5), 16);
       const b = parseInt(color.slice(5, 7), 16);
-      return [r, g, b, 255];
+      const a = parseInt(color.slice(7, 9), 16) || 255
+      return [r, g, b, a];
     }
   )
     event.preventDefault();
     const lastFont = outputFontArrays.current[outputFontArrays.current.length - 1];
-    const lastFontColorized = recolorize(lastFont, [...colorsAsRGB, [0, 0, 0, 255]]);
+    const lastFontColorized = recolorize(lastFont, colorsAsRGB);
     const familyName = `preview-input-font-colorized-${Date.now()}`
     const fontFace = new FontFace(familyName, lastFontColorized)
     fontFace.load().then(function (loadedFontFace) {
