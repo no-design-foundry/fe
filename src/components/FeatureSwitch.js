@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useFela } from "react-fela";
 
@@ -19,8 +19,8 @@ const indicatorRule = () => ({
   mixBlendMode: "multiply",
 })
 
-function FeatureSwitch({ children, tag, onClick }) {
-  const [value, setValue] = useState(false);
+function FeatureSwitch({ children, tag, onClick, checked=false }) {
+  const [value, setValue] = useState(checked);
   const { css } = useFela({ value });
 
   function handleOnClick(e) {

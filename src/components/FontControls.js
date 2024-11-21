@@ -57,6 +57,18 @@ function FontControls() {
 
   useEffect(() => {
     if (previewRef?.current) {
+      let value = []
+      opentypeFeatures.forEach((feature) => {
+        if (feature.checked) {
+          value.push(`"${feature.tag}"`)
+        }
+      })
+      previewRef.current.style.fontFeatureSettings = value.join(", ");
+    }
+  }, [previewRef])
+
+  useEffect(() => {
+    if (previewRef?.current) {
       document.fonts.ready.then(() => {
         const preview = previewRef.current;
         preview.style.fontVariationSettings = variableSettingsToString();
@@ -68,9 +80,10 @@ function FontControls() {
           (window.innerHeight * 0.7) / preview.firstChild.offsetHeight;
         const scaleY =
           (window.innerWidth * 0.7) / preview.firstChild.offsetWidth;
-        preview.style.fontSize = `${
-          currentFontSize * Math.min(scaleX, scaleY)
-        }px`;
+        const newFontSize = `${Math.round(currentFontSize * Math.min(scaleX, scaleY))}px`
+        if (newFontSize !== preview.style.fontSize) {
+          preview.style.fontSize = newFontSize
+        }
       });
     }
   }, [filterIdentifier, previewRef?.current, outputFonts[filterIdentifier]]);
@@ -81,12 +94,12 @@ function FontControls() {
         <>
           <div>Features</div>
           <div class={css(featureTogglesRule)}>
-            {opentypeFeatures?.map((feature, index) => (
+            {opentypeFeatures?.map(({label, ...kwargs}, index) => (
               <FeatureSwitch
-                tag={feature.tag}
+                {...kwargs}
                 onClick={handleOnFeatureInput}
               >
-                {feature.label}
+                {label}
               </FeatureSwitch>
             ))}
           </div>

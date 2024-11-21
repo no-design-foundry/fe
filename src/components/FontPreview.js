@@ -21,6 +21,7 @@ const getLayerRule =
     transitionTimingFunction: "ease-in",
     textRendering: "optimizeSpeed",
     lineHeight: "1em",
+    whiteSpace: "nowrap",
     color: layerColors[index],
     extend: [
       {

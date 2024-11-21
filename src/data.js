@@ -16,7 +16,8 @@ export default [
       },
       {
         label: "Filled",
-        tag: "ss02"
+        tag: "ss02",
+        checked: true
       }
     ],
     variableFontControlSliders: [
@@ -25,28 +26,28 @@ export default [
         tag: "OTLN",
         min: 1,
         max: 20,
-        defaultValue: 10,
+        defaultValue: 4,
       },
       {
         label: "Line Width",
         tag: "LINE",
         min: 1,
         max: 20,
-        defaultValue: 10,
+        defaultValue: 4,
       },
       {
         label: "Point Size",
         tag: "POIN",
         min: 10,
         max: 40,
-        defaultValue: 10,
+        defaultValue: 30,
       },
       {
         label: "Handle Size",
         tag: "HAND",
         min: 10,
         max: 40,
-        defaultValue: 10,
+        defaultValue: 25,
       },
     ],
     inputs: [
