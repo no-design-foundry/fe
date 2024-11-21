@@ -49,7 +49,7 @@ const navRule = ({isInFilter}) => ({
   extend: [{
     condition: !isInFilter,
     style: {
-      backgroundColor: "red",
+      backgroundColor: "white",
     }
   }]
   // left: 14

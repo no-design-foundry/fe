@@ -186,9 +186,9 @@ export default [
     slug: "hinting",
     title: "TrueType hinting, an insight for the curious",
   },
-  {
-    type: "post",
-    slug: "bezier",
-    title: "Beziers (Not the town in France)",
-  }
+  // {
+  //   type: "post",
+  //   slug: "bezier",
+  //   title: "Beziers (Not the town in France)",
+  // }
 ];
