@@ -6,18 +6,14 @@ const buttonRule = () => ({
   display: "inline-block",
   position: "relative",
   width: "auto",
-
+  margin: "0 !important",
+  overflow: "hidden",
+  display: "flex",
+  alignItems: "center",
+  "& > * + *": {
+    marginLeft: ".5ch",
+  }
 });
-
-const indicatorRule = () => ({
-  position: "absolute",
-  top: 0,
-  right: 0,
-  bottom: 0,
-  left: 0,
-  background: "silver",
-  mixBlendMode: "multiply",
-})
 
 function FeatureSwitch({ children, tag, onClick, checked=false }) {
   const [value, setValue] = useState(checked);
@@ -32,8 +28,8 @@ function FeatureSwitch({ children, tag, onClick, checked=false }) {
 
   return (
     <button className={css(buttonRule)} onClick={handleOnClick}>
-      {value && <div className={css(indicatorRule)}></div>}
-      {children}
+      <div>{children}</div>
+      <input type="checkbox" checked={value} readOnly />
     </button>
   );
 }
