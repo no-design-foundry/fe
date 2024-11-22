@@ -5,6 +5,12 @@ import OutputFontContext from "@/contexts/OutputFontContext";
 
 const duration = 500;
 
+
+const layerWrapperRule = () => ({
+  position: "relative",
+  paddingBottom: 100
+})
+
 const getLayerRule =
   (index) =>
   ({ identifier, layerColors, fontFamilies = [], opacity = 1 }) => ({
@@ -15,6 +21,7 @@ const getLayerRule =
     transitionTimingFunction: "ease-in",
     textRendering: "optimizeSpeed",
     lineHeight: "1em",
+    whiteSpace: "nowrap",
     color: layerColors[index],
     extend: [
       {
@@ -27,7 +34,7 @@ const getLayerRule =
       {
         condition: fontFamilies?.length,
         style: {
-          fontFamily: fontFamilies[index]
+          fontFamily: fontFamilies[index],
         },
       },
       {
@@ -41,9 +48,9 @@ const getLayerRule =
 
 function FontPreview({ children, className }) {
   const { identifier, layerColors } = useContext(FilterContext);
-  const ref = useRef()
+  const ref = useRef();
   const { outputFonts, setPreviewRef } = useContext(OutputFontContext);
-  const fontFamilies = outputFonts?.[identifier]
+  const fontFamilies = outputFonts?.[identifier];
   const { css } = useFela({
     layerColors,
     identifier,
@@ -51,19 +58,21 @@ function FontPreview({ children, className }) {
   });
 
   useEffect(() => {
-      setPreviewRef(ref)
-  }, [ref])
+    setPreviewRef(ref);
+  }, [ref]);
 
   return (
-    <div ref={ref} className={className}>
-      {layerColors.map((color, index) => (
-        <div
-          key={`${identifier}-${color}`}
-          className={css(getLayerRule(index))}
-        >
-          {children}
-        </div>
-      ))}
+    <div className={className}>
+      <div ref={ref} className={css(layerWrapperRule)}>
+        {layerColors.map((color, index) => (
+          <div
+            key={`${identifier}-${color}`}
+            className={css(getLayerRule(index))}
+          >
+            {children}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

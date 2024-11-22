@@ -4,12 +4,25 @@ import InputMemoryContext from "@/contexts/InputMemoryContext";
 import OutputFontContext from "@/contexts/OutputFontContext";
 import Slider from "./Slider";
 import Checkbox from "./Checkbox";
+import { useFela } from "react-fela";
+import FeatureSwitch from "./FeatureSwitch";
+
+const featureTogglesRule = () => ({
+  display: "flex",
+  flexDirection: "row",
+  flexWrap: "wrap",
+  gap: 10,
+});
 
 function FontControls() {
   const { previewRef, outputFonts } = useContext(OutputFontContext);
-  const { variableFontControlSliders = [], identifier: filterIdentifier, opentypeFeatures } =
-    useContext(FilterInfoContext);
-  const currentOpentypeFeatures = useRef([])
+  const {
+    variableFontControlSliders = [],
+    identifier: filterIdentifier,
+    opentypeFeatures,
+  } = useContext(FilterInfoContext);
+  const currentOpentypeFeatures = useRef([]);
+  const { css } = useFela();
 
   // const fontSizeIdentifier = `${filterIdentifier}-fontsize`;
   // const initialFontSize = getInputMemory(fontSizeIdentifier);
@@ -26,53 +39,80 @@ function FontControls() {
       .join(", ");
   }
 
-
   function handleOnVariableInput({ tag, value }) {
     currentVariableSettings.current[tag] = parseFloat(value);
     previewRef.current.style.fontVariationSettings = variableSettingsToString();
   }
 
-  function handleOnFeatureInput({ tag, checked }) {
-    if (checked) {
-      currentOpentypeFeatures.current.push(tag)
+  function handleOnFeatureInput({ tag, value }) {
+    if (value) {
+      currentOpentypeFeatures.current.push(tag);
+    } else {
+      const index = currentOpentypeFeatures.current.indexOf(tag);
+      currentOpentypeFeatures.current.splice(index, 1);
     }
-    else {
-      const index = currentOpentypeFeatures.current.indexOf(tag)
-      currentOpentypeFeatures.current.splice(index, 1)
-    }
-    console.log(currentOpentypeFeatures)
-    previewRef.current.style.fontFeatureSettings = currentOpentypeFeatures.current.map(tag => `"${tag}"`).join(", ");
+    previewRef.current.style.fontFeatureSettings =
+      currentOpentypeFeatures.current.map((tag) => `"${tag}"`).join(", ");
   }
 
+  useEffect(() => {
+    if (previewRef?.current) {
+      let value = []
+      opentypeFeatures?.forEach((feature) => {
+        if (feature.checked) {
+          value.push(`"${feature.tag}"`)
+        }
+      })
+      previewRef.current.style.fontFeatureSettings = value.join(", ");
+    }
+  }, [previewRef])
 
   useEffect(() => {
     if (previewRef?.current) {
       document.fonts.ready.then(() => {
         const preview = previewRef.current;
         preview.style.fontVariationSettings = variableSettingsToString();
-        console.log(window.getComputedStyle(preview).fontFamily)
+        console.log(window.getComputedStyle(preview).fontFamily);
         const currentFontSize = parseInt(
           window.getComputedStyle(preview)["font-size"]
         );
-        const scaleX = (window.innerHeight * .7) / preview.firstChild.offsetHeight;
-        const scaleY = (window.innerWidth * .7) / preview.firstChild.offsetWidth;
-        preview.style.fontSize = `${currentFontSize * Math.min(scaleX, scaleY)}px`;
+        const scaleX =
+          (window.innerHeight * 0.7) / preview.firstChild.offsetHeight;
+        const scaleY =
+          (window.innerWidth * 0.7) / preview.firstChild.offsetWidth;
+        const newFontSize = `${Math.round(currentFontSize * Math.min(scaleX, scaleY))}px`
+        if (newFontSize !== preview.style.fontSize) {
+          preview.style.fontSize = newFontSize
+        }
       });
     }
   }, [filterIdentifier, previewRef?.current, outputFonts[filterIdentifier]]);
 
   return (
     <>
-      {
-        opentypeFeatures?.map((feature, index) => (
-          <Checkbox
-            key={`${filterIdentifier}-opentype-feature-${index}`}
-            identifier={`${filterIdentifier}-${feature.tag}`}
-            {...feature}
-            handleOnInput={(e) => handleOnFeatureInput({ tag: feature.tag, checked: e.target.checked })}
-          ></Checkbox>
-        ))
-      }
+      {opentypeFeatures && (
+        <>
+          <div>Features</div>
+          <div class={css(featureTogglesRule)}>
+            {opentypeFeatures?.map(({label, ...kwargs}, index) => (
+              <FeatureSwitch
+                {...kwargs}
+                onClick={handleOnFeatureInput}
+              >
+                {label}
+              </FeatureSwitch>
+            ))}
+          </div>
+        </>
+      )}
+
+      {/* <Checkbox
+        key={`${filterIdentifier}-opentype-feature-${index}`}
+        identifier={`${filterIdentifier}-${feature.tag}`}
+        {...feature}
+        handleOnInput={(e) => handleOnFeatureInput({ tag: feature.tag, checked: e.target.checked })}
+      ></Checkbox> */}
+
       {variableFontControlSliders.map((slider, index) => (
         <Slider
           identifier={`${filterIdentifier}-${slider.tag}`}

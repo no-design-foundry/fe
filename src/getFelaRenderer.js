@@ -67,6 +67,18 @@ const paddingHorizontal = (value) => ({
   paddingRight: value,
 })
 
+const spaceY = (value) => ({
+  "& > * + *": {
+    marginTop: value,
+  }
+})
+
+const spaceX = (value) => ({
+  "& > * + *": {
+    marginLeft: value,
+  }
+})
+
 export default function getRenderer() {
   return createRenderer({
     plugins: [
@@ -76,7 +88,9 @@ export default function getRenderer() {
         paddingVertical,
         paddingHorizontal,
         marginVertical,
-        marginHorizontal
+        marginHorizontal,
+        spaceX,
+        spaceY
       }),
       embedded(),
       namedKeys(namedBreakpoints),

@@ -20,6 +20,11 @@
     src: url(/Arial-pan.ttf);
 }
 
+@font-face {
+    font-family: "x_ray-0";
+    src: url(/Arial-x_ray.ttf);
+}
+
 ul {
     list-style: none;
 }
@@ -46,9 +51,10 @@ main {
     flex-direction: column;
 }
 
-html, body, #__next {
-    height: 100%;
-}
+// html, body, #__next {
+//     height: 100%;
+// }
+
 #__next {
     display: flex;
     flex-direction: column;
@@ -58,10 +64,11 @@ main {
 }
 
 body {
-    padding: 14px;
+    padding: 0 14px 0 14px;
     font-size: 17px;
     line-height: 1.2em;
     font-family: Arial, Helvetica, sans-serif;
+    overscroll-behavior: none;
 }
 
 * {

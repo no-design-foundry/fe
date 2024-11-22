@@ -1,10 +1,71 @@
 export default [
   {
     type: "filterDetailView",
+    title: "X-Ray",
+    identifier: "x_ray",
+    slug: "x-ray",
+    isHidden: false,
+    isNew: true,
+    scaleThumbnailOnMobile: true,
+    isNewUntil: "01-08-2024",
+    layerColors: ["#000"],
+    opentypeFeatures: [
+      {
+        label: "Background",
+        tag: "ss01"
+      },
+      {
+        label: "Filled",
+        tag: "ss02",
+        checked: true
+      }
+    ],
+    variableFontControlSliders: [
+      {
+        label: "Outline Width",
+        tag: "OTLN",
+        min: 1,
+        max: 20,
+        defaultValue: 4,
+      },
+      {
+        label: "Line Width",
+        tag: "LINE",
+        min: 1,
+        max: 20,
+        defaultValue: 4,
+      },
+      {
+        label: "Point Size",
+        tag: "POIN",
+        min: 10,
+        max: 40,
+        defaultValue: 30,
+      },
+      {
+        label: "Handle Size",
+        tag: "HAND",
+        min: 10,
+        max: 40,
+        defaultValue: 25,
+      },
+    ],
+    inputs: [
+      {
+        type: "colors",
+        label: "Colors",
+        names: ["outline_color", "line_color", "point_color"],
+        labels: ["Outline Color", "Line Color", "Point Color"],
+        defaultValues: ["#FF0000", "#00FF00", "#0000FF"],
+      },
+    ]
+  },
+  {
+    type: "filterDetailView",
     title: "Pan",
     identifier: "pan",
     slug: "pan",
-    isNew: true,
+    isNew: false,
     scaleThumbnailOnMobile: true,
     isHidden: false,
     layerColors: ["#000"],
@@ -92,83 +153,12 @@ export default [
   },
   {
     type: "filterDetailView",
-    title: "X-Ray",
-    identifier: "x_ray",
-    slug: "x-ray",
-    isHidden: process.env.NODE_ENV !== "development",
-    isNew: false,
-    scaleThumbnailOnMobile: true,
-    isNewUntil: "01-08-2024",
-    layerColors: ["#000"],
-    opentypeFeatures: [
-      {
-        label: "Background",
-        tag: "ss01"
-      },
-      {
-        label: "Filled",
-        tag: "ss02"
-      }
-    ],
-    variableFontControlSliders: [
-      {
-        label: "Outline Width",
-        tag: "OTLN",
-        min: 1,
-        max: 20,
-        defaultValue: 10,
-      },
-      {
-        label: "Line Width",
-        tag: "LINE",
-        min: 1,
-        max: 20,
-        defaultValue: 10,
-      },
-      {
-        label: "Point Size",
-        tag: "POIN",
-        min: 10,
-        max: 40,
-        defaultValue: 10,
-      },
-      {
-        label: "Handle Size",
-        tag: "HAND",
-        min: 10,
-        max: 40,
-        defaultValue: 10,
-      },
-    ],
-    inputs: [
-      {
-        type: "color",
-        label: "Outline Color",
-        name: "outline_color",
-        defaultValue: "#000",
-      },
-      {
-        type: "color",
-        label: "Line Color",
-        name: "line_color",
-        defaultValue: "#000",
-      },
-      {
-        type: "color",
-        label: "Point Color",
-        name: "point_color",
-        defaultValue: "#000",
-      },
-    ]
-  },
-  {
-    type: "filterDetailView",
     title: "Extruder",
     identifier: "extruder",
     slug: "extruder",
     isHidden: true,
     scaleThumbnailOnMobile: true,
-    isNew: true,
+    isNew: false,
     isNewUntil: "01-08-2024",
     layerColors: ["#000", "transparent"],
     variableFontControlSliders: [
@@ -195,5 +185,10 @@ export default [
     type: "post",
     slug: "hinting",
     title: "TrueType hinting, an insight for the curious",
-  }
+  },
+  // {
+  //   type: "post",
+  //   slug: "bezier",
+  //   title: "Beziers (Not the town in France)",
+  // }
 ];

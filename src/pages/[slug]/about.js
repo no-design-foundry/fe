@@ -1,16 +1,28 @@
 import Markdown from "@/components/Markdown";
 import data from "@/data";
 import React from "react";
+import { useFela } from "react-fela";
+
+const markdownWrapperRule = () => ({
+  marginTop: "1em",
+});
 
 function About({ markdown }) {
-  return <Markdown markdown={markdown} />;
+  const { css } = useFela();
+  return (
+    <div className={css(markdownWrapperRule)}>
+      <Markdown markdown={markdown} />
+    </div>
+  );
 }
 
 export default About;
 
 export function getStaticPaths() {
   return {
-    paths: data.filter(entry => entry.type === "filterDetailView" && !(entry.isHidden)).map((entry) => ({ params: { slug: entry.slug } })),
+    paths: data
+      .filter((entry) => entry.type === "filterDetailView" && !entry.isHidden)
+      .map((entry) => ({ params: { slug: entry.slug } })),
     fallback: false,
   };
 }
