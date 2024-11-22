@@ -58,7 +58,7 @@ function FontControls() {
   useEffect(() => {
     if (previewRef?.current) {
       let value = []
-      opentypeFeatures.forEach((feature) => {
+      opentypeFeatures?.forEach((feature) => {
         if (feature.checked) {
           value.push(`"${feature.tag}"`)
         }

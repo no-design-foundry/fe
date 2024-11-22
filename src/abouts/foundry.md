@@ -8,6 +8,8 @@ And of course last but not least thanks to Alžběta Nováková.
 
 This website doesn't store any fonts, make sure you font license is compliant with usage of this website.
 
+[Contribute on GitHub](https://github.com/no-design-foundry/)
+
 [Follow me on Instagram](https://www.instagram.com/sindljan/)
 
 [Buy me a coffee](https://buymeacoffee.com/jansindl3r)
