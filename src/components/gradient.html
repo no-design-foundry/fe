@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated Blurred Gradient</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .gradient-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .circle {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255,255,255,0.8), rgba(255,255,255,0));
+            filter: blur(100px);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translate(0, 0);
+            }
+            25% {
+                transform: translate(50px, -50px);
+            }
+            50% {
+                transform: translate(-50px, 50px);
+            }
+            75% {
+                transform: translate(100px, -100px);
+            }
+        }
+
+        /* Create multiple circles */
+        .circle:nth-child(1) {
+            background: radial-gradient(circle, rgba(255,0,0,0.8), rgba(255,0,0,0));
+            animation-delay: 0s;
+        }
+
+        .circle:nth-child(2) {
+            background: radial-gradient(circle, rgba(0,255,0,0.8), rgba(0,255,0,0));
+            animation-delay: 2s;
+        }
+
+        .circle:nth-child(3) {
+            background: radial-gradient(circle, rgba(0,0,255,0.8), rgba(0,0,255,0));
+            animation-delay: 4s;
+        }
+
+        .circle:nth-child(4) {
+            background: radial-gradient(circle, rgba(138,43,226,0.8), rgba(138,43,226,0));
+            animation-delay: 1s;
+        }
+
+        .circle:nth-child(5) {
+            background: radial-gradient(circle, rgba(75,0,130,0.8), rgba(75,0,130,0));
+            animation-delay: 3s;
+        }
+
+        .circle:nth-child(6) {
+            background: radial-gradient(circle, rgba(0,191,255,0.8), rgba(0,191,255,0));
+            animation-delay: 5s;
+        }
+
+        .circle:nth-child(7) {
+            background: radial-gradient(circle, rgba(147,112,219,0.8), rgba(147,112,219,0));
+            animation-delay: 2.5s;
+        }
+
+        .circle:nth-child(8) {
+            background: radial-gradient(circle, rgba(255,20,147,0.8), rgba(255,20,147,0));
+            animation-delay: 4.5s;
+        }
+    </style>
+</head>
+<body>
+    <div class="gradient-container">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+    </div>
+
+    <script>
+        // Dynamically adjust the number of circles
+        const container = document.querySelector('.gradient-container');
+
+        for (let i = 9; i <= 15; i++) {
+            const circle = document.createElement('div');
+            circle.className = 'circle';
+            circle.style.animationDelay = `${Math.random() * 6}s`;
+            circle.style.width = `${Math.random() * 300 + 100}px`;
+            circle.style.height = circle.style.width;
+            circle.style.background = `radial-gradient(circle, rgba(${Math.random() * 255},${Math.random() * 255},${Math.random() * 255},0.8), rgba(0,0,0,0))`;
+            container.appendChild(circle);
+        }
+    </script>
+</body>
+</html>
