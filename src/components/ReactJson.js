@@ -1,31 +1,33 @@
-import React, { use, useState } from "react";
+import React, { useState } from "react";
 import { convertXML } from "simple-xml-to-json";
 import { useFela } from "react-fela";
 
-export const childStyle = ({ level }) => ({
-  marginLeft: `${level * 5}px`,
-  extend: [
-    {
-      condition: level == 1,
-      style: {
-        padding: 10,
-        background: "#F2F2F2",
-        borderRadius: 10,
-        margin: 10,
-      },
-    },
-  ],
+const INDENT = 2
+
+const childStyle = ({ level }) => ({
+  // marginLeft: `${level * INDENT}ch`,
+  ...(level === 1 && {
+    padding: 10,
+    background: "#F2F2F2",
+    borderRadius: 10,
+    margin: 10,
+  }),
 });
 
-export const lastChildStyle = ({ level }) => ({
-  marginLeft: (level + 1) * 5,
+const headerRule = ({ level }) => ({
+  textDecoration: "underline",
+  "& > * + *": { marginLeft: 20 },
+  "& + ul": {
+    marginLeft: `${level * INDENT}ch`,
+  }
+})
+
+const lastChildStyle = () => ({
   display: "flex",
-  "& > * + *": {
-    marginLeft: 20,
-  },
+  "& > * + *": { marginLeft: 20 },
 });
 
-function LastChildElement({ data, level }) {
+function LastChildElement({ data }) {
   return Object.entries(data).map(([key, value]) => (
     <span key={key}>
       {key}={value}
@@ -37,18 +39,16 @@ function ChildElement({ data, level = 0 }) {
   const { css } = useFela({ level });
   const key = Object.keys(data)[0];
   const { children, ...otherValues } = data[key];
-  const [expanded, setExpanded] = useState(false);
-
-  function handleOnClick() {
-    setExpanded(!expanded);
-  }
+  const [expanded, setExpanded] = useState(!false);
 
   return (
     <div className={css(childStyle)}>
-      <div className={css(lastChildStyle)} {...(children ? { onClick: handleOnClick } : {})}>
+      <div
+        className={css(headerRule)}
+        {...(children && { onClick: () => setExpanded(!expanded) })}
+      >
         <span>{key}</span>
-        <LastChildElement data={otherValues} level={level} />
-        {children && <span>{expanded ? "↑" : "↓"}</span>}
+        <LastChildElement data={otherValues} />
       </div>
       {expanded && (
         <ul>
@@ -59,11 +59,10 @@ function ChildElement({ data, level = 0 }) {
                 {value.children ? (
                   <ChildElement key={index} data={item} level={level + 1} />
                 ) : (
-                  <LastChildElement
-                    key={index}
-                    data={item[key]}
-                    level={level + 1}
-                  />
+                  <>
+                    <span>{key}</span>
+                    <LastChildElement data={item[key]} />
+                  </>
                 )}
               </div>
             );
@@ -76,7 +75,6 @@ function ChildElement({ data, level = 0 }) {
 
 function ReactJson({ src }) {
   const json = convertXML(src);
-  console.log(json)
   return (
     <div>
       <ChildElement data={json} />
