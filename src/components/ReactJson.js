@@ -5,7 +5,6 @@ import { TTXContext } from "@/pages/workshop/explorer";
 
 const INDENT = 1;
 
-
 const inputRule = () => ({
   border: "none",
   width: "100%",
@@ -32,6 +31,7 @@ const inputWrapperRule = () => ({
 
 const trRule = ({ level }) => ({
   // display: "block",
+  // verticalAlign: "baseline",
 });
 
 const thRule = () => ({
@@ -40,16 +40,19 @@ const thRule = () => ({
 
 const tdRule = ({ level }) => ({
   textAlign: "left",
-  paddingVertical: 4,
-  paddingHorizontal: 10,
+  paddingVertical: 2,
+  paddingHorizontal: 4,
+  "& + *": {
+    // borderTop: "1px solid black"
+  },
   extend: [
     {
       condition: level == 1,
       style: {
-        background: "#F2F2F2",
         margin: 10,
-        padding: 10,
+        padding: 20,
         borderRadius: 10,
+        // background: "#F2F2F2"
       },
     },
   ],
@@ -69,13 +72,13 @@ const tableRule = ({ level }) => ({
     {
       condition: level > 0,
       style: {
-        width: "100%",
+        // width: "100%",
       },
     },
     {
-      condition: level == 1,
+      condition: level == 0,
       style: {
-        background: "#F2F2F2",
+        // background: "#F2F2F2",
         padding: 10,
         borderRadius: 10,
       },
@@ -86,7 +89,7 @@ const tableRule = ({ level }) => ({
 function buildQuerySelectorPath(keys) {
   return keys.reduce((acc, key, index) => {
     if (typeof key === "number") {
-      return `${acc} > *:nth-child(${key})`;
+      return `${acc} > *:nth-child(${key + 1})`;
     }
     if (index === 0) {
       return key;
@@ -96,18 +99,18 @@ function buildQuerySelectorPath(keys) {
   }, "");
 }
 
-function Attributes({ data, keys }) {
+function Attributes({ data, pathKeys }) {
   const { css } = useFela();
 
   return Object.entries(data).map(([key, value]) => (
     <span key={key} className={css(inputWrapperRule)}>
       <strong>{key}</strong>
-      <Input keys={keys} lastKey={key} value={value.trim()} />
+      <Input pathKeys={pathKeys} lastKey={key} value={value.trim()} />
     </span>
   ));
 }
 
-function Input({ type, value, pathKeys }) {
+function Input({ type, value, pathKeys, lastKey }) {
   const { rawXmlFont } = useContext(TTXContext);
   const [size, setSize] = useState(Math.max(value?.length ?? 1, 5));
   value = value?.trim();
@@ -116,13 +119,18 @@ function Input({ type, value, pathKeys }) {
   function handleOnChange(e) {
     const { value } = e.target;
     const path = buildQuerySelectorPath(pathKeys);
-    console.log(path)
-    // if (lastKey === "content") {
-    //   rawXmlFont.current.querySelector(path).textContent = value;
-    // } else {
-    //   rawXmlFont.current.querySelector(path).setAttribute(lastKey, value);
-    // }
-    // setSize(Math.max(value.length, 4));
+    let originalValue;
+    if (lastKey === "content") {
+      originalValue = rawXmlFont.current.querySelector(path).textContent;
+      rawXmlFont.current.querySelector(path).textContent = value;
+    } else {
+      originalValue = rawXmlFont.current
+        .querySelector(path)
+        .getAttribute(lastKey);
+      rawXmlFont.current.querySelector(path).setAttribute(lastKey, value);
+    }
+    console.log({ originalValue });
+    setSize(Math.max(value.length, 4));
   }
 
   if (type === "textarea") {
@@ -165,7 +173,7 @@ function getUniqueKeys(data) {
 
 function Tr({ child, uniqueKeys, level, pathKeys }) {
   const [expanded, setExpanded] = useState(false);
-  const { css } = useFela({ level });
+  const { css } = useFela({ level, expanded });
   const key = Object.keys(child)[0];
 
   return (
@@ -174,8 +182,7 @@ function Tr({ child, uniqueKeys, level, pathKeys }) {
         <td className={css(tdRule)}>
           {"children" in child[key] ? (
             <div onClick={() => setExpanded(!expanded)}>
-              {expanded ? "▲" : "▼"}
-              {key}
+              {`${expanded ? "▲" : "▼"} ${key}`}
             </div>
           ) : (
             <>
@@ -194,26 +201,34 @@ function Tr({ child, uniqueKeys, level, pathKeys }) {
           <td className={css(tdRule)}>
             {child?.[key]?.[uniqueKey] && (
               <Input
+                type={
+                  key === "assembly" && uniqueKey === "content"
+                    ? "textarea"
+                    : "text"
+                }
                 value={child[key][uniqueKey]}
-                pathKeys={[...pathKeys, uniqueKey]}
+                pathKeys={pathKeys}
+                lastKey={uniqueKey}
               />
             )}
           </td>
         ))}
       </tr>
       <tr>
-        <td colSpan="100%">
-          {expanded && <Table data={child} level={level} pathKeys={[...pathKeys]} />}
+        <td colSpan={"100%"}>
+          {expanded && (
+            <Table data={child} level={level} pathKeys={[...pathKeys]} expanded={expanded} />
+          )}
         </td>
       </tr>
     </>
   );
 }
 
-function Table({ data, level, pathKeys }) {
+function Table({ data, level, pathKeys, expanded }) {
   const key = Object.keys(data)[0];
   const { children } = data[key];
-  const { css } = useFela({ level });
+  const { css } = useFela({ level, expanded });
   const uniqueKeys =
     Object.values(data[key]).length === 1
       ? getUniqueKeys(data[key]).filter((key) => key !== "children")
@@ -222,9 +237,7 @@ function Table({ data, level, pathKeys }) {
     <table className={css(tableRule)}>
       <thead>
         <tr>
-          {uniqueKeys.length ? (
-            <th className={css(tdRule, thRule)}>Type</th>
-          ) : null}
+          {uniqueKeys.length ? <th className={css(tdRule, thRule)}></th> : null}
           {uniqueKeys.map((uniqueKey) => (
             <th className={css(tdRule, thRule)}>{uniqueKey}</th>
           ))}
@@ -232,7 +245,14 @@ function Table({ data, level, pathKeys }) {
       </thead>
       <tbody>
         {children?.map((child, index) => (
-          <Tr child={child} uniqueKeys={uniqueKeys} level={level + 1} pathKeys={[...pathKeys, index, Object.keys(child)[0]]}></Tr>
+          <>
+            <Tr
+              child={child}
+              uniqueKeys={uniqueKeys}
+              level={level + 1}
+              pathKeys={[...pathKeys, index]}
+            ></Tr>
+          </>
         ))}
       </tbody>
     </table>
@@ -242,7 +262,7 @@ function Table({ data, level, pathKeys }) {
 function ReactJson({ src }) {
   const json = convertXML(src);
   const { css } = useFela();
-  return <Table data={json} pathKeys={[]} level={0} />;
+  return <Table data={json} pathKeys={["&"]} level={0} />;
 }
 
 export default ReactJson;
