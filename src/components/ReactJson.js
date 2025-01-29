@@ -15,6 +15,11 @@ const childStyle = ({ level }) => ({
       condition: level > 1,
       style: {
         // width: "100%",
+        width: "100%",
+        paddingVertical: 10,
+        "& + *": {
+          borderTop: "1px solid #000",
+        },
       },
     },
   ],
@@ -58,6 +63,7 @@ const indicatorRule = {
 const attributesRule = () => ({
   flexWrap: "wrap",
   display: "flex",
+  justifyContent: "flex-start",
   whiteSpace: "pre-wrap",
   marginLeft: "10px",
   "& > *:not(:last-child)": {
@@ -245,7 +251,7 @@ function ChildElement({ data, keys = [], level = 0 }) {
           {children ? (
             <>
               <span className={css(indicatorRule)}>{expanded ? "▲" : "▼"}</span>
-              <u>{key}</u>
+              <span>{key}</span>
             </>
           ) : (
             key
