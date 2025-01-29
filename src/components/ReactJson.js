@@ -6,12 +6,15 @@ import { TTXContext } from "@/pages/workshop/explorer";
 const INDENT = 1;
 
 const childStyle = ({ level }) => ({
-  maxWidth: "80vw",
+  // maxWidth: "80vw",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "flex-start",
   extend: [
     {
       condition: level > 1,
       style: {
-        width: "100%",
+        // width: "100%",
       },
     },
   ],
@@ -74,7 +77,8 @@ const inputRule = () => ({
 });
 
 const textAreaRule = () => ({
-  width: "70ch"
+  width: "70ch",
+  fontSize: "inherit"
 })
 
 const inputWrapperRule = () => ({
