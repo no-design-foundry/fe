@@ -5,71 +5,6 @@ import { TTXContext } from "@/pages/workshop/explorer";
 
 const INDENT = 1;
 
-const childStyle = ({ level }) => ({
-  // maxWidth: "80vw",
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "flex-start",
-  extend: [
-    {
-      condition: level > 1,
-      style: {
-        // width: "100%",
-        width: "100%",
-        paddingVertical: 10,
-        "& + *": {
-          borderTop: "1px solid #000",
-        },
-      },
-    },
-  ],
-});
-
-const buttonRule = ({ level }) => ({
-  extend: [
-    {
-      condition: level === 1,
-      style: {
-        padding: 10,
-        background: "#F2F2F2",
-        borderRadius: 10,
-        marginVertical: 2,
-      },
-    },
-  ],
-});
-
-const headerStyle = ({ level }) => ({
-  display: "flex",
-  alignItems: "center",
-});
-
-const getIndentRule = (level) => () => ({
-  extend: [
-    {
-      condition: level > 1,
-      style: {
-        paddingLeft: `${level * INDENT}ch`,
-      },
-    },
-  ],
-});
-
-const indicatorRule = {
-  textDecoration: "none",
-  // marginLeft: "auto",
-};
-
-const attributesRule = () => ({
-  flexWrap: "wrap",
-  display: "flex",
-  justifyContent: "flex-start",
-  whiteSpace: "pre-wrap",
-  marginLeft: "10px",
-  "& > *:not(:last-child)": {
-    marginRight: "10px",
-  },
-});
 
 const inputRule = () => ({
   border: "none",
@@ -84,8 +19,8 @@ const inputRule = () => ({
 
 const textAreaRule = () => ({
   width: "70ch",
-  fontSize: "inherit"
-})
+  fontSize: "inherit",
+});
 
 const inputWrapperRule = () => ({
   display: "flex",
@@ -95,18 +30,57 @@ const inputWrapperRule = () => ({
   },
 });
 
-const clickableRule = () => ({
-  cursor: "pointer",
+const trRule = ({ level }) => ({
+  // display: "block",
 });
 
-const headRule = () => ({
+const thRule = () => ({
   textAlign: "left",
 });
 
-const tableRule = () => ({
-  "& td": {
-    padding: 2,
+const tdRule = ({ level }) => ({
+  textAlign: "left",
+  paddingVertical: 4,
+  paddingHorizontal: 10,
+  extend: [
+    {
+      condition: level == 1,
+      style: {
+        background: "#F2F2F2",
+        margin: 10,
+        padding: 10,
+        borderRadius: 10,
+      },
+    },
+  ],
+});
+
+const attributesWrapperRule = () => ({
+  display: "flex",
+  alignItems: "baseline",
+  "& > * + *": {
+    marginLeft: 10,
   },
+});
+
+const tableRule = ({ level }) => ({
+  paddingLeft: `${level * INDENT}ch`,
+  extend: [
+    {
+      condition: level > 0,
+      style: {
+        width: "100%",
+      },
+    },
+    {
+      condition: level == 1,
+      style: {
+        background: "#F2F2F2",
+        padding: 10,
+        borderRadius: 10,
+      },
+    },
+  ],
 });
 
 function buildQuerySelectorPath(keys) {
@@ -125,31 +99,15 @@ function buildQuerySelectorPath(keys) {
 function Attributes({ data, keys }) {
   const { css } = useFela();
 
-  return (
-    <span className={css(attributesRule)}>
-      {Object.entries(data).map(([key, value]) => (
-        <span key={key} className={css(inputWrapperRule)}>
-          <strong>{key}</strong>
-          <Input keys={keys} lastKey={key} value={value.trim()} />
-        </span>
-      ))}
+  return Object.entries(data).map(([key, value]) => (
+    <span key={key} className={css(inputWrapperRule)}>
+      <strong>{key}</strong>
+      <Input keys={keys} lastKey={key} value={value.trim()} />
     </span>
-  );
+  ));
 }
 
-function hasChildren(children) {
-  const returnValue = children.some((child) =>
-    Object.values(child)
-      .reduce((acc, childKey) => {
-        acc = [...acc, ...Object.keys(childKey)];
-        return acc;
-      }, [])
-      .some((key) => key === "children")
-  );
-  return returnValue;
-}
-
-function Input({ type, value, keys, lastKey }) {
+function Input({ type, value, pathKeys }) {
   const { rawXmlFont } = useContext(TTXContext);
   const [size, setSize] = useState(Math.max(value?.length ?? 1, 5));
   value = value?.trim();
@@ -157,17 +115,23 @@ function Input({ type, value, keys, lastKey }) {
 
   function handleOnChange(e) {
     const { value } = e.target;
-    const path = buildQuerySelectorPath(keys);
-    if (lastKey === "content") {
-      rawXmlFont.current.querySelector(path).textContent = value;
-    } else {
-      rawXmlFont.current.querySelector(path).setAttribute(lastKey, value);
-    }
-    setSize(Math.max(value.length, 4));
+    const path = buildQuerySelectorPath(pathKeys);
+    console.log(path)
+    // if (lastKey === "content") {
+    //   rawXmlFont.current.querySelector(path).textContent = value;
+    // } else {
+    //   rawXmlFont.current.querySelector(path).setAttribute(lastKey, value);
+    // }
+    // setSize(Math.max(value.length, 4));
   }
+
   if (type === "textarea") {
     return (
-      <textarea className={css(inputRule, textAreaRule)} rows={20} onChange={handleOnChange}>
+      <textarea
+        className={css(inputRule, textAreaRule)}
+        rows={20}
+        onChange={handleOnChange}
+      >
         {value}
       </textarea>
     );
@@ -184,10 +148,10 @@ function Input({ type, value, keys, lastKey }) {
   }
 }
 
-function ChildTable({ data, level, keys }) {
-  const { css } = useFela({ level });
+function getUniqueKeys(data) {
+  const key = Object.keys(data)[0];
   const uniqueKeys = [
-    ...data.reduce((acc, child) => {
+    ...Object.values(data[key]).reduce((acc, child) => {
       const key = Object.keys(child)[0];
       const childData = child[key];
       for (const childKey of Object.keys(childData)) {
@@ -196,85 +160,89 @@ function ChildTable({ data, level, keys }) {
       return acc;
     }, new Set()),
   ];
+  return uniqueKeys;
+}
+
+function Tr({ child, uniqueKeys, level, pathKeys }) {
+  const [expanded, setExpanded] = useState(false);
+  const { css } = useFela({ level });
+  const key = Object.keys(child)[0];
 
   return (
-    <table className={css(tableRule, getIndentRule(level))}>
-      <thead className={css(headRule)}>
+    <>
+      <tr className={css(trRule)}>
+        <td className={css(tdRule)}>
+          {"children" in child[key] ? (
+            <div onClick={() => setExpanded(!expanded)}>
+              {expanded ? "▲" : "▼"}
+              {key}
+            </div>
+          ) : (
+            <>
+              {uniqueKeys.length ? (
+                key
+              ) : (
+                <div className={css(attributesWrapperRule)}>
+                  <span>{key}</span>
+                  <Attributes data={child[key]} pathKeys={[...pathKeys]} />
+                </div>
+              )}
+            </>
+          )}
+        </td>
+        {uniqueKeys.map((uniqueKey, index) => (
+          <td className={css(tdRule)}>
+            {child?.[key]?.[uniqueKey] && (
+              <Input
+                value={child[key][uniqueKey]}
+                pathKeys={[...pathKeys, uniqueKey]}
+              />
+            )}
+          </td>
+        ))}
+      </tr>
+      <tr>
+        <td colSpan="100%">
+          {expanded && <Table data={child} level={level} pathKeys={[...pathKeys]} />}
+        </td>
+      </tr>
+    </>
+  );
+}
+
+function Table({ data, level, pathKeys }) {
+  const key = Object.keys(data)[0];
+  const { children } = data[key];
+  const { css } = useFela({ level });
+  const uniqueKeys =
+    Object.values(data[key]).length === 1
+      ? getUniqueKeys(data[key]).filter((key) => key !== "children")
+      : [];
+  return (
+    <table className={css(tableRule)}>
+      <thead>
         <tr>
-          <th>Type</th>
-          {uniqueKeys.map((key, index) => (
-            <th key={index}>{key}</th>
+          {uniqueKeys.length ? (
+            <th className={css(tdRule, thRule)}>Type</th>
+          ) : null}
+          {uniqueKeys.map((uniqueKey) => (
+            <th className={css(tdRule, thRule)}>{uniqueKey}</th>
           ))}
         </tr>
       </thead>
       <tbody>
-        {data.map((child, index) => {
-          const [rowKey, rowValues] = Object.entries(child)[0];
-          return (
-            <tr key={index}>
-              <td>{rowKey}</td>
-              {uniqueKeys.map((key, index) => {
-                return (
-                  <td key={index}>
-                    {rowValues[key] && (
-                      <Input
-                        value={rowValues[key]}
-                        keys={[...keys, index]}
-                        lastKey={key}
-                        type={rowKey === "assembly" ? "textarea" : "text"}
-                      ></Input>
-                    )}
-                  </td>
-                );
-              })}
-            </tr>
-          );
-        })}
+        {children?.map((child, index) => (
+          <Tr child={child} uniqueKeys={uniqueKeys} level={level + 1} pathKeys={[...pathKeys, index, Object.keys(child)[0]]}></Tr>
+        ))}
       </tbody>
     </table>
   );
 }
 
-function ChildElement({ data, keys = [], level = 0 }) {
-  const { css } = useFela({ level });
-  const key = Object.keys(data)[0];
-  const { children, ...attributes } = data[key];
-  const [expanded, setExpanded] = useState(false);
-
-  return (
-    <div className={css(buttonRule, childStyle, getIndentRule(level))}>
-      <div className={css(headerStyle)}>
-        <span
-          className={css(clickableRule)}
-          onClick={() => children && setExpanded(!expanded)}
-        >
-          {children ? (
-            <>
-              <span className={css(indicatorRule)}>{expanded ? "▲" : "▼"}</span>
-              <span>{key}</span>
-            </>
-          ) : (
-            key
-          )}
-        </span>
-        {attributes && <Attributes keys={[...keys, key]} data={attributes} />}
-      </div>
-      {expanded ? (
-        hasChildren(children) ? (
-          children?.map((child, index) => {
-            return <ChildElement key={index} data={child} level={level + 1} />;
-          })
-        ) : (
-          <ChildTable keys={[...keys, key]} data={children} level={level} />
-        )
-      ) : null}
-    </div>
-  );
-}
-
 function ReactJson({ src }) {
   const json = convertXML(src);
-  return <ChildElement data={json} />;
+  const { css } = useFela();
+  return <Table data={json} pathKeys={[]} level={0} />;
 }
 
 export default ReactJson;
