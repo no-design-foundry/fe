@@ -9,11 +9,18 @@ const inputRule = () => ({
   border: "none",
   width: "100%",
   minWidth: "2ch",
-  paddingVertical: 2,
-  marginVertical: 2,
   paddingHorizontal: 4,
   borderRadius: 4,
   fontFamily: "monospace",
+});
+
+const rowLegendRule = () => ({
+  borderRight: "1px solid black",
+});
+
+const clickableRule = () => ({
+  cursor: "pointer",
+  userSelect: "none",
 });
 
 const textAreaRule = () => ({
@@ -21,69 +28,55 @@ const textAreaRule = () => ({
   fontSize: "inherit",
 });
 
-const inputWrapperRule = () => ({
+const attributesRule = () => ({
   display: "flex",
   alignItems: "baseline",
   "& > * + *": {
-    marginLeft: 10,
+    paddingLeft: 10,
   },
 });
 
-const trRule = ({ level }) => ({
-  // display: "block",
-  // verticalAlign: "baseline",
+const cellRule = () => ({
+  borderTop: "1px solid black",
+  width: "100%",
+  padding: 10,
 });
 
-const thRule = () => ({
-  textAlign: "left",
-});
-
-const tdRule = ({ level }) => ({
-  textAlign: "left",
-  paddingVertical: 2,
-  paddingHorizontal: 4,
-  "& + *": {
-    // borderTop: "1px solid black"
-  },
-  extend: [
-    {
-      condition: level == 1,
-      style: {
-        margin: 10,
-        padding: 20,
-        borderRadius: 10,
-        // background: "#F2F2F2"
-      },
-    },
-  ],
-});
+const emptyCellRule = () => ({});
 
 const attributesWrapperRule = () => ({
   display: "flex",
   alignItems: "baseline",
   "& > * + *": {
-    marginLeft: 10,
+    paddingLeft: 10,
   },
 });
 
-const tableRule = ({ level }) => ({
+const expandableTableRule = () => ({
+  gridColumn: "1 / -1",
+  width: "100%",
+});
+
+const tableRule = ({ level, uniqueKeysLength }) => ({
   paddingLeft: `${level * INDENT}ch`,
   extend: [
     {
-      condition: level > 0,
+      condition: uniqueKeysLength === 0,
       style: {
-        // width: "100%",
+        display: "flex",
+        flexDirection: "column",
+        width: "100%",
       },
     },
     {
-      condition: level == 0,
+      condition: uniqueKeysLength > 0,
       style: {
-        // background: "#F2F2F2",
-        padding: 10,
-        borderRadius: 10,
+        display: "grid",
+        gridTemplateColumns: `repeat(${uniqueKeysLength + 1}, max-content)`,
       },
     },
   ],
+  // gap: 4
 });
 
 function buildQuerySelectorPath(keys) {
@@ -103,8 +96,8 @@ function Attributes({ data, pathKeys }) {
   const { css } = useFela();
 
   return Object.entries(data).map(([key, value]) => (
-    <span key={key} className={css(inputWrapperRule)}>
-      <strong>{key}</strong>
+    <span key={key} className={css(attributesRule)}>
+      <span>{key}</span>
       <Input pathKeys={pathKeys} lastKey={key} value={value.trim()} />
     </span>
   ));
@@ -173,96 +166,138 @@ function getUniqueKeys(data) {
 
 function Tr({ child, uniqueKeys, level, pathKeys }) {
   const [expanded, setExpanded] = useState(false);
-  const { css } = useFela({ level, expanded });
+  const { css } = useFela({ level });
   const key = Object.keys(child)[0];
 
   return (
     <>
-      <tr className={css(trRule)}>
-        <td className={css(tdRule)}>
-          {"children" in child[key] ? (
-            <div onClick={() => setExpanded(!expanded)}>
-              {`${expanded ? "▲" : "▼"} ${key}`}
-            </div>
-          ) : (
-            <>
-              {uniqueKeys.length ? (
-                key
-              ) : (
-                <div className={css(attributesWrapperRule)}>
-                  <span>{key}</span>
-                  <Attributes data={child[key]} pathKeys={[...pathKeys]} />
-                </div>
-              )}
-            </>
+      <div className={css(cellRule, rowLegendRule)}>
+        {"children" in child[key] ? (
+          <i
+            className={css(clickableRule)}
+            onClick={() => setExpanded(!expanded)}
+          >
+            {`${expanded ? "▲" : "▼"} ${key}`}
+          </i>
+        ) : uniqueKeys.length ? (
+          <i>{key}</i>
+        ) : (
+          <i className={css(attributesWrapperRule)}>
+            <span>{key}</span>
+            <Attributes data={child[key]} pathKeys={[...pathKeys]} />
+          </i>
+        )}
+      </div>
+      {uniqueKeys.map((uniqueKey, index) => (
+        <div className={css(cellRule)}>
+          {child?.[key]?.[uniqueKey] && (
+            <Input
+              type={
+                key === "assembly" && uniqueKey === "content"
+                  ? "textarea"
+                  : "text"
+              }
+              value={child[key][uniqueKey]}
+              pathKeys={pathKeys}
+              lastKey={uniqueKey}
+            />
           )}
-        </td>
-        {uniqueKeys.map((uniqueKey, index) => (
-          <td className={css(tdRule)}>
-            {child?.[key]?.[uniqueKey] && (
-              <Input
-                type={
-                  key === "assembly" && uniqueKey === "content"
-                    ? "textarea"
-                    : "text"
-                }
-                value={child[key][uniqueKey]}
-                pathKeys={pathKeys}
-                lastKey={uniqueKey}
-              />
-            )}
-          </td>
-        ))}
-      </tr>
-      <tr>
-        <td colSpan={"100%"}>
-          {expanded && (
-            <Table data={child} level={level} pathKeys={[...pathKeys]} expanded={expanded} />
-          )}
-        </td>
-      </tr>
+        </div>
+      ))}
+      <div className={css(expandableTableRule)}>
+        {expanded && (
+          <Table
+            data={child}
+            level={level}
+            pathKeys={[...pathKeys]}
+            expanded={expanded}
+          />
+        )}
+      </div>
     </>
   );
 }
 
-function Table({ data, level, pathKeys, expanded }) {
+function Table({ data, level, pathKeys }) {
   const key = Object.keys(data)[0];
   const { children } = data[key];
-  const { css } = useFela({ level, expanded });
   const uniqueKeys =
     Object.values(data[key]).length === 1
       ? getUniqueKeys(data[key]).filter((key) => key !== "children")
       : [];
+  const { css } = useFela({
+    level,
+    uniqueKeysLength: uniqueKeys.length,
+  });
   return (
-    <table className={css(tableRule)}>
-      <thead>
-        <tr>
-          {uniqueKeys.length ? <th className={css(tdRule, thRule)}></th> : null}
-          {uniqueKeys.map((uniqueKey) => (
-            <th className={css(tdRule, thRule)}>{uniqueKey}</th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {children?.map((child, index) => (
-          <>
-            <Tr
-              child={child}
-              uniqueKeys={uniqueKeys}
-              level={level + 1}
-              pathKeys={[...pathKeys, index]}
-            ></Tr>
-          </>
-        ))}
-      </tbody>
-    </table>
+    <div className={css(tableRule)}>
+      {uniqueKeys.length ? (
+        <div className={css(cellRule, emptyCellRule, rowLegendRule)}></div>
+      ) : null}
+      {uniqueKeys.map((uniqueKey) => (
+        <strong className={css(cellRule)}>{uniqueKey}</strong>
+      ))}
+      {children?.map((child, index) => (
+        <>
+          <Tr
+            child={child}
+            uniqueKeys={uniqueKeys}
+            level={level + 1}
+            pathKeys={[...pathKeys, index]}
+          ></Tr>
+        </>
+      ))}
+    </div>
+  );
+}
+
+const tableListEntryRule = () => ({
+  background: "#F2F2F2",
+  padding: 20,
+  borderRadius: 10,
+  "& + *": {
+    marginTop: 5,
+  },
+  "& > * + *": {
+    marginTop: 10,
+  },
+});
+
+const mainRule = () => ({
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "flex-start",
+});
+
+function TableListEntry({ data }) {
+  const key = Object.keys(data)[0];
+  const [expanded, setExpanded] = useState();
+  const { css } = useFela();
+
+  function handleOnClick() {
+    setExpanded(!expanded);
+  }
+  return (
+    <div className={css(tableListEntryRule)}>
+      <strong onClick={handleOnClick} className={css(clickableRule)}>{`${
+        expanded ? "▲" : "▼"
+      } ${key}`}</strong>
+      {expanded && <Table data={data} level={0} pathKeys={["&"]} />}
+    </div>
   );
 }
 
 function ReactJson({ src }) {
   const json = convertXML(src);
+  const key = Object.keys(json)[0];
   const { css } = useFela();
-  return <Table data={json} pathKeys={["&"]} level={0} />;
+  return (
+    <div className={css(mainRule)}>
+      {json[key].children.map((child) => (
+        <TableListEntry key={key} data={child} />
+      ))}
+    </div>
+  );
 }
 
 export default ReactJson;
