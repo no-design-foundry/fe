@@ -143,24 +143,25 @@ function hasChildren(children) {
 
 function Input({value, keys, lastKey}) {
   const { rawXmlFont } = useContext(TTXContext);
+  const [size, setSize] = useState(Math.max(value?.length ?? 1, 4));
   value = value?.trim()
   const {css} = useFela()
 
   function handleOnChange(e) {
     const { value } = e.target;
     const path = buildQuerySelectorPath(keys);
-    console.log(lastKey, value)
     if (lastKey === "content") {
       rawXmlFont.current.querySelector(path).textContent = value;
     } else {
       rawXmlFont.current.querySelector(path).setAttribute(lastKey, value);
     }
+    setSize(Math.max(value.length, 4));
   }
 
   return (
     <input
       type="text"
-      size={Math.max(value?.length ?? 1, 4)}
+      size={size}
       className={css(inputRule)}
       defaultValue={value}
       onChange={handleOnChange}
