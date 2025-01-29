@@ -45,6 +45,7 @@ function Explorer() {
   }
 
   async function handleOnExport(e) {
+    console.log(rawXmlFont.current)
     const rawXmlFontString = new XMLSerializer().serializeToString(rawXmlFont.current);
     exportFont(rawXmlFontString).then((base64Data) => {
       const link = document.createElement('a');

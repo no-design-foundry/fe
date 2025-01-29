@@ -109,9 +109,12 @@ function Attributes({ data, keys }) {
     const { key } = e.target.dataset;
     const { value } = e.target
     const path = buildQuerySelectorPath(keys)
-    const originalValue = rawXmlFont.current.querySelector(path).getAttribute(key)
-    rawXmlFont.current.querySelector(path).setAttribute(key, value)  
-    console.log(`Changed ${key} from ${originalValue} to ${value}`)
+    if (key === "content") {
+      rawXmlFont.current.querySelector(path).textContent = value
+    }
+    else {
+      rawXmlFont.current.querySelector(path).setAttribute(key, value)
+    }
   }
 
   return (
