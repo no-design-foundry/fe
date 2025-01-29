@@ -38,24 +38,6 @@ const headerStyle = ({ level }) => ({
   // marginLeft: `${level * INDENT}ch`,
 });
 
-const lastChildStyle = ({ level }) => ({
-  display: "flex",
-  "& > * + *": {
-    marginLeft: "10px",
-  },
-  extend: [
-    {
-      condition: level > 0,
-      style: {
-        "&:not(:first-child)": {
-          borderTop: "1px solid black",
-        },
-        paddingVertical: "4px",
-      },
-    },
-  ],
-});
-
 const getIndentRule = (level) => () => ({
   extend: [
     {
@@ -82,9 +64,21 @@ const attributesRule = () => ({
 
 const inputRule = () => ({
   border: "none",
-  display: "inline",
-  width: "auto !important",
+  width: "100%",
   minWidth: "2ch",
+  padding: 4,
+  borderRadius: 4,
+  fontFamily: "monospace",
+});
+
+const headRule = () => ({
+  textAlign: "left",
+});
+
+const tableRule = () => ({
+  "& td": {
+    padding: 2,
+  },
 });
 
 function buildQuerySelectorPath(keys) {
@@ -94,8 +88,7 @@ function buildQuerySelectorPath(keys) {
     }
     if (index === 0) {
       return key;
-    }
-    else {
+    } else {
       return `${acc} > ${key}`;
     }
   }, "");
@@ -107,13 +100,12 @@ function Attributes({ data, keys }) {
 
   function handleOnChange(e) {
     const { key } = e.target.dataset;
-    const { value } = e.target
-    const path = buildQuerySelectorPath(keys)
+    const { value } = e.target;
+    const path = buildQuerySelectorPath(keys);
     if (key === "content") {
-      rawXmlFont.current.querySelector(path).textContent = value
-    }
-    else {
-      rawXmlFont.current.querySelector(path).setAttribute(key, value)
+      rawXmlFont.current.querySelector(path).textContent = value;
+    } else {
+      rawXmlFont.current.querySelector(path).setAttribute(key, value);
     }
   }
 
@@ -129,10 +121,90 @@ function Attributes({ data, keys }) {
             data-key={key}
             onChange={handleOnChange}
             defaultValue={value.trim()}
+            size={value.length}
           />
         </span>
       ))}
     </span>
+  );
+}
+
+function hasChildren(children) {
+  const returnValue = children.some((child) =>
+    Object.values(child)
+      .reduce((acc, childKey) => {
+        acc = [...acc, ...Object.keys(childKey)];
+        return acc;
+      }, [])
+      .some((key) => key === "children")
+  );
+  return returnValue;
+}
+
+function Input({value, keys, lastKey}) {
+  const { rawXmlFont } = useContext(TTXContext);
+  value = value?.trim()
+  const {css} = useFela()
+
+  function handleOnChange(e) {
+    const { value } = e.target;
+    const path = buildQuerySelectorPath(keys);
+    console.log(lastKey, value)
+    if (lastKey === "content") {
+      rawXmlFont.current.querySelector(path).textContent = value;
+    } else {
+      rawXmlFont.current.querySelector(path).setAttribute(lastKey, value);
+    }
+  }
+
+  return (
+    <input
+      type="text"
+      size={Math.max(value?.length ?? 1, 4)}
+      className={css(inputRule)}
+      defaultValue={value}
+      onChange={handleOnChange}
+    />
+  );
+}
+
+function ChildTable({ data, level, keys }) {
+  const { css } = useFela();
+  const uniqueKeys = [
+    ...data.reduce((acc, child) => {
+      const key = Object.keys(child)[0];
+      const childData = child[key];
+      for (const childKey of Object.keys(childData)) {
+        acc.add(childKey);
+      }
+      return acc;
+    }, new Set()),
+  ];
+
+  return (
+    <table className={css(tableRule, getIndentRule(level))}>
+      <thead className={css(headRule)}>
+        <tr>
+          <th>Type</th>
+          {uniqueKeys.map((key, index) => (
+            <th key={index}>{key}</th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {data.map((child, index) => {
+          const [rowKey, rowValues] = Object.entries(child)[0];
+          return (
+            <tr key={index}>
+              <td>{rowKey}</td>
+              {uniqueKeys.map((key, index) => {
+                return <td key={index}><Input value={rowValues[key]} keys={[...keys, index]} lastKey={key}></Input></td>;
+              })}
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
   );
 }
 
@@ -154,7 +226,16 @@ function ChildElement({ data, keys = [], level = 0 }) {
           <span className={css(indicatorRule)}>{expanded ? "▲" : "▼"}</span>
         )}
       </div>
-      {expanded && (
+      {expanded ? (
+        hasChildren(children) ? (
+          children?.map((child, index) => {
+            return <ChildElement key={index} data={child} level={level + 1} />;
+          })
+        ) : (
+          <ChildTable keys={[...keys, key]} data={children} level={level + 1} />
+        )
+      ) : null}
+      {/* {expanded && (
         <ul className={css(getIndentRule(level + 1))}>
           {children?.map((child, index) => {
             const childKey = Object.keys(child)[0];
@@ -177,7 +258,7 @@ function ChildElement({ data, keys = [], level = 0 }) {
             );
           })}
         </ul>
-      )}
+      )} */}
     </div>
   );
 }
