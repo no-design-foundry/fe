@@ -32,10 +32,8 @@ const buttonRule = ({ level }) => ({
 });
 
 const headerStyle = ({ level }) => ({
-  cursor: "pointer",
   display: "flex",
   alignItems: "center",
-  // marginLeft: `${level * INDENT}ch`,
 });
 
 const getIndentRule = (level) => () => ({
@@ -51,14 +49,16 @@ const getIndentRule = (level) => () => ({
 
 const indicatorRule = {
   textDecoration: "none",
-  marginLeft: "auto",
+  // marginLeft: "auto",
 };
 
 const attributesRule = () => ({
+  flexWrap: "wrap",
+  display: "flex",
   whiteSpace: "pre-wrap",
   marginLeft: "10px",
-  "& > * + *": {
-    marginLeft: "10px",
+  "& > *:not(:last-child)": {
+    marginRight: "10px",
   },
 });
 
@@ -66,10 +66,16 @@ const inputRule = () => ({
   border: "none",
   width: "100%",
   minWidth: "2ch",
-  padding: 4,
+  paddingVertical: 2,
+  marginVertical: 2,
+  paddingHorizontal: 4,
   borderRadius: 4,
   fontFamily: "monospace",
 });
+
+const textAreaRule = () => ({
+  width: "70ch"
+})
 
 const inputWrapperRule = () => ({
   display: "flex",
@@ -77,6 +83,10 @@ const inputWrapperRule = () => ({
   "& > * + *": {
     marginLeft: 10,
   },
+});
+
+const clickableRule = () => ({
+  cursor: "pointer",
 });
 
 const headRule = () => ({
@@ -104,32 +114,13 @@ function buildQuerySelectorPath(keys) {
 
 function Attributes({ data, keys }) {
   const { css } = useFela();
-  const { rawXmlFont } = useContext(TTXContext);
-
-  function handleOnChange(e) {
-    const { key } = e.target.dataset;
-    const { value } = e.target;
-    const path = buildQuerySelectorPath(keys);
-    if (key === "content") {
-      rawXmlFont.current.querySelector(path).textContent = value;
-    } else {
-      rawXmlFont.current.querySelector(path).setAttribute(key, value);
-    }
-  }
 
   return (
     <span className={css(attributesRule)}>
       {Object.entries(data).map(([key, value]) => (
         <span key={key} className={css(inputWrapperRule)}>
           <strong>{key}</strong>
-          <input
-            className={css(inputRule)}
-            type="text"
-            data-key={key}
-            onChange={handleOnChange}
-            defaultValue={value.trim()}
-            size={value.length}
-          />
+          <Input keys={keys} lastKey={key} value={value.trim()} />
         </span>
       ))}
     </span>
@@ -148,9 +139,9 @@ function hasChildren(children) {
   return returnValue;
 }
 
-function Input({ value, keys, lastKey }) {
+function Input({ type, value, keys, lastKey }) {
   const { rawXmlFont } = useContext(TTXContext);
-  const [size, setSize] = useState(Math.max(value?.length ?? 1, 4));
+  const [size, setSize] = useState(Math.max(value?.length ?? 1, 5));
   value = value?.trim();
   const { css } = useFela();
 
@@ -164,16 +155,23 @@ function Input({ value, keys, lastKey }) {
     }
     setSize(Math.max(value.length, 4));
   }
-
-  return (
-    <input
-      type="text"
-      size={size}
-      className={css(inputRule)}
-      defaultValue={value}
-      onChange={handleOnChange}
-    />
-  );
+  if (type === "textarea") {
+    return (
+      <textarea className={css(inputRule, textAreaRule)} rows={20} onChange={handleOnChange}>
+        {value}
+      </textarea>
+    );
+  } else {
+    return (
+      <input
+        type="text"
+        size={size}
+        className={css(inputRule)}
+        defaultValue={value}
+        onChange={handleOnChange}
+      />
+    );
+  }
 }
 
 function ChildTable({ data, level, keys }) {
@@ -213,6 +211,7 @@ function ChildTable({ data, level, keys }) {
                         value={rowValues[key]}
                         keys={[...keys, index]}
                         lastKey={key}
+                        type={rowKey === "assembly" ? "textarea" : "text"}
                       ></Input>
                     )}
                   </td>
@@ -234,15 +233,21 @@ function ChildElement({ data, keys = [], level = 0 }) {
 
   return (
     <div className={css(buttonRule, childStyle, getIndentRule(level))}>
-      <div
-        className={css(headerStyle)}
-        onClick={() => children && setExpanded(!expanded)}
-      >
-        <span>{key}</span>
+      <div className={css(headerStyle)}>
+        <span
+          className={css(clickableRule)}
+          onClick={() => children && setExpanded(!expanded)}
+        >
+          {children ? (
+            <>
+              <span className={css(indicatorRule)}>{expanded ? "▲" : "▼"}</span>
+              <u>{key}</u>
+            </>
+          ) : (
+            key
+          )}
+        </span>
         {attributes && <Attributes keys={[...keys, key]} data={attributes} />}
-        {children && (
-          <span className={css(indicatorRule)}>{expanded ? "▲" : "▼"}</span>
-        )}
       </div>
       {expanded ? (
         hasChildren(children) ? (
@@ -253,30 +258,6 @@ function ChildElement({ data, keys = [], level = 0 }) {
           <ChildTable keys={[...keys, key]} data={children} level={level} />
         )
       ) : null}
-      {/* {expanded && (
-        <ul className={css(getIndentRule(level + 1))}>
-          {children?.map((child, index) => {
-            const childKey = Object.keys(child)[0];
-            const childData = child[childKey];
-            return (
-              <li key={index} className={css(lastChildStyle)}>
-                {childData.children ? (
-                  <ChildElement
-                    keys={[...keys, key]}
-                    data={child}
-                    level={level + 1}
-                  />
-                ) : (
-                  <div className={css(buttonRule({ level: level + 1 }))}>
-                    <span>{childKey}</span>
-                    <Attributes keys={[...keys, key, index]} data={childData} />
-                  </div>
-                )}
-              </li>
-            );
-          })}
-        </ul>
-      )} */}
     </div>
   );
 }
