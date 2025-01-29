@@ -43,7 +43,7 @@ const getIndentRule = (level) => () => ({
     {
       condition: level > 1,
       style: {
-        marginLeft: `${level * INDENT}ch`,
+        paddingLeft: `${level * INDENT}ch`,
       },
     },
   ],
@@ -69,6 +69,14 @@ const inputRule = () => ({
   padding: 4,
   borderRadius: 4,
   fontFamily: "monospace",
+});
+
+const inputWrapperRule = () => ({
+  display: "flex",
+  alignItems: "baseline",
+  "& > * + *": {
+    marginLeft: 10,
+  },
 });
 
 const headRule = () => ({
@@ -112,9 +120,8 @@ function Attributes({ data, keys }) {
   return (
     <span className={css(attributesRule)}>
       {Object.entries(data).map(([key, value]) => (
-        <span key={key}>
+        <span key={key} className={css(inputWrapperRule)}>
           <strong>{key}</strong>
-          <span> = </span>
           <input
             className={css(inputRule)}
             type="text"
@@ -141,11 +148,11 @@ function hasChildren(children) {
   return returnValue;
 }
 
-function Input({value, keys, lastKey}) {
+function Input({ value, keys, lastKey }) {
   const { rawXmlFont } = useContext(TTXContext);
   const [size, setSize] = useState(Math.max(value?.length ?? 1, 4));
-  value = value?.trim()
-  const {css} = useFela()
+  value = value?.trim();
+  const { css } = useFela();
 
   function handleOnChange(e) {
     const { value } = e.target;
@@ -170,7 +177,7 @@ function Input({value, keys, lastKey}) {
 }
 
 function ChildTable({ data, level, keys }) {
-  const { css } = useFela();
+  const { css } = useFela({ level });
   const uniqueKeys = [
     ...data.reduce((acc, child) => {
       const key = Object.keys(child)[0];
@@ -199,7 +206,17 @@ function ChildTable({ data, level, keys }) {
             <tr key={index}>
               <td>{rowKey}</td>
               {uniqueKeys.map((key, index) => {
-                return <td key={index}><Input value={rowValues[key]} keys={[...keys, index]} lastKey={key}></Input></td>;
+                return (
+                  <td key={index}>
+                    {rowValues[key] && (
+                      <Input
+                        value={rowValues[key]}
+                        keys={[...keys, index]}
+                        lastKey={key}
+                      ></Input>
+                    )}
+                  </td>
+                );
               })}
             </tr>
           );
@@ -216,7 +233,7 @@ function ChildElement({ data, keys = [], level = 0 }) {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <div className={css(buttonRule, childStyle)}>
+    <div className={css(buttonRule, childStyle, getIndentRule(level))}>
       <div
         className={css(headerStyle)}
         onClick={() => children && setExpanded(!expanded)}
@@ -233,7 +250,7 @@ function ChildElement({ data, keys = [], level = 0 }) {
             return <ChildElement key={index} data={child} level={level + 1} />;
           })
         ) : (
-          <ChildTable keys={[...keys, key]} data={children} level={level + 1} />
+          <ChildTable keys={[...keys, key]} data={children} level={level} />
         )
       ) : null}
       {/* {expanded && (
