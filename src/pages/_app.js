@@ -36,7 +36,7 @@ class App extends BaseApp {
             <Head>
               <title>{"ndf" + getTitle(router?.asPath)}</title>
             </Head>
-            <main style={{marginTop: "1em"}}>
+            <main style={{marginTop: "2em"}}>
               <Component {...pageProps} />
             </main>
           </InputMemoryContextWrapper>
