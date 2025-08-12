@@ -21,8 +21,13 @@ const thumbnailRule = ({ isPreview, scaleThumbnailOnMobile }) => ({
   background: isPreview ? "silver" : "black",
   display: "flex",
   flexDirection: "column",
+  width: "100%",
   "& > *": {
+    width: "100%",
     filter: "invert(1)",
+  },
+  "& > * > *": {
+    width: "100%",
   },
   fromTabletS: {
     height: 0,

@@ -13,6 +13,8 @@ const sectionRule = () => ({
 const filterThumbnailWrapperRule = () => ({
   display: "flex",
   flexDirection: "column",
+  width: "100%",
+  height: "100%",
 });
 
 const postUlRule = () => ({
