@@ -6,8 +6,12 @@ import { useFela } from "react-fela";
 // or lottie-react - depending on what library you use
 const wrapperRule = () => ({
   display: "flex",
+  height: "100%",
   "& > div": {
     display: "flex"
+  },
+  "& svg": {
+    overflow: "visible"
   }
 });
 

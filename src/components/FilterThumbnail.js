@@ -21,19 +21,19 @@ const thumbnailRule = ({ isPreview, scaleThumbnailOnMobile }) => ({
   background: isPreview ? "silver" : "black",
   display: "flex",
   flexDirection: "column",
+  justifyContent: "center",
   width: "100%",
+  height: "70vh",
+  overflow: "hidden",
   "& > *": {
     width: "100%",
+    maxHeight: "100%",
     filter: "invert(1)",
   },
   "& > * > *": {
     width: "100%",
   },
-  fromTabletS: {
-    height: 0,
-    paddingBottom: "56%"
-  },
-  "untilTabletS,noHover": {
+  "untilTabletS": {
     overflow: "hidden",
     height: "100vw",
     alignItems: "center",
